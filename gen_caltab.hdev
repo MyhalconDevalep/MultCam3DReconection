@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="21.05.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<c>*圆点X方向个数，Y方向个数，圆点间距8mm，圆点直径为8mm*0.5，生成的描述文件，生成的标定板文件</c>
+<l>* gen_caltab (7, 7, 0.008, 0.5, 'caltab_100mm.descr', 'caltab_100mm.ps')</l>
+<l>* gen_caltab (7, 7, 0.015, 0.5, 'caltab_150mm.descr', 'caltab_150mm.ps')</l>
+<l>* gen_caltab (7, 7, 0.025, 0.5, 'caltab_240mm.descr', 'caltab_240mm.ps')</l>
+<l>gen_caltab (7, 7, 0.03, 0.5, 'caltab_300mm.descr', 'caltab_300mm.ps')</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

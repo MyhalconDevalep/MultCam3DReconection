@@ -1,0 +1,934 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.2" halcon_version="21.05.0.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_close_window ()</l>
+<l>dev_update_off ()</l>
+<l>read_image (ImageBack, 'D:/Project/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/1/0/1_0.bmp')</l>
+<l>get_image_size (ImageBack, WidthBack, HeightBack)</l>
+<l>WindowSizeFactor1 := 5</l>
+<l>dev_open_window (0, 0, WidthBack / WindowSizeFactor1, HeightBack / WindowSizeFactor1, 'black', WindowHandle1)</l>
+<l>set_display_font (WindowHandle1, 14, 'mono', 'true', 'false')</l>
+<l>dev_open_window (0, WidthBack / WindowSizeFactor1 + 12, WidthBack / WindowSizeFactor1, HeightBack / WindowSizeFactor1, 'black', WindowHandle2)</l>
+<l>set_display_font (WindowHandle2, 14, 'mono', 'true', 'false')</l>
+<l>dev_open_window (0, (WidthBack / WindowSizeFactor1)*2 + 24, WidthBack / WindowSizeFactor1, HeightBack / WindowSizeFactor1, 'black', WindowHandle3)</l>
+<l>set_display_font (WindowHandle3, 14, 'mono', 'true', 'false')</l>
+<l>CalibObjDescr := 'caltab_240mm.descr'</l>
+<l>Calibration_model_Init (0.006, 0.00000345, 0.00000345, WidthBack, HeightBack, CalibObjDescr, CalibDataID)</l>
+<c>* </c>
+<c>* Start the loop over the calibration images.</c>
+<l>* gen_empty_obj (ImagesBack)</l>
+<l>* gen_empty_obj (ImagesFront)</l>
+<l>Calibration_image_path:='D:/Project/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/2/'</l>
+<c></c>
+<l>Calibration_mask (Calibration_image_path, CalibDataID, Errors)</l>
+<c></c>
+<c></c>
+<c>* Perform the actual calibration.误差要小于1</c>
+<c></c>
+<l> Calibration_data:='calibration_data.dat'</l>
+<l> Write_calibration_data (CalibDataID, Calibration_data, CamParamData0, CamPose0, CamParamData1, CamPose1, CamParamData2, CamPose2, World2CamMat0, InvertToCamMat0, InvertToCamMat1, InvertToCamMat2, PlanePose, cameraSetupModelID, StereoModelID)</l>
+<c></c>
+<c></c>
+<l> Load_calibration_data (Calibration_data, CalibDataID, CamParamData0, CamPose0, CamParamData1, CamPose1, CamParamData2, CamPose2, World2CamMat0, InvertToCamMat0, InvertToCamMat1, InvertToCamMat2, PlanePose, cameraSetupModelID, StereoModelID)</l>
+<c></c>
+<c></c>
+<l>* set_camera_setup_param (cameraSetupModelID,'general', 'reference_camera', -1)</l>
+<l>* set_camera_setup_param (cameraSetupModelID, 0, CamParamData2, CamParamData2)</l>
+<l>* write_camera_setup_model (cameraSetupModelID, 'CameraSetupModel.csm')</l>
+<l>* read_camera_setup_model ('C:/Users/fly/Desktop/3DModelRebuild/CameraSetupModel.csm', CameraSetupModelID)</l>
+<c></c>
+<l>gen_camera_setup_object_model_3d (cameraSetupModelID, 'auto', 'auto', ObjectModel3DCamera, ObjectModel3DCone)</l>
+<c></c>
+<c>*拿到哪一个标定板相对视野的姿态</c>
+<l>* get_calib_data (CalibDataID, 'calib_obj_pose', [0,0], 'pose', PlanePose)</l>
+<c></c>
+<l>gen_plane_object_model_3d (PlanePose, [-0.3,-0.3,0.3,0.3], [-0.3,0.3,0.3,-0.3], ObjectModel3D)</l>
+<l>visualize_object_model_3d (WindowHandle2, [ObjectModel3D,ObjectModel3DCamera,ObjectModel3DCone], [], [0.25,-0.4,25,255,345,40,0], [ 'disp_pose'], ['true'], [], [], [], PoseOut)</l>
+<c></c>
+<c></c>
+<c></c>
+<l>* tuple_gen_sequence (0, 48, 1, Indices)</l>
+<c></c>
+<l>* Ones:=gen_tuple_const(49,1)</l>
+<c></c>
+<l>* xs:=[]</l>
+<l>* ys:=[]</l>
+<l>* xs_world := []</l>
+<l>* ys_world := []</l>
+<l>* zs_world := []</l>
+<c></c>
+<l>NumCams := 3</l>
+<l>* allRows := []</l>
+<l>* allCols := []</l>
+<l>* allCams := []</l>
+<l>* allIndices := []</l>
+<l>* Index := 0</l>
+<c>* 读取图像并提取亮点中心（三个相机）</c>
+<l>for CamIdx := 0 to NumCams-1 by 1</l>
+<l>    path:='D:/3DModelRebuild/Images1/'+CamIdx+'/'+(CamIdx+1)+'_1.bmp'</l>
+<l>*     path:='D:/3DModelRebuild/Images1/Test/'+(CamIdx+1)+'_1.bmp'</l>
+<l>*     read_image (Image, path)</l>
+<c>    </c>
+<l>*     get_calib_data (CalibDataID, 'camera', CamIdx, 'params', CamParam)</l>
+<l>*     get_calib_data (CalibDataID, 'camera', CamIdx, 'pose', CamPose)</l>
+<c></c>
+<l>*     rgb1_to_gray (Image, Gray)</l>
+<l>*     threshold (Gray, Region, 0, 60)</l>
+<l>*     connection (Region, Connected)</l>
+<l>*     select_shape (Connected, Selected, 'area', 'and', 200, 1200)</l>
+<l>*     area_center(Selected, Areas, Rows, Cols)</l>
+<l>*     gen_cross_contour_xld (Cross, Rows, Cols, 20, 0.785398)</l>
+<c>    </c>
+<c>    </c>
+<c>   * 391，389，392，404，797，945       598，94，777，1090  ，841，359</c>
+<l>    if (CamIdx == 0)</l>
+<l>*         Rows0 := Rows</l>
+<l>*         Cols0 := Cols</l>
+<l>        Rows0:=[391,389]</l>
+<l>        Cols0:=[598,94]</l>
+<l>*         CamParam0 := CamParam</l>
+<l>*         CamPose0 := CamPose</l>
+<l>    elseif (CamIdx == 1)</l>
+<l>*         Rows1 := Rows</l>
+<l>*         Cols1 := Cols</l>
+<l>          Rows1 := [392,404]</l>
+<l>          Cols1 := [777,1090]</l>
+<l>*         CamParam1 := CamParam</l>
+<l>*         CamPose1 := CamPose</l>
+<l>    elseif (CamIdx == 2)</l>
+<l>*         Rows2 := Rows</l>
+<l>*         Cols2 := Cols</l>
+<l>           Rows2 := [797,945]</l>
+<l>           Cols2 := [841,359]</l>
+<l>*         CamParam2 := CamParam</l>
+<l>*         CamPose2 := CamPose</l>
+<l>    endif</l>
+<l>endfor</l>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<l>Find_coordinate_pairs (Rows0, Rows1, Rows2, Cols0, Cols1, Cols2, 10.0, 5, StereoModelID, PlanePose, CamParamData0, CamParamData1, CamParamData2, InvertToCamMat0, InvertToCamMat1, InvertToCamMat2, ValidTriples, allRows, allCols, allCams, allIndices)</l>
+<c></c>
+<l>stop()</l>
+<l>reconstruct_points_stereo (StereoModelID, allRows, allCols, [], allCams, allIndices, X, Y, Z, CovWP, PointIndexOut)</l>
+<c></c>
+<l>Coordinate_Transformation_Result (X, Y, Z, -0.033, 0, PlanePose, World2CamMat0, CamParamData0, RowImage, ColImage, xM_mm, yM_mm, zM_mm)</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="dev_disp_intro_text">
+<interface/>
+<body>
+<l>Text := 'This example shows how to calibrate a stereo setup of two telecentric'</l>
+<l>Text[1] := 'line scan cameras. '</l>
+<l>Text[2] := 'Additionally, the calibration results are used for a stereo'</l>
+<l>Text[3] := 'reconstruction.'</l>
+<l>dev_clear_window ()</l>
+<l>dev_disp_text (Text, 'window', 12, 12, 'white', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>return ()</l>
+</body>
+<docu id="dev_disp_intro_text">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="dev_disp_calibration_text">
+<interface/>
+<body>
+<l>Text := 'First, we calibrate the stereo setup.'</l>
+<l>Text[1] := ''</l>
+<l>Text[2] := 'In this case, the cameras were mounted firmly and the object was moved'</l>
+<l>Text[3] := 'on a linear drive below.'</l>
+<l>Text[4] := ''</l>
+<l>Text[5] := 'The cameras were aligned along-track:'</l>
+<l>Text[6] := 'one camera looking from the back to the front (camera 0, \'Back\'),'</l>
+<l>Text[7] := 'one camera looking from the front to the back (camera 1, \'Front\').'</l>
+<l>dev_clear_window ()</l>
+<l>dev_disp_text (Text, 'window', 12, 12, 'white', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>return ()</l>
+</body>
+<docu id="dev_disp_calibration_text">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="dev_disp_calibration_results">
+<interface>
+<ic>
+<par name="CalibDataID" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<c>* Get the calibration results</c>
+<l>get_calib_data (CalibDataID, 'model', 'general', 'camera_calib_error', Errors)</l>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'params', CamParamBack)</l>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'params_labels', CamParamLabelsBack)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'params', CamParamFront)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'params_labels', CamParamLabelsFront)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'pose', Back_P_Front)</l>
+<l>pose_invert (Back_P_Front, Front_P_Back)</l>
+<c></c>
+<l>Text := 'Calibration results:'</l>
+<l>Text[1] := ''</l>
+<l>Text[2] := 'Calibration error:'</l>
+<l>Text[3] := (Errors$'.2f') + ' px'</l>
+<l>Text[4] := ''</l>
+<l>Text[5] := 'Camera parameters:'</l>
+<l>dev_clear_window ()</l>
+<l>dev_disp_text (Text, 'window', 12, 12, 'white', 'box', 'false')</l>
+<c></c>
+<c>* Specify the format, scale, and unit of the elements of</c>
+<c>* the camera parameters.</c>
+<l>Format := ['','10.5f','7.2f','7.2f','7.2f','7.2f','7.2f','d','d','7.2f','7.2f','7.2f']</l>
+<l>Scale := [1.0,1.0,1.0,1e6,1e6,1.0,1.0,1.0,1.0,1e6,1e6,1e6]</l>
+<l>Unit := ['','','',' um/px',' um/px',' px',' px',' px',' px',' um/px',' um/px',' um/px']</l>
+<c></c>
+<c>* Display camera parameters.</c>
+<c>* Camera 0:</c>
+<l>Text := 'Camera 0:'</l>
+<l>for Index := 1 to |CamParamBack| - 1 by 1</l>
+<l>    if (CamParamLabelsBack[Index] == 'image_width' or CamParamLabelsBack[Index] == 'image_height' or CamParamLabelsBack[Index] == 'p1' or CamParamLabelsBack[Index] == 'p2')</l>
+<l>        continue</l>
+<l>    endif</l>
+<l>    Text := [Text,CamParamLabelsBack[Index]$'-13' + ' = ' + (CamParamBack[Index] * Scale[Index])$Format[Index] + Unit[Index]]</l>
+<l>endfor</l>
+<l>dev_disp_text (Text, 'window', 120, 22, 'white', 'box', 'false')</l>
+<c>* Camera 1:</c>
+<l>Text := 'Camera 1:'</l>
+<l>for Index := 1 to |CamParamFront| - 1 by 1</l>
+<l>    if (CamParamLabelsFront[Index] == 'image_width' or CamParamLabelsFront[Index] == 'image_height' or CamParamLabelsFront[Index] == 'p1' or CamParamLabelsFront[Index] == 'p2')</l>
+<l>        continue</l>
+<l>    endif</l>
+<l>    Text := [Text,CamParamLabelsFront[Index]$'-13' + ' = ' + (CamParamFront[Index] * Scale[Index])$Format[Index] + Unit[Index]]</l>
+<l>endfor</l>
+<l>dev_disp_text (Text, 'window', 320, 22, 'white', 'box', 'false')</l>
+<c></c>
+<c>* Display relative pose.</c>
+<l>Format := ['8.4f','8.4f','8.4f','8.4f','8.4f','8.4f']</l>
+<l>Unit := [' m',' m',' m',' deg',' deg',' deg']</l>
+<l>Text := 'Pose of camera 1 relative to camera 0:'</l>
+<l>for Index := 0 to |Back_P_Front| - 2 by 1</l>
+<l>    Text := [Text,Back_P_Front[Index]$Format[Index] + Unit[Index]]</l>
+<l>endfor</l>
+<l>dev_disp_text (Text, 'window', 520, 12, 'white', 'box', 'false')</l>
+<l>return ()</l>
+</body>
+<docu id="dev_disp_calibration_results">
+<parameters>
+<parameter id="CalibDataID"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="dev_disp_text_calibration_error">
+<interface/>
+<body>
+<l>Text := 'The resulting calibration error of over 0.5 px'</l>
+<l>Text[1] := 'is rather high.'</l>
+<l>Text[2] := ''</l>
+<l>Text[3] := 'To check if there are systematic variations'</l>
+<l>Text[4] := 'that might explain this, we have a look at'</l>
+<l>Text[5] := 'the residuals:'</l>
+<l>Text[6] := 'We compare the observed calibration mark'</l>
+<l>Text[7] := 'centers with the projected mark centers.'</l>
+<l>Text[8] := ''</l>
+<l>Text[9] := 'In the following, we will show the residuals'</l>
+<l>Text[10] := 'for a few of the calibration images.'</l>
+<l>dev_clear_window ()</l>
+<l>dev_disp_text (Text, 'window', 12, 12, 'white', 'box', 'false')</l>
+<l>dev_disp_text ('Press Run (F5) to continue', 'window', 'bottom', 'right', 'black', [], [])</l>
+<l>return ()</l>
+</body>
+<docu id="dev_disp_text_calibration_error">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="Calibration_model_Init">
+<interface>
+<ic>
+<par name="Focus" base_type="ctrl" dimension="0"/>
+<par name="Sx" base_type="ctrl" dimension="0"/>
+<par name="Sy" base_type="ctrl" dimension="0"/>
+<par name="WidthBack" base_type="ctrl" dimension="0"/>
+<par name="HeightBack" base_type="ctrl" dimension="0"/>
+<par name="CalibObjDescr" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="CalibDataID" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* 初始化一个相机模型（单个相机内参）</c>
+<l>gen_cam_par_area_scan_division (Focus, 0, Sx, Sy,WidthBack/2, HeightBack/2, WidthBack, HeightBack, StartCamParam0)</l>
+<c>* 创建一个标定数据模型，3个相机，1个标定板</c>
+<l>create_calib_data ('calibration_object', 3, 1, CalibDataID)</l>
+<c>* 设置3个相机的初始参数</c>
+<l>set_calib_data_cam_param (CalibDataID, 'all', [], StartCamParam0)</l>
+<c>* 设置标定板的描述文件</c>
+<c></c>
+<l>set_calib_data_calib_object (CalibDataID, 0, CalibObjDescr)</l>
+<c>* 禁止标定参数sx的优化（只标定fy）</c>
+<l>set_calib_data (CalibDataID, 'camera', 0, 'excluded_settings', 'sx')</l>
+<l>set_calib_data (CalibDataID, 'camera', 1, 'excluded_settings', 'sx')</l>
+<l>set_calib_data (CalibDataID, 'camera', 2, 'excluded_settings', 'sx')</l>
+<c>* As the two cameras are mounted rigidly and stationary and the</c>
+<c>* object is moved linearly in front of the cameras, only one</c>
+<c>* common motion vector needs to be determined.</c>
+<c>* 设置公共运动向量：多相机共享标定板移动</c>
+<l>set_calib_data (CalibDataID, 'model', 'general', 'common_motion_vector', 'true')</l>
+<l>return ()</l>
+</body>
+<docu id="Calibration_model_Init">
+<parameters>
+<parameter id="CalibDataID"/>
+<parameter id="CalibObjDescr"/>
+<parameter id="Focus"/>
+<parameter id="HeightBack"/>
+<parameter id="Sx"/>
+<parameter id="Sy"/>
+<parameter id="WidthBack"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Calibration_mask">
+<interface>
+<ic>
+<par name="Calibration_image_path" base_type="ctrl" dimension="0"/>
+<par name="CalibDataID" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="Errors" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<l>list_image_files (Calibration_image_path+'0', 'default', [], ImageFiles0)</l>
+<l>list_image_files (Calibration_image_path+'1', 'default', [], ImageFiles1)</l>
+<l>list_image_files (Calibration_image_path+'2', 'default', [], ImageFiles2)</l>
+<l>len1:=|ImageFiles0|</l>
+<l>len2:=|ImageFiles1|</l>
+<l>len3:=|ImageFiles2|</l>
+<l>if(len1=len2 and len2=len3)</l>
+<c>    * 遍历每帧图像，从三个相机读取</c>
+<l>    for I := 0 to |ImageFiles0|-1 by 1</l>
+<c>        * 相机0（图像路径类似 '1_1.bmp'）</c>
+<l>        try</l>
+<l>            read_image (ImageCalibration0, ImageFiles0[I])</l>
+<l>            find_calib_object (ImageCalibration0, CalibDataID, 0, 0, I, [], [])</l>
+<l>            get_calib_data_observ_contours (ContoursCali0, CalibDataID, 'marks', 0, 0, I)</l>
+<l>        catch (Exception)</l>
+<l>        endtry</l>
+<c>        </c>
+<l>    endfor</l>
+<c>    </c>
+<c>    * 遍历每帧图像，从三个相机读取</c>
+<l>    for I := 0 to |ImageFiles1|-1 by 1</l>
+<c>        * 相机1</c>
+<l>        try</l>
+<l>            read_image (ImageCalibration1, ImageFiles1[I])</l>
+<l>            find_calib_object (ImageCalibration1, CalibDataID, 1, 0, I, [], [])</l>
+<l>*             get_calib_data_observ_points (CalibDataID, 1, 0, I-1, Row4, Column4, Index6, Pose3)</l>
+<l>            get_calib_data_observ_contours (ContoursCali1, CalibDataID, 'marks', 1, 0, I)</l>
+<l>        catch (Exception)</l>
+<l>        endtry</l>
+<c>        </c>
+<l>    endfor</l>
+<c>    </c>
+<c>    * 遍历每帧图像，从三个相机读取</c>
+<l>    for I := 1 to |ImageFiles2|-1 by 1</l>
+<c>        * 相机2</c>
+<l>        try</l>
+<l>            read_image (ImageCalibration2, ImageFiles2[I])</l>
+<l>            find_calib_object (ImageCalibration2, CalibDataID, 2, 0, I, [], [])</l>
+<l>*             get_calib_data_observ_points (CalibDataID, 2, 0, I-1, Row5, Column5, Index7, Pose4)</l>
+<l>            get_calib_data_observ_contours (ContoursCali2, CalibDataID, 'marks', 2, 0, I) </l>
+<l>        catch (Exception)</l>
+<l>        endtry</l>
+<c>        </c>
+<l>    endfor</l>
+<l>    calibrate_cameras (CalibDataID, Errors)</l>
+<l>else</l>
+<l>   Errors:=-9999</l>
+<l>endif</l>
+<l>return ()</l>
+</body>
+<docu id="Calibration_mask">
+<parameters>
+<parameter id="CalibDataID"/>
+<parameter id="Calibration_image_path"/>
+<parameter id="Errors"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Write_calibration_data">
+<interface>
+<ic>
+<par name="CalibDataID" base_type="ctrl" dimension="0"/>
+<par name="Calibration_data" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="CamParamData0" base_type="ctrl" dimension="0"/>
+<par name="CamPose0" base_type="ctrl" dimension="0"/>
+<par name="CamParamData1" base_type="ctrl" dimension="0"/>
+<par name="CamPose1" base_type="ctrl" dimension="0"/>
+<par name="CamParamData2" base_type="ctrl" dimension="0"/>
+<par name="CamPose2" base_type="ctrl" dimension="0"/>
+<par name="World2CamMat0" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat0" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat1" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat2" base_type="ctrl" dimension="0"/>
+<par name="PlanePose" base_type="ctrl" dimension="0"/>
+<par name="cameraSetupModelID" base_type="ctrl" dimension="0"/>
+<par name="StereoModelID" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>*世界坐标系原点，Z轴垂直</c>
+<l>write_calib_data (CalibDataID, Calibration_data)</l>
+<c>* Get the calibration results.</c>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'params', CamParamData0)</l>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'pose', CamPose0)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'params', CamParamData1)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'pose', CamPose1)</l>
+<l>get_calib_data (CalibDataID, 'camera', 2, 'params', CamParamData2)</l>
+<l>get_calib_data (CalibDataID, 'camera', 2, 'pose', CamPose2)</l>
+<c></c>
+<c>* 获取从世界坐标到相机坐标的变换矩阵</c>
+<l>pose_to_hom_mat3d (CamPose0, World2CamMat0)</l>
+<l>hom_mat3d_invert (World2CamMat0, InvertToCamMat0)</l>
+<l>pose_to_hom_mat3d (CamPose1, World2CamMat1)</l>
+<l>hom_mat3d_invert (World2CamMat1, InvertToCamMat1)</l>
+<l>pose_to_hom_mat3d (CamPose2, World2CamMat2)</l>
+<l>hom_mat3d_invert (World2CamMat2, InvertToCamMat2)</l>
+<c></c>
+<l>get_calib_data (CalibDataID, 'model', 'general', 'camera_setup_model', cameraSetupModelID)</l>
+<c>* 取参考标定板姿态（一般第0块的第0帧）</c>
+<l>get_calib_data (CalibDataID, 'calib_obj_pose', [0,0], 'pose', PlanePose)</l>
+<c></c>
+<l>create_stereo_model (cameraSetupModelID, 'points_3d', [], [], StereoModelID)</l>
+<l>return ()</l>
+</body>
+<docu id="Write_calibration_data">
+<parameters>
+<parameter id="CalibDataID"/>
+<parameter id="Calibration_data"/>
+<parameter id="CamParamData0"/>
+<parameter id="CamParamData1"/>
+<parameter id="CamParamData2"/>
+<parameter id="CamPose0"/>
+<parameter id="CamPose1"/>
+<parameter id="CamPose2"/>
+<parameter id="InvertToCamMat0"/>
+<parameter id="InvertToCamMat1"/>
+<parameter id="InvertToCamMat2"/>
+<parameter id="PlanePose"/>
+<parameter id="StereoModelID"/>
+<parameter id="World2CamMat0"/>
+<parameter id="cameraSetupModelID"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Find_coordinate_pairs">
+<interface>
+<ic>
+<par name="Rows0" base_type="ctrl" dimension="0"/>
+<par name="Rows1" base_type="ctrl" dimension="0"/>
+<par name="Rows2" base_type="ctrl" dimension="0"/>
+<par name="Cols0" base_type="ctrl" dimension="0"/>
+<par name="Cols1" base_type="ctrl" dimension="0"/>
+<par name="Cols2" base_type="ctrl" dimension="0"/>
+<par name="ProjectDiff" base_type="ctrl" dimension="0"/>
+<par name="ZTolerance" base_type="ctrl" dimension="0"/>
+<par name="StereoModelID" base_type="ctrl" dimension="0"/>
+<par name="PlanePose" base_type="ctrl" dimension="0"/>
+<par name="CamParamData0" base_type="ctrl" dimension="0"/>
+<par name="CamParamData1" base_type="ctrl" dimension="0"/>
+<par name="CamParamData2" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat0" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat1" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat2" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="ValidTriples" base_type="ctrl" dimension="0"/>
+<par name="allRows" base_type="ctrl" dimension="0"/>
+<par name="allCols" base_type="ctrl" dimension="0"/>
+<par name="allCams" base_type="ctrl" dimension="0"/>
+<par name="allIndices" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* 初始化点使用标记</c>
+<l>* Used0:=gen_tuple_const(|Rows0|, false)</l>
+<l>* Used1:=gen_tuple_const(|Rows1|, false)</l>
+<l>* Used2:=gen_tuple_const(|Rows2|, false)</l>
+<c></c>
+<l>* Index := 0</l>
+<c>* 保存三相机一致配对结果</c>
+<l>* ValidTriples := []</l>
+<l>* allRows := []</l>
+<l>* allCols := []</l>
+<l>* allCams := []</l>
+<l>* allIndices := []</l>
+<c>* 遍历点匹配组合，使用两个相机重建三维点</c>
+<c>* 用于误差检查的投影与计算 reprojection error</c>
+<c>* 判断误差小于阈值的三相机一致点加入最终三维重建列表</c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<c></c>
+<l>* for i := 0 to |Rows0|-1 by 1</l>
+<l>*     if (Used0[i])</l>
+<l>*         continue</l>
+<l>*     endif</l>
+<c>    </c>
+<l>*     Row0 := Rows0[i]</l>
+<l>*     Col0 := Cols0[i]</l>
+<c>    </c>
+<l>*     for j := 0 to |Rows1|-1 by 1</l>
+<l>*         if (Used1[j])</l>
+<l>*             continue</l>
+<l>*         endif</l>
+<c>        </c>
+<l>*         Row1 := Rows1[j]</l>
+<l>*         Col1 := Cols1[j]</l>
+<c>        </c>
+<l>*         reconstruct_points_stereo (StereoModelID, [Row0,Row1],[Col0,Col1], [], [0,1], [0,0], Qx01, Qy01, Qz01, CovWP, PointIndexOut)</l>
+<l>*         affine_trans_point_3d (InvertToCamMat0, Qx01, Qy01, Qz01, Qx_cam0, Qy_cam0, Qz_cam0)</l>
+<l>*         affine_trans_point_3d (InvertToCamMat1, Qx01, Qy01, Qz01, Qx_cam1, Qy_cam1, Qz_cam1)</l>
+<c>        </c>
+<l>*         project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
+<l>*         project_3d_point (Qx_cam1, Qy_cam1, Qz_cam1, CamParamData1, R1c, C1c)</l>
+<c>        *它表示你用两个相机重建出一个 3D 点后，重新投影回相机0的图像，如果它正好落在你检测到的 blob 上，那就是对的；如果投影误差太大，就说明这两个点配错了或者有误差，不能用于3D重建。</c>
+<l>*         Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
+<l>*         Err1 := sqrt((R1c - Row1)*(R1c - Row1) + (C1c - Col1)*(C1c - Col1))</l>
+<l>*         Diff01 := Err0 + Err1</l>
+<c>        </c>
+<l>*         if (Diff01 &lt; ProjectDiff)</l>
+<l>*             for k := 0 to |Rows2|-1 by 1</l>
+<l>*                 if (Used2[k])</l>
+<l>*                     continue</l>
+<l>*                 endif</l>
+<c>                </c>
+<l>*                 Row2 := Rows2[k]</l>
+<l>*                 Col2 := Cols2[k]</l>
+<c>                </c>
+<l>*                 reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
+<l>*                 affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, Qx_cam0, Qy_cam0, Qz_cam0)</l>
+<l>*                 affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, Qx_cam2, Qy_cam2, Qz_cam2)</l>
+<c>                </c>
+<l>*                 project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
+<l>*                 project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
+<c>                </c>
+<l>*                 Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
+<l>*                 Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
+<l>*                 Diff02 := Err0 + Err2</l>
+<c>                </c>
+<l>*                 if (Diff02 &lt; ProjectDiff)</l>
+<c>                    * 找到有效三目匹配</c>
+<l>*                     ValidTriples := [ValidTriples, [Row0,Col0,Row1,Col1,Row2,Col2]]</l>
+<c>                    </c>
+<l>*                     allRows := [allRows, Row0, Row1, Row2]</l>
+<l>*                     allCols := [allCols, Col0, Col1, Col2]</l>
+<l>*                     allCams := [allCams, 0, 1, 2]</l>
+<l>*                     allIndices := [allIndices, Index, Index, Index]</l>
+<l>*                     Index := Index + 1</l>
+<c>                    </c>
+<c>                    * 标记三点为已用</c>
+<l>*                     Used0[i] := true</l>
+<l>*                     Used1[j] := true</l>
+<l>*                     Used2[k] := true</l>
+<c>                    </c>
+<l>*                     break  </l>
+<c>                    * 找到一个配对就跳出k循环</c>
+<l>*                 endif</l>
+<l>*             endfor</l>
+<l>*         endif</l>
+<l>*     endfor</l>
+<l>* endfor</l>
+<c>                    </c>
+<c>   </c>
+<c>                    </c>
+<c>                    </c>
+<c>   * 初始化使用标记</c>
+<l>*     Used0 := gen_tuple_const(|Rows0|, false)</l>
+<l>*     Used1 := gen_tuple_const(|Rows1|, false)</l>
+<l>*     Used2 := gen_tuple_const(|Rows2|, false)</l>
+<c></c>
+<l>*     Index := 0</l>
+<l>*     ValidTriples := []</l>
+<l>*     allRows := []</l>
+<l>*     allCols := []</l>
+<l>*     allCams := []</l>
+<l>*     allIndices := []</l>
+<c></c>
+<c>    * 以相机2为基准循环</c>
+<l>*     for k := 0 to |Rows2|-1 by 1</l>
+<l>*         if (Used2[k])</l>
+<l>*             continue</l>
+<l>*         endif</l>
+<c></c>
+<l>*         Row2 := Rows2[k]</l>
+<l>*         Col2 := Cols2[k]</l>
+<c></c>
+<c>        * === 与相机0组合重建 ===</c>
+<l>*         MinDiff02 := 99999</l>
+<l>*         BestIdx0 := -1</l>
+<l>*         for i := 0 to |Rows0|-1 by 1</l>
+<l>*             if (Used0[i])</l>
+<l>*                 continue</l>
+<l>*             endif</l>
+<c></c>
+<l>*             Row0 := Rows0[i]</l>
+<l>*             Col0 := Cols0[i]</l>
+<c></c>
+<l>*             reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, Qx_cam0, Qy_cam0, Qz_cam0)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, Qx_cam2, Qy_cam2, Qz_cam2)</l>
+<c></c>
+<l>*             project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
+<l>*             project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
+<c></c>
+<l>*             Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
+<l>*             Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
+<l>*             Diff02 := Err0 + Err2</l>
+<c></c>
+<l>*             if (Diff02 &lt; MinDiff02)</l>
+<l>*                 MinDiff02 := Diff02</l>
+<l>*                 BestIdx0 := i</l>
+<l>*             endif</l>
+<l>*         endfor</l>
+<c></c>
+<l>*         if (MinDiff02 &gt; ProjectDiff)</l>
+<l>*             continue</l>
+<l>*         endif</l>
+<c></c>
+<c>        * === 与相机1组合重建 ===</c>
+<l>*         MinDiff12 := 99999</l>
+<l>*         BestIdx1 := -1</l>
+<l>*         for j := 0 to |Rows1|-1 by 1</l>
+<l>*             if (Used1[j])</l>
+<l>*                 continue</l>
+<l>*             endif</l>
+<c></c>
+<l>*             Row1 := Rows1[j]</l>
+<l>*             Col1 := Cols1[j]</l>
+<c></c>
+<l>*             reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], Qx12, Qy12, Qz12, CovWP, PointIndexOut)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat1, Qx12, Qy12, Qz12, Qx_cam1, Qy_cam1, Qz_cam1)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat2, Qx12, Qy12, Qz12, Qx_cam2, Qy_cam2, Qz_cam2)</l>
+<c></c>
+<l>*             project_3d_point (Qx_cam1, Qy_cam1, Qz_cam1, CamParamData1, R1c, C1c)</l>
+<l>*             project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
+<c></c>
+<l>*             Err1 := sqrt((R1c - Row1)*(R1c - Row1) + (C1c - Col1)*(C1c - Col1))</l>
+<l>*             Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
+<l>*             Diff12 := Err1 + Err2</l>
+<c></c>
+<l>*             if (Diff12 &lt; MinDiff12)</l>
+<l>*                 MinDiff12 := Diff12</l>
+<l>*                 BestIdx1 := j</l>
+<l>*             endif</l>
+<l>*         endfor</l>
+<c></c>
+<l>*         if (MinDiff12 &gt; ProjectDiff)</l>
+<l>*             continue</l>
+<l>*         endif</l>
+<c></c>
+<c>        * === 三相机匹配成功 ===</c>
+<l>*         ValidTriples := [ValidTriples, [Rows0[BestIdx0], Cols0[BestIdx0], Rows1[BestIdx1], Cols1[BestIdx1], Row2, Col2]]</l>
+<c></c>
+<l>*         allRows := [allRows, Rows0[BestIdx0], Rows1[BestIdx1], Row2]</l>
+<l>*         allCols := [allCols, Cols0[BestIdx0], Cols1[BestIdx1], Col2]</l>
+<l>*         allCams := [allCams, 0, 1, 2]</l>
+<l>*         allIndices := [allIndices, Index, Index, Index]</l>
+<l>*         Index := Index + 1</l>
+<c></c>
+<l>*         Used0[BestIdx0] := true</l>
+<l>*         Used1[BestIdx1] := true</l>
+<l>*         Used2[k] := true</l>
+<l>*     endfor  </l>
+<c>        </c>
+<c>     * 初始化使用标志</c>
+<c>      * ---------- 参数初始化 ----------</c>
+<l>    Used0 := gen_tuple_const(|Rows0|, false)</l>
+<l>    Used1 := gen_tuple_const(|Rows1|, false)</l>
+<l>    Used2 := gen_tuple_const(|Rows2|, false)</l>
+<c></c>
+<l>    Index := 0</l>
+<l>    ValidTriples := []</l>
+<l>    allRows := []</l>
+<l>    allCols := []</l>
+<l>    allCams := []</l>
+<l>    allIndices := []</l>
+<c></c>
+<c>    * ---------- 世界坐标系变换 ----------</c>
+<l>    pose_to_hom_mat3d (PlanePose, BoardToWorld)</l>
+<l>    hom_mat3d_invert (BoardToWorld, WorldToBoard)</l>
+<c></c>
+<c>    * ---------- 主循环：以相机2为基准 ----------</c>
+<l>    for k := 0 to |Rows2|-1 by 1</l>
+<l>        if (Used2[k])</l>
+<l>            continue</l>
+<l>        endif</l>
+<c></c>
+<l>        Row2 := Rows2[k]</l>
+<l>        Col2 := Cols2[k]</l>
+<l>        FoundTriple := false</l>
+<c></c>
+<c>        * ---------- 尝试所有 cam0 ----------</c>
+<l>        for i := 0 to |Rows0|-1 by 1</l>
+<l>            if (Used0[i])</l>
+<l>                continue</l>
+<l>            endif</l>
+<c></c>
+<l>            Row0 := Rows0[i]</l>
+<l>            Col0 := Cols0[i]</l>
+<c></c>
+<l>            reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], \
+                                       Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
+<l>            affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, Qx_cam0, Qy_cam0, Qz_cam0)</l>
+<l>            affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, Qx_cam2, Qy_cam2, Qz_cam2)</l>
+<c></c>
+<l>            project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
+<l>            project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
+<c></c>
+<l>            Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
+<l>            Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
+<l>            Diff02 := Err0 + Err2</l>
+<c></c>
+<l>            if (Diff02 &gt; ProjectDiff)</l>
+<l>                continue</l>
+<l>            endif</l>
+<c></c>
+<c>            * ---------- Cam0组合合格后尝试Cam1 ----------</c>
+<l>            for j := 0 to |Rows1|-1 by 1</l>
+<l>                if (Used1[j])</l>
+<l>                    continue</l>
+<l>                endif</l>
+<c></c>
+<l>                Row1 := Rows1[j]</l>
+<l>                Col1 := Cols1[j]</l>
+<c></c>
+<l>                reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], \
+                                           Qx12, Qy12, Qz12, CovWP, PointIndexOut)</l>
+<l>                affine_trans_point_3d (InvertToCamMat1, Qx12, Qy12, Qz12, Qx_cam1, Qy_cam1, Qz_cam1)</l>
+<l>                affine_trans_point_3d (InvertToCamMat2, Qx12, Qy12, Qz12, Qx_cam2b, Qy_cam2b, Qz_cam2b)</l>
+<c></c>
+<l>                project_3d_point (Qx_cam1, Qy_cam1, Qz_cam1, CamParamData1, R1c, C1c)</l>
+<l>                project_3d_point (Qx_cam2b, Qy_cam2b, Qz_cam2b, CamParamData2, R2c_b, C2c_b)</l>
+<c></c>
+<l>                Err1 := sqrt((R1c - Row1)*(R1c - Row1) + (C1c - Col1)*(C1c - Col1))</l>
+<l>                Err2b := sqrt((R2c_b - Row2)*(R2c_b - Row2) + (C2c_b - Col2)*(C2c_b - Col2))</l>
+<l>                Diff12 := Err1 + Err2b</l>
+<c></c>
+<l>                if (Diff12 &gt; ProjectDiff)</l>
+<l>                    continue</l>
+<l>                endif</l>
+<c></c>
+<c>                * ---------- 转换到标定板坐标系 ----------</c>
+<l>                affine_trans_point_3d (WorldToBoard, Qx02, Qy02, Qz02, Qx02_b, Qy02_b, Qz02_b)</l>
+<l>                affine_trans_point_3d (WorldToBoard, Qx12, Qy12, Qz12, Qx12_b, Qy12_b, Qz12_b)</l>
+<c></c>
+<l>                ZDiff := abs(Qz02_b - Qz12_b)</l>
+<c></c>
+<c>                * ---------- Z一致性检查 ----------</c>
+<l>                if (ZDiff &lt;= ZTolerance)</l>
+<c>                    * 三相机匹配成功</c>
+<l>                    ValidTriples := [ValidTriples, [Row0,Col0,Row1,Col1,Row2,Col2]]</l>
+<c></c>
+<l>                    allRows := [allRows, Row0, Row1, Row2]</l>
+<l>                    allCols := [allCols, Col0, Col1, Col2]</l>
+<l>                    allCams := [allCams, 0, 1, 2]</l>
+<l>                    allIndices := [allIndices, Index, Index, Index]</l>
+<l>                    Index := Index + 1</l>
+<c></c>
+<l>                    Used0[i] := true</l>
+<l>                    Used1[j] := true</l>
+<l>                    Used2[k] := true</l>
+<l>                    FoundTriple := true</l>
+<l>                    break</l>
+<l>                endif</l>
+<l>            endfor</l>
+<c></c>
+<c>            * 若找到合格三相机匹配，跳出cam0循环</c>
+<l>            if (FoundTriple)</l>
+<l>                break</l>
+<l>            endif</l>
+<c></c>
+<l>        endfor</l>
+<l>    endfor</l>
+<c></c>
+<l>return ()</l>
+<c>                    </c>
+<c>                    </c>
+<c></c>
+</body>
+<docu id="Find_coordinate_pairs">
+<parameters>
+<parameter id="CamParamData0"/>
+<parameter id="CamParamData1"/>
+<parameter id="CamParamData2"/>
+<parameter id="Cols0"/>
+<parameter id="Cols1"/>
+<parameter id="Cols2"/>
+<parameter id="InvertToCamMat0"/>
+<parameter id="InvertToCamMat1"/>
+<parameter id="InvertToCamMat2"/>
+<parameter id="PlanePose"/>
+<parameter id="ProjectDiff"/>
+<parameter id="Rows0"/>
+<parameter id="Rows1"/>
+<parameter id="Rows2"/>
+<parameter id="StereoModelID"/>
+<parameter id="ValidTriples"/>
+<parameter id="ZTolerance"/>
+<parameter id="allCams"/>
+<parameter id="allCols"/>
+<parameter id="allIndices"/>
+<parameter id="allRows"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Coordinate_Transformation_Result">
+<interface>
+<ic>
+<par name="X" base_type="ctrl" dimension="0"/>
+<par name="Y" base_type="ctrl" dimension="0"/>
+<par name="Z" base_type="ctrl" dimension="0"/>
+<par name="Z_Offset" base_type="ctrl" dimension="0"/>
+<par name="Rz_Offset" base_type="ctrl" dimension="0"/>
+<par name="PlanePose" base_type="ctrl" dimension="0"/>
+<par name="World2CamMat0" base_type="ctrl" dimension="0"/>
+<par name="CamParamData0" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="RowImage" base_type="ctrl" dimension="0"/>
+<par name="ColImage" base_type="ctrl" dimension="0"/>
+<par name="xM_mm" base_type="ctrl" dimension="0"/>
+<par name="yM_mm" base_type="ctrl" dimension="0"/>
+<par name="zM_mm" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>* 生成变换矩阵，将三维点从世界系变换到标定板坐标系下</c>
+<l>try</l>
+<l>    create_pose (0, 0, 0, 180, 0, 180+Rz_Offset, 'Rp+T', 'gba', 'point', Pose)</l>
+<l>    pose_compose (PlanePose, Pose, PoseCompose)</l>
+<l>    set_origin_pose (PoseCompose, 0, 0, Z_Offset, PoseNewOrigin)</l>
+<l>    pose_to_hom_mat3d (PoseNewOrigin, WorldToBoard)</l>
+<l>    hom_mat3d_invert (WorldToBoard, BoardToWorld)</l>
+<c>    * 应用坐标系变换，使Z轴与桌面垂直</c>
+<l>    affine_trans_point_3d (BoardToWorld, X, Y, Z, X_Corrected, Y_Corrected, Z_Corrected)</l>
+<c>    *把坐标反投影回相机</c>
+<l>*     get_calib_data (CalibDataID, 'camera', 0, 'pose', CamPose0)</l>
+<l>*     pose_to_hom_mat3d (CamPose0, World2Cam0) </l>
+<c>    * 世界 -&gt; 相机0坐</c>
+<l>    affine_trans_point_3d (World2CamMat0, X, Y, Z, X_cam0, Y_cam0, Z_cam0)</l>
+<l>*     get_calib_data (CalibDataID, 'camera', 0, 'params', CamParam0)</l>
+<l>    project_3d_point (X_cam0, Y_cam0, Z_cam0, CamParamData0, RowImage, ColImage)</l>
+<l>*     gen_cross_contour_xld (Cross2, RowImage, ColImage, 100, 0.785398)</l>
+<c>    * 转为毫米</c>
+<l>    xM_mm := X_Corrected * 1000</l>
+<l>    yM_mm := Y_Corrected * 1000</l>
+<l>    zM_mm := Z_Corrected * 1000 </l>
+<l>catch (Exception)</l>
+<l>endtry</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="Coordinate_Transformation_Result">
+<parameters>
+<parameter id="CamParamData0"/>
+<parameter id="ColImage"/>
+<parameter id="PlanePose"/>
+<parameter id="RowImage"/>
+<parameter id="Rz_Offset"/>
+<parameter id="World2CamMat0"/>
+<parameter id="X"/>
+<parameter id="Y"/>
+<parameter id="Z"/>
+<parameter id="Z_Offset"/>
+<parameter id="xM_mm"/>
+<parameter id="yM_mm"/>
+<parameter id="zM_mm"/>
+</parameters>
+</docu>
+</procedure>
+<procedure name="Load_calibration_data">
+<interface>
+<ic>
+<par name="Calibration_data" base_type="ctrl" dimension="0"/>
+</ic>
+<oc>
+<par name="CalibDataID" base_type="ctrl" dimension="0"/>
+<par name="CamParamData0" base_type="ctrl" dimension="0"/>
+<par name="CamPose0" base_type="ctrl" dimension="0"/>
+<par name="CamParamData1" base_type="ctrl" dimension="0"/>
+<par name="CamPose1" base_type="ctrl" dimension="0"/>
+<par name="CamParamData2" base_type="ctrl" dimension="0"/>
+<par name="CamPose2" base_type="ctrl" dimension="0"/>
+<par name="World2CamMat0" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat0" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat1" base_type="ctrl" dimension="0"/>
+<par name="InvertToCamMat2" base_type="ctrl" dimension="0"/>
+<par name="PlanePose" base_type="ctrl" dimension="0"/>
+<par name="cameraSetupModelID" base_type="ctrl" dimension="0"/>
+<par name="StereoModelID" base_type="ctrl" dimension="0"/>
+</oc>
+</interface>
+<body>
+<c>*世界坐标系原点，Z轴垂直</c>
+<c></c>
+<l>read_calib_data (Calibration_data,CalibDataID)</l>
+<l>calibrate_cameras (CalibDataID, Error)</l>
+<c>* Get the calibration results.</c>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'params', CamParamData0)</l>
+<l>get_calib_data (CalibDataID, 'camera', 0, 'pose', CamPose0)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'params', CamParamData1)</l>
+<l>get_calib_data (CalibDataID, 'camera', 1, 'pose', CamPose1)</l>
+<l>get_calib_data (CalibDataID, 'camera', 2, 'params', CamParamData2)</l>
+<l>get_calib_data (CalibDataID, 'camera', 2, 'pose', CamPose2)</l>
+<c></c>
+<c>* 获取从世界坐标到相机坐标的变换矩阵</c>
+<l>pose_to_hom_mat3d (CamPose0, World2CamMat0)</l>
+<l>hom_mat3d_invert (World2CamMat0, InvertToCamMat0)</l>
+<l>pose_to_hom_mat3d (CamPose1, World2CamMat1)</l>
+<l>hom_mat3d_invert (World2CamMat1, InvertToCamMat1)</l>
+<l>pose_to_hom_mat3d (CamPose2, World2CamMat2)</l>
+<l>hom_mat3d_invert (World2CamMat2, InvertToCamMat2)</l>
+<c></c>
+<l>get_calib_data (CalibDataID, 'model', 'general', 'camera_setup_model', cameraSetupModelID)</l>
+<c>* 取参考标定板姿态（一般第0块的第0帧）</c>
+<l>get_calib_data (CalibDataID, 'calib_obj_pose', [0,0], 'pose', PlanePose)</l>
+<c></c>
+<l>create_stereo_model (cameraSetupModelID, 'points_3d', [], [], StereoModelID)</l>
+<l>return ()</l>
+</body>
+<docu id="Load_calibration_data">
+<parameters>
+<parameter id="CalibDataID"/>
+<parameter id="Calibration_data"/>
+<parameter id="CamParamData0"/>
+<parameter id="CamParamData1"/>
+<parameter id="CamParamData2"/>
+<parameter id="CamPose0"/>
+<parameter id="CamPose1"/>
+<parameter id="CamPose2"/>
+<parameter id="InvertToCamMat0"/>
+<parameter id="InvertToCamMat1"/>
+<parameter id="InvertToCamMat2"/>
+<parameter id="PlanePose"/>
+<parameter id="StereoModelID"/>
+<parameter id="World2CamMat0"/>
+<parameter id="cameraSetupModelID"/>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
