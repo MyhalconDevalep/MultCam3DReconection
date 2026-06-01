@@ -31,18 +31,20 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.num_Robot1Threshold = new Sunny.UI.UIDoubleUpDown();
             this.num_BottleTolerance = new Sunny.UI.UIDoubleUpDown();
             this.num_MinHeight = new Sunny.UI.UIDoubleUpDown();
             this.label8 = new System.Windows.Forms.Label();
-            this.num_SafelyDisp = new Sunny.UI.UIDoubleUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.num_X_CommandPoint = new Sunny.UI.UIDoubleUpDown();
+            this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
-            this.btn_SaveConfig = new Sunny.UI.UISymbolButton();
+            this.num_X_CommandPoint = new Sunny.UI.UIDoubleUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.num_SafelyDisp = new Sunny.UI.UIDoubleUpDown();
             this.num_MaxHeight = new Sunny.UI.UIDoubleUpDown();
             this.label1 = new System.Windows.Forms.Label();
+            this.btn_SaveConfig = new Sunny.UI.UISymbolButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.num_Robot1Threshold = new Sunny.UI.UIDoubleUpDown();
+            this.num_Robot2Threshold = new Sunny.UI.UIDoubleUpDown();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -71,14 +73,16 @@
             this.tableLayoutPanel3.Controls.Add(this.num_MinHeight, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.label8, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.label7, 2, 2);
-            this.tableLayoutPanel3.Controls.Add(this.num_Robot1Threshold, 3, 2);
             this.tableLayoutPanel3.Controls.Add(this.label5, 2, 0);
             this.tableLayoutPanel3.Controls.Add(this.num_X_CommandPoint, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.label6, 2, 1);
             this.tableLayoutPanel3.Controls.Add(this.num_SafelyDisp, 3, 1);
             this.tableLayoutPanel3.Controls.Add(this.num_MaxHeight, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.label1, 0, 2);
-            this.tableLayoutPanel3.Controls.Add(this.btn_SaveConfig, 3, 3);
+            this.tableLayoutPanel3.Controls.Add(this.btn_SaveConfig, 1, 4);
+            this.tableLayoutPanel3.Controls.Add(this.label2, 2, 3);
+            this.tableLayoutPanel3.Controls.Add(this.num_Robot1Threshold, 3, 2);
+            this.tableLayoutPanel3.Controls.Add(this.num_Robot2Threshold, 3, 3);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 25);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -102,41 +106,6 @@
             this.label4.Size = new System.Drawing.Size(114, 21);
             this.label4.TabIndex = 0;
             this.label4.Text = "瓶间容差(mm)";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(583, 239);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 21);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "臂一阈值";
-            // 
-            // num_Robot1Threshold
-            // 
-            this.num_Robot1Threshold.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_Robot1Threshold.Decimal = 0;
-            this.num_Robot1Threshold.DecimalPlaces = 0;
-            this.num_Robot1Threshold.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_Robot1Threshold.HasMaximum = true;
-            this.num_Robot1Threshold.HasMinimum = true;
-            this.num_Robot1Threshold.Location = new System.Drawing.Point(811, 235);
-            this.num_Robot1Threshold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_Robot1Threshold.Maximum = 4000D;
-            this.num_Robot1Threshold.MaximumEnabled = true;
-            this.num_Robot1Threshold.Minimum = -1000D;
-            this.num_Robot1Threshold.MinimumEnabled = true;
-            this.num_Robot1Threshold.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_Robot1Threshold.Name = "num_Robot1Threshold";
-            this.num_Robot1Threshold.ShowText = false;
-            this.num_Robot1Threshold.Size = new System.Drawing.Size(116, 29);
-            this.num_Robot1Threshold.Step = 1D;
-            this.num_Robot1Threshold.TabIndex = 2;
-            this.num_Robot1Threshold.Text = "uiDoubleUpDown1";
-            this.num_Robot1Threshold.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_Robot1Threshold.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.num_Robot1Threshold.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_Robot1Threshold_ValueChanged);
             // 
             // num_BottleTolerance
             // 
@@ -198,40 +167,25 @@
             this.label8.TabIndex = 0;
             this.label8.Text = "最小高度";
             // 
-            // num_SafelyDisp
+            // label7
             // 
-            this.num_SafelyDisp.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_SafelyDisp.Decimal = 0;
-            this.num_SafelyDisp.DecimalPlaces = 0;
-            this.num_SafelyDisp.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_SafelyDisp.HasMaximum = true;
-            this.num_SafelyDisp.HasMinimum = true;
-            this.num_SafelyDisp.Location = new System.Drawing.Point(811, 135);
-            this.num_SafelyDisp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_SafelyDisp.Maximum = 1000D;
-            this.num_SafelyDisp.MaximumEnabled = true;
-            this.num_SafelyDisp.Minimum = 0D;
-            this.num_SafelyDisp.MinimumEnabled = true;
-            this.num_SafelyDisp.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_SafelyDisp.Name = "num_SafelyDisp";
-            this.num_SafelyDisp.ShowText = false;
-            this.num_SafelyDisp.Size = new System.Drawing.Size(116, 29);
-            this.num_SafelyDisp.Step = 1D;
-            this.num_SafelyDisp.TabIndex = 2;
-            this.num_SafelyDisp.Text = "uiDoubleUpDown1";
-            this.num_SafelyDisp.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_SafelyDisp.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.num_SafelyDisp.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_SafelyDisp_ValueChanged);
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(583, 239);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 21);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "臂一阈值";
             // 
-            // label6
+            // label5
             // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(583, 139);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 21);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "安全间距";
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(586, 39);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(68, 21);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "X发令点";
             // 
             // num_X_CommandPoint
             // 
@@ -258,31 +212,40 @@
             this.num_X_CommandPoint.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             this.num_X_CommandPoint.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_X_CommandPoint_ValueChanged);
             // 
-            // label5
+            // label6
             // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(586, 39);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(68, 21);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "X发令点";
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(583, 139);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 21);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "安全间距";
             // 
-            // btn_SaveConfig
+            // num_SafelyDisp
             // 
-            this.btn_SaveConfig.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.btn_SaveConfig.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_SaveConfig.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_SaveConfig.Location = new System.Drawing.Point(819, 332);
-            this.btn_SaveConfig.MinimumSize = new System.Drawing.Size(1, 1);
-            this.btn_SaveConfig.Name = "btn_SaveConfig";
-            this.btn_SaveConfig.Size = new System.Drawing.Size(100, 35);
-            this.btn_SaveConfig.Symbol = 61639;
-            this.btn_SaveConfig.TabIndex = 4;
-            this.btn_SaveConfig.Text = "保存";
-            this.btn_SaveConfig.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_SaveConfig.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            this.btn_SaveConfig.Click += new System.EventHandler(this.btn_SaveConfig_Click);
+            this.num_SafelyDisp.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_SafelyDisp.Decimal = 0;
+            this.num_SafelyDisp.DecimalPlaces = 0;
+            this.num_SafelyDisp.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_SafelyDisp.HasMaximum = true;
+            this.num_SafelyDisp.HasMinimum = true;
+            this.num_SafelyDisp.Location = new System.Drawing.Point(811, 135);
+            this.num_SafelyDisp.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_SafelyDisp.Maximum = 1000D;
+            this.num_SafelyDisp.MaximumEnabled = true;
+            this.num_SafelyDisp.Minimum = 0D;
+            this.num_SafelyDisp.MinimumEnabled = true;
+            this.num_SafelyDisp.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_SafelyDisp.Name = "num_SafelyDisp";
+            this.num_SafelyDisp.ShowText = false;
+            this.num_SafelyDisp.Size = new System.Drawing.Size(116, 29);
+            this.num_SafelyDisp.Step = 1D;
+            this.num_SafelyDisp.TabIndex = 2;
+            this.num_SafelyDisp.Text = "uiDoubleUpDown1";
+            this.num_SafelyDisp.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_SafelyDisp.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.num_SafelyDisp.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_SafelyDisp_ValueChanged);
             // 
             // num_MaxHeight
             // 
@@ -319,6 +282,82 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "最大高度";
             // 
+            // btn_SaveConfig
+            // 
+            this.btn_SaveConfig.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btn_SaveConfig.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btn_SaveConfig.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_SaveConfig.Location = new System.Drawing.Point(322, 432);
+            this.btn_SaveConfig.MinimumSize = new System.Drawing.Size(1, 1);
+            this.btn_SaveConfig.Name = "btn_SaveConfig";
+            this.btn_SaveConfig.Size = new System.Drawing.Size(100, 35);
+            this.btn_SaveConfig.Symbol = 61639;
+            this.btn_SaveConfig.TabIndex = 4;
+            this.btn_SaveConfig.Text = "保存";
+            this.btn_SaveConfig.TipsFont = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.btn_SaveConfig.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.btn_SaveConfig.Click += new System.EventHandler(this.btn_SaveConfig_Click);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(583, 339);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(74, 21);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "臂二阈值";
+            // 
+            // num_Robot1Threshold
+            // 
+            this.num_Robot1Threshold.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_Robot1Threshold.Decimal = 0;
+            this.num_Robot1Threshold.DecimalPlaces = 0;
+            this.num_Robot1Threshold.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_Robot1Threshold.HasMaximum = true;
+            this.num_Robot1Threshold.HasMinimum = true;
+            this.num_Robot1Threshold.Location = new System.Drawing.Point(811, 235);
+            this.num_Robot1Threshold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_Robot1Threshold.Maximum = 4000D;
+            this.num_Robot1Threshold.MaximumEnabled = true;
+            this.num_Robot1Threshold.Minimum = -1000D;
+            this.num_Robot1Threshold.MinimumEnabled = true;
+            this.num_Robot1Threshold.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_Robot1Threshold.Name = "num_Robot1Threshold";
+            this.num_Robot1Threshold.ShowText = false;
+            this.num_Robot1Threshold.Size = new System.Drawing.Size(116, 29);
+            this.num_Robot1Threshold.Step = 1D;
+            this.num_Robot1Threshold.TabIndex = 2;
+            this.num_Robot1Threshold.Text = "uiDoubleUpDown1";
+            this.num_Robot1Threshold.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_Robot1Threshold.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.num_Robot1Threshold.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_Robot1Threshold_ValueChanged);
+            // 
+            // num_Robot2Threshold
+            // 
+            this.num_Robot2Threshold.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_Robot2Threshold.Decimal = 0;
+            this.num_Robot2Threshold.DecimalPlaces = 0;
+            this.num_Robot2Threshold.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_Robot2Threshold.HasMaximum = true;
+            this.num_Robot2Threshold.HasMinimum = true;
+            this.num_Robot2Threshold.Location = new System.Drawing.Point(811, 335);
+            this.num_Robot2Threshold.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_Robot2Threshold.Maximum = 4000D;
+            this.num_Robot2Threshold.MaximumEnabled = true;
+            this.num_Robot2Threshold.Minimum = -1000D;
+            this.num_Robot2Threshold.MinimumEnabled = true;
+            this.num_Robot2Threshold.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_Robot2Threshold.Name = "num_Robot2Threshold";
+            this.num_Robot2Threshold.ShowText = false;
+            this.num_Robot2Threshold.Size = new System.Drawing.Size(116, 29);
+            this.num_Robot2Threshold.Step = 1D;
+            this.num_Robot2Threshold.TabIndex = 2;
+            this.num_Robot2Threshold.Text = "uiDoubleUpDown1";
+            this.num_Robot2Threshold.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_Robot2Threshold.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.num_Robot2Threshold.ValueChanged += new Sunny.UI.UIDoubleUpDown.OnValueChanged(this.num_Robot2Threshold_ValueChanged);
+            // 
             // RobotRegionParams
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -351,5 +390,7 @@
         private Sunny.UI.UISymbolButton btn_SaveConfig;
         private Sunny.UI.UIDoubleUpDown num_MaxHeight;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private Sunny.UI.UIDoubleUpDown num_Robot2Threshold;
     }
 }

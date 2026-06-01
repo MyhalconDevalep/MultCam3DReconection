@@ -25,6 +25,7 @@ namespace WideVisualPositionMultCam3D.Page
                 num_MinHeight.DataBindings.Add("Value", GlobalStaticData.UpdataBingdingData, "MinHeight");
                 num_MaxHeight.DataBindings.Add("Value", GlobalStaticData.UpdataBingdingData, "MaxHeight");
                 num_Robot1Threshold.DataBindings.Add("Value", GlobalStaticData.UpdataBingdingData, "Robot1Threshold");
+                num_Robot2Threshold.DataBindings.Add("Value", GlobalStaticData.UpdataBingdingData, "Robot2Threshold");
             }
             catch (Exception ex)
             {
@@ -65,6 +66,11 @@ namespace WideVisualPositionMultCam3D.Page
             GlobalStaticData.UpdataBingdingData.Robot1Threshold = Convert.ToInt32(value);
         }
 
+        private void num_Robot2Threshold_ValueChanged(object sender, double value)
+        {
+            GlobalStaticData.UpdataBingdingData.Robot2Threshold = Convert.ToInt32(value);
+        }
+
         private void btn_SaveConfig_Click(object sender, EventArgs e)
         {
             try
@@ -82,6 +88,7 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.OperateConfig.SetValue("PublicPickConfig", "MinHeight​", GlobalStaticData.UpdataBingdingData.MinHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("PublicPickConfig", "MaxHeight​", GlobalStaticData.UpdataBingdingData.MaxHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("PublicPickConfig", "Robot1Threshold", GlobalStaticData.UpdataBingdingData.Robot1Threshold.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPickConfig", "Robot2Threshold", GlobalStaticData.UpdataBingdingData.Robot2Threshold.ToString());
                 GlobalStaticData.CoorSelectRefresh = true;
                 GlobalStaticData.SendRobotCoorRefresh = true;
 
@@ -95,6 +102,6 @@ namespace WideVisualPositionMultCam3D.Page
             }
         }
 
-       
+      
     }
 }

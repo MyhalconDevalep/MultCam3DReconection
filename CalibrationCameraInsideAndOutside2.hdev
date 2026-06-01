@@ -5,7 +5,7 @@
 <body>
 <l>dev_close_window ()</l>
 <l>dev_update_off ()</l>
-<l>read_image (ImageBack, 'D:/Project/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/1/0/1_0.bmp')</l>
+<l>read_image (ImageBack, 'D:/chuda_Project/Project_Code/3DWideVision/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/1/0/1_0.bmp')</l>
 <l>get_image_size (ImageBack, WidthBack, HeightBack)</l>
 <l>WindowSizeFactor1 := 5</l>
 <l>dev_open_window (0, 0, WidthBack / WindowSizeFactor1, HeightBack / WindowSizeFactor1, 'black', WindowHandle1)</l>
@@ -20,7 +20,7 @@
 <c>* Start the loop over the calibration images.</c>
 <l>* gen_empty_obj (ImagesBack)</l>
 <l>* gen_empty_obj (ImagesFront)</l>
-<l>Calibration_image_path:='D:/Project/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/2/'</l>
+<l>Calibration_image_path:='D:/chuda_Project/Project_Code/3DWideVision/WideVisualPositionMultCam3D/WideVisualPositionMultCam3D/bin/x64/Debug/Images/CalibrationImages/1/'</l>
 <c></c>
 <l>Calibration_mask (Calibration_image_path, CalibDataID, Errors)</l>
 <c></c>
@@ -463,101 +463,10 @@
 </oc>
 </interface>
 <body>
-<c>* 初始化点使用标记</c>
-<l>* Used0:=gen_tuple_const(|Rows0|, false)</l>
-<l>* Used1:=gen_tuple_const(|Rows1|, false)</l>
-<l>* Used2:=gen_tuple_const(|Rows2|, false)</l>
-<c></c>
-<l>* Index := 0</l>
-<c>* 保存三相机一致配对结果</c>
-<l>* ValidTriples := []</l>
-<l>* allRows := []</l>
-<l>* allCols := []</l>
-<l>* allCams := []</l>
-<l>* allIndices := []</l>
-<c>* 遍历点匹配组合，使用两个相机重建三维点</c>
-<c>* 用于误差检查的投影与计算 reprojection error</c>
-<c>* 判断误差小于阈值的三相机一致点加入最终三维重建列表</c>
-<c></c>
-<c></c>
-<c></c>
-<c></c>
-<c></c>
-<c></c>
-<l>* for i := 0 to |Rows0|-1 by 1</l>
-<l>*     if (Used0[i])</l>
-<l>*         continue</l>
-<l>*     endif</l>
-<c>    </c>
-<l>*     Row0 := Rows0[i]</l>
-<l>*     Col0 := Cols0[i]</l>
-<c>    </c>
-<l>*     for j := 0 to |Rows1|-1 by 1</l>
-<l>*         if (Used1[j])</l>
-<l>*             continue</l>
-<l>*         endif</l>
-<c>        </c>
-<l>*         Row1 := Rows1[j]</l>
-<l>*         Col1 := Cols1[j]</l>
-<c>        </c>
-<l>*         reconstruct_points_stereo (StereoModelID, [Row0,Row1],[Col0,Col1], [], [0,1], [0,0], Qx01, Qy01, Qz01, CovWP, PointIndexOut)</l>
-<l>*         affine_trans_point_3d (InvertToCamMat0, Qx01, Qy01, Qz01, Qx_cam0, Qy_cam0, Qz_cam0)</l>
-<l>*         affine_trans_point_3d (InvertToCamMat1, Qx01, Qy01, Qz01, Qx_cam1, Qy_cam1, Qz_cam1)</l>
-<c>        </c>
-<l>*         project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
-<l>*         project_3d_point (Qx_cam1, Qy_cam1, Qz_cam1, CamParamData1, R1c, C1c)</l>
-<c>        *它表示你用两个相机重建出一个 3D 点后，重新投影回相机0的图像，如果它正好落在你检测到的 blob 上，那就是对的；如果投影误差太大，就说明这两个点配错了或者有误差，不能用于3D重建。</c>
-<l>*         Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
-<l>*         Err1 := sqrt((R1c - Row1)*(R1c - Row1) + (C1c - Col1)*(C1c - Col1))</l>
-<l>*         Diff01 := Err0 + Err1</l>
-<c>        </c>
-<l>*         if (Diff01 &lt; ProjectDiff)</l>
-<l>*             for k := 0 to |Rows2|-1 by 1</l>
-<l>*                 if (Used2[k])</l>
-<l>*                     continue</l>
-<l>*                 endif</l>
-<c>                </c>
-<l>*                 Row2 := Rows2[k]</l>
-<l>*                 Col2 := Cols2[k]</l>
-<c>                </c>
-<l>*                 reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
-<l>*                 affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, Qx_cam0, Qy_cam0, Qz_cam0)</l>
-<l>*                 affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, Qx_cam2, Qy_cam2, Qz_cam2)</l>
-<c>                </c>
-<l>*                 project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
-<l>*                 project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
-<c>                </c>
-<l>*                 Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
-<l>*                 Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
-<l>*                 Diff02 := Err0 + Err2</l>
-<c>                </c>
-<l>*                 if (Diff02 &lt; ProjectDiff)</l>
-<c>                    * 找到有效三目匹配</c>
-<l>*                     ValidTriples := [ValidTriples, [Row0,Col0,Row1,Col1,Row2,Col2]]</l>
-<c>                    </c>
-<l>*                     allRows := [allRows, Row0, Row1, Row2]</l>
-<l>*                     allCols := [allCols, Col0, Col1, Col2]</l>
-<l>*                     allCams := [allCams, 0, 1, 2]</l>
-<l>*                     allIndices := [allIndices, Index, Index, Index]</l>
-<l>*                     Index := Index + 1</l>
-<c>                    </c>
-<c>                    * 标记三点为已用</c>
-<l>*                     Used0[i] := true</l>
-<l>*                     Used1[j] := true</l>
-<l>*                     Used2[k] := true</l>
-<c>                    </c>
-<l>*                     break  </l>
-<c>                    * 找到一个配对就跳出k循环</c>
-<l>*                 endif</l>
-<l>*             endfor</l>
-<l>*         endif</l>
-<l>*     endfor</l>
-<l>* endfor</l>
-<c>                    </c>
-<c>   </c>
-<c>                    </c>
-<c>                    </c>
-<c>   * 初始化使用标记</c>
+<c> </c>
+<c>  ************************************************已经在用的版本***********************************************************      </c>
+<c>     * 初始化使用标志</c>
+<c>      * ---------- 参数初始化 ----------</c>
 <l>*     Used0 := gen_tuple_const(|Rows0|, false)</l>
 <l>*     Used1 := gen_tuple_const(|Rows1|, false)</l>
 <l>*     Used2 := gen_tuple_const(|Rows2|, false)</l>
@@ -569,50 +478,40 @@
 <l>*     allCams := []</l>
 <l>*     allIndices := []</l>
 <c></c>
-<c>    * 以相机2为基准循环</c>
-<l>*     for k := 0 to |Rows2|-1 by 1</l>
-<l>*         if (Used2[k])</l>
+<c>    * ---------- 世界坐标系变换 ----------</c>
+<l>*     pose_to_hom_mat3d (PlanePose, BoardToWorld)</l>
+<l>*     hom_mat3d_invert (BoardToWorld, WorldToBoard)</l>
+<c></c>
+<c>    * ---------- 主循环：以相机2为基准 ----------</c>
+<l>*   for k := 0 to |Rows2|-1 by 1</l>
+<l>*     if (Used2[k])</l>
+<l>*         continue</l>
+<l>*     endif</l>
+<c></c>
+<l>*     Row2 := Rows2[k]</l>
+<l>*     Col2 := Cols2[k]</l>
+<c></c>
+<c>    * &lt;&lt;&lt; 改动点 1：最优解缓存 &gt;&gt;&gt;</c>
+<l>*     BestScore := 1e9</l>
+<l>*     BestI := -1</l>
+<l>*     BestJ := -1</l>
+<l>*     BestQx := 0</l>
+<l>*     BestQy := 0</l>
+<l>*     BestQz := 0</l>
+<c></c>
+<c>    * ---------- 遍历 cam0 ----------</c>
+<l>*     for i := 0 to |Rows0|-1 by 1</l>
+<l>*         if (Used0[i])</l>
 <l>*             continue</l>
 <l>*         endif</l>
 <c></c>
-<l>*         Row2 := Rows2[k]</l>
-<l>*         Col2 := Cols2[k]</l>
+<l>*         Row0 := Rows0[i]</l>
+<l>*         Col0 := Cols0[i]</l>
 <c></c>
-<c>        * === 与相机0组合重建 ===</c>
-<l>*         MinDiff02 := 99999</l>
-<l>*         BestIdx0 := -1</l>
-<l>*         for i := 0 to |Rows0|-1 by 1</l>
-<l>*             if (Used0[i])</l>
-<l>*                 continue</l>
-<l>*             endif</l>
+<l>*         reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], \
+                                   Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
 <c></c>
-<l>*             Row0 := Rows0[i]</l>
-<l>*             Col0 := Cols0[i]</l>
-<c></c>
-<l>*             reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
-<l>*             affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, Qx_cam0, Qy_cam0, Qz_cam0)</l>
-<l>*             affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, Qx_cam2, Qy_cam2, Qz_cam2)</l>
-<c></c>
-<l>*             project_3d_point (Qx_cam0, Qy_cam0, Qz_cam0, CamParamData0, R0c, C0c)</l>
-<l>*             project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
-<c></c>
-<l>*             Err0 := sqrt((R0c - Row0)*(R0c - Row0) + (C0c - Col0)*(C0c - Col0))</l>
-<l>*             Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
-<l>*             Diff02 := Err0 + Err2</l>
-<c></c>
-<l>*             if (Diff02 &lt; MinDiff02)</l>
-<l>*                 MinDiff02 := Diff02</l>
-<l>*                 BestIdx0 := i</l>
-<l>*             endif</l>
-<l>*         endfor</l>
-<c></c>
-<l>*         if (MinDiff02 &gt; ProjectDiff)</l>
-<l>*             continue</l>
-<l>*         endif</l>
-<c></c>
-<c>        * === 与相机1组合重建 ===</c>
-<l>*         MinDiff12 := 99999</l>
-<l>*         BestIdx1 := -1</l>
+<c>        * ---------- 遍历 cam1 ----------</c>
 <l>*         for j := 0 to |Rows1|-1 by 1</l>
 <l>*             if (Used1[j])</l>
 <l>*                 continue</l>
@@ -621,170 +520,294 @@
 <l>*             Row1 := Rows1[j]</l>
 <l>*             Col1 := Cols1[j]</l>
 <c></c>
-<l>*             reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], Qx12, Qy12, Qz12, CovWP, PointIndexOut)</l>
-<l>*             affine_trans_point_3d (InvertToCamMat1, Qx12, Qy12, Qz12, Qx_cam1, Qy_cam1, Qz_cam1)</l>
-<l>*             affine_trans_point_3d (InvertToCamMat2, Qx12, Qy12, Qz12, Qx_cam2, Qy_cam2, Qz_cam2)</l>
-<c></c>
-<l>*             project_3d_point (Qx_cam1, Qy_cam1, Qz_cam1, CamParamData1, R1c, C1c)</l>
-<l>*             project_3d_point (Qx_cam2, Qy_cam2, Qz_cam2, CamParamData2, R2c, C2c)</l>
-<c></c>
-<l>*             Err1 := sqrt((R1c - Row1)*(R1c - Row1) + (C1c - Col1)*(C1c - Col1))</l>
-<l>*             Err2 := sqrt((R2c - Row2)*(R2c - Row2) + (C2c - Col2)*(C2c - Col2))</l>
-<l>*             Diff12 := Err1 + Err2</l>
-<c></c>
-<l>*             if (Diff12 &lt; MinDiff12)</l>
-<l>*                 MinDiff12 := Diff12</l>
-<l>*                 BestIdx1 := j</l>
-<l>*             endif</l>
-<l>*         endfor</l>
-<c></c>
-<l>*         if (MinDiff12 &gt; ProjectDiff)</l>
-<l>*             continue</l>
-<l>*         endif</l>
-<c></c>
-<c>        * === 三相机匹配成功 ===</c>
-<l>*         ValidTriples := [ValidTriples, [Rows0[BestIdx0], Cols0[BestIdx0], Rows1[BestIdx1], Cols1[BestIdx1], Row2, Col2]]</l>
-<c></c>
-<l>*         allRows := [allRows, Rows0[BestIdx0], Rows1[BestIdx1], Row2]</l>
-<l>*         allCols := [allCols, Cols0[BestIdx0], Cols1[BestIdx1], Col2]</l>
-<l>*         allCams := [allCams, 0, 1, 2]</l>
-<l>*         allIndices := [allIndices, Index, Index, Index]</l>
-<l>*         Index := Index + 1</l>
-<c></c>
-<l>*         Used0[BestIdx0] := true</l>
-<l>*         Used1[BestIdx1] := true</l>
-<l>*         Used2[k] := true</l>
-<l>*     endfor  </l>
-<c>        </c>
-<c>     * 初始化使用标志</c>
-<c>      * ---------- 参数初始化 ----------</c>
-<l>    Used0 := gen_tuple_const(|Rows0|, false)</l>
-<l>    Used1 := gen_tuple_const(|Rows1|, false)</l>
-<l>    Used2 := gen_tuple_const(|Rows2|, false)</l>
-<c></c>
-<l>    Index := 0</l>
-<l>    ValidTriples := []</l>
-<l>    allRows := []</l>
-<l>    allCols := []</l>
-<l>    allCams := []</l>
-<l>    allIndices := []</l>
-<c></c>
-<c>    * ---------- 世界坐标系变换 ----------</c>
-<l>    pose_to_hom_mat3d (PlanePose, BoardToWorld)</l>
-<l>    hom_mat3d_invert (BoardToWorld, WorldToBoard)</l>
-<c></c>
-<c>    * ---------- 主循环：以相机2为基准 ----------</c>
-<l>  for k := 0 to |Rows2|-1 by 1</l>
-<l>    if (Used2[k])</l>
-<l>        continue</l>
-<l>    endif</l>
-<c></c>
-<l>    Row2 := Rows2[k]</l>
-<l>    Col2 := Cols2[k]</l>
-<c></c>
-<c>    * &lt;&lt;&lt; 改动点 1：最优解缓存 &gt;&gt;&gt;</c>
-<l>    BestScore := 1e9</l>
-<l>    BestI := -1</l>
-<l>    BestJ := -1</l>
-<l>    BestQx := 0</l>
-<l>    BestQy := 0</l>
-<l>    BestQz := 0</l>
-<c></c>
-<c>    * ---------- 遍历 cam0 ----------</c>
-<l>    for i := 0 to |Rows0|-1 by 1</l>
-<l>        if (Used0[i])</l>
-<l>            continue</l>
-<l>        endif</l>
-<c></c>
-<l>        Row0 := Rows0[i]</l>
-<l>        Col0 := Cols0[i]</l>
-<c></c>
-<l>        reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], \
-                                   Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
-<c></c>
-<c>        * ---------- 遍历 cam1 ----------</c>
-<l>        for j := 0 to |Rows1|-1 by 1</l>
-<l>            if (Used1[j])</l>
-<l>                continue</l>
-<l>            endif</l>
-<c></c>
-<l>            Row1 := Rows1[j]</l>
-<l>            Col1 := Cols1[j]</l>
-<c></c>
-<l>            reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], \
+<l>*             reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], \
                                        Qx12, Qy12, Qz12, CovWP, PointIndexOut)</l>
 <c></c>
 <c>            * ---------- 转到标定板坐标 ----------</c>
-<l>            affine_trans_point_3d (WorldToBoard, Qx02, Qy02, Qz02, Qx02_b, Qy02_b, Qz02_b)</l>
-<l>            affine_trans_point_3d (WorldToBoard, Qx12, Qy12, Qz12, Qx12_b, Qy12_b, Qz12_b)</l>
+<l>*             affine_trans_point_3d (WorldToBoard, Qx02, Qy02, Qz02, Qx02_b, Qy02_b, Qz02_b)</l>
+<l>*             affine_trans_point_3d (WorldToBoard, Qx12, Qy12, Qz12, Qx12_b, Qy12_b, Qz12_b)</l>
 <c></c>
-<l>            ZDiff := abs(Qz02_b - Qz12_b)</l>
-<l>            if (ZDiff &gt; ZTolerance)</l>
-<l>                continue</l>
-<l>            endif</l>
+<l>*             ZDiff := abs(Qz02_b - Qz12_b)</l>
+<l>*             if (ZDiff &gt; ZTolerance)</l>
+<l>*                 continue</l>
+<l>*             endif</l>
 <c></c>
-<l>            XYDiff := sqrt((Qx02_b-Qx12_b)*(Qx02_b-Qx12_b) + (Qy02_b-Qy12_b)*(Qy02_b-Qy12_b))</l>
-<l>            if (XYDiff &gt; XYTolerance)</l>
-<l>                continue</l>
-<l>            endif</l>
+<l>*             XYDiff := sqrt((Qx02_b-Qx12_b)*(Qx02_b-Qx12_b) + (Qy02_b-Qy12_b)*(Qy02_b-Qy12_b))</l>
+<l>*             if (XYDiff &gt; XYTolerance)</l>
+<l>*                 continue</l>
+<l>*             endif</l>
 <c></c>
 <c>            * =====================================================</c>
 <c>            * &lt;&lt;&lt; 改动点 2：只用 Q02，一个 3D 点投影三相机 &gt;&gt;&gt;</c>
 <c>            * =====================================================</c>
-<l>            affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, X0, Y0, Z0)</l>
-<l>            affine_trans_point_3d (InvertToCamMat1, Qx02, Qy02, Qz02, X1, Y1, Z1)</l>
-<l>            affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, X2, Y2, Z2)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, X0, Y0, Z0)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat1, Qx02, Qy02, Qz02, X1, Y1, Z1)</l>
+<l>*             affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, X2, Y2, Z2)</l>
+<c></c>
+<l>*             project_3d_point (X0, Y0, Z0, CamParamData0, R0p, C0p)</l>
+<l>*             project_3d_point (X1, Y1, Z1, CamParamData1, R1p, C1p)</l>
+<l>*             project_3d_point (X2, Y2, Z2, CamParamData2, R2p, C2p)</l>
+<c></c>
+<l>*             Err0 := sqrt((R0p-Row0)*(R0p-Row0) + (C0p-Col0)*(C0p-Col0))</l>
+<l>*             Err1 := sqrt((R1p-Row1)*(R1p-Row1) + (C1p-Col1)*(C1p-Col1))</l>
+<l>*             Err2 := sqrt((R2p-Row2)*(R2p-Row2) + (C2p-Col2)*(C2p-Col2))</l>
+<c></c>
+<l>*             if (Err0+Err1+Err2 &gt; ProjectDiff)</l>
+<l>*                 continue</l>
+<l>*             endif</l>
+<c></c>
+<c>            * &lt;&lt;&lt; 改动点 3：评分，而不是 break &gt;&gt;&gt;</c>
+<l>*             Score := Err0 + Err1 + Err2 \
+                     + 2.0*ZDiff \
+                     + 1.0*XYDiff</l>
+<c></c>
+<l>*             if (Score &lt; BestScore)</l>
+<l>*                 BestScore := Score</l>
+<l>*                 BestI := i</l>
+<l>*                 BestJ := j</l>
+<l>*                 BestQx := Qx02</l>
+<l>*                 BestQy := Qy02</l>
+<l>*                 BestQz := Qz02</l>
+<l>*             endif</l>
+<c></c>
+<l>*         endfor</l>
+<l>*     endfor</l>
+<c></c>
+<c>    * ---------- 统一提交最优解 ----------</c>
+<l>*     if (BestI &gt;= 0 and BestJ &gt;= 0)</l>
+<l>*         Used0[BestI] := true</l>
+<l>*         Used1[BestJ] := true</l>
+<l>*         Used2[k] := true</l>
+<c></c>
+<l>*         ValidTriples := [ValidTriples, [Rows0[BestI], Cols0[BestI],  Rows1[BestJ], Cols1[BestJ], Row2, Col2]]</l>
+<c></c>
+<l>*         allRows := [allRows, Rows0[BestI], Rows1[BestJ], Row2]</l>
+<l>*         allCols := [allCols, Cols0[BestI], Cols1[BestJ], Col2]</l>
+<l>*         allCams := [allCams, 0, 1, 2]</l>
+<l>*         allIndices := [allIndices, Index, Index, Index]</l>
+<c></c>
+<l>*         Index := Index + 1</l>
+<l>*     endif</l>
+<c></c>
+<l>* endfor</l>
+<c>*****************************************************************************************************************************************</c>
+<c>* =========================================================</c>
+<c>* 初始化</c>
+<c>* =========================================================</c>
+<l>CandidateScores := []</l>
+<l>CandidateI := []</l>
+<l>CandidateJ := []</l>
+<l>CandidateK := []</l>
+<l>CandidateQx := []</l>
+<l>CandidateQy := []</l>
+<l>CandidateQz := []</l>
+<c></c>
+<c>* =========================================================</c>
+<c>* 世界坐标系变换</c>
+<c>* =========================================================</c>
+<l>pose_to_hom_mat3d (PlanePose, BoardToWorld)</l>
+<l>hom_mat3d_invert (BoardToWorld, WorldToBoard)</l>
+<c></c>
+<c>* =========================================================</c>
+<c>* 遍历所有组合（不再立即Used）</c>
+<c>* =========================================================</c>
+<l>for k := 0 to |Rows2|-1 by 1</l>
+<c></c>
+<l>    Row2 := Rows2[k]</l>
+<l>    Col2 := Cols2[k]</l>
+<c></c>
+<l>    for i := 0 to |Rows0|-1 by 1</l>
+<c></c>
+<l>        Row0 := Rows0[i]</l>
+<l>        Col0 := Cols0[i]</l>
+<c></c>
+<c>        * -------------------------------------------------</c>
+<c>        * Q02</c>
+<c>        * -------------------------------------------------</c>
+<l>        reconstruct_points_stereo (StereoModelID, \
+                                   [Row0,Row2], \
+                                   [Col0,Col2], \
+                                   [], \
+                                   [0,2], \
+                                   [0,0], \
+                                   Qx02, Qy02, Qz02, CovWP, PointIndexOut)</l>
+<c></c>
+<l>        for j := 0 to |Rows1|-1 by 1</l>
+<c></c>
+<l>            Row1 := Rows1[j]</l>
+<l>            Col1 := Cols1[j]</l>
+<c></c>
+<c>            * -------------------------------------------------</c>
+<c>            * Q12</c>
+<c>            * -------------------------------------------------</c>
+<l>            reconstruct_points_stereo (StereoModelID, \
+                                       [Row1,Row2], \
+                                       [Col1,Col2], \
+                                       [], \
+                                       [1,2], \
+                                       [0,0], \
+                                       Qx12, Qy12, Qz12, CovWP, PointIndexOut)</l>
+<c></c>
+<c>            * -------------------------------------------------</c>
+<c>            * Q01</c>
+<c>            * 新增：第三组重建</c>
+<c>            * -------------------------------------------------</c>
+<l>            reconstruct_points_stereo (StereoModelID, \
+                                       [Row0,Row1], \
+                                       [Col0,Col1], \
+                                       [], \
+                                       [0,1], \
+                                       [0,0], \
+                                       Qx01, Qy01, Qz01, CovWP, PointIndexOut)</l>
+<c></c>
+<c>            * =====================================================</c>
+<c>            * 转到标定板坐标系</c>
+<c>            * =====================================================</c>
+<l>            affine_trans_point_3d (WorldToBoard, \
+                                   Qx02, Qy02, Qz02, \
+                                   Qx02_b, Qy02_b, Qz02_b)</l>
+<c></c>
+<l>            affine_trans_point_3d (WorldToBoard, \
+                                   Qx12, Qy12, Qz12, \
+                                   Qx12_b, Qy12_b, Qz12_b)</l>
+<c></c>
+<l>            affine_trans_point_3d (WorldToBoard, \
+                                   Qx01, Qy01, Qz01, \
+                                   Qx01_b, Qy01_b, Qz01_b)</l>
+<c></c>
+<c>            * =====================================================</c>
+<c>            * 平面约束（新增）</c>
+<c>            * =====================================================</c>
+<l>            Zmean := (Qz02_b + Qz12_b + Qz01_b)/3.0</l>
+<l>            PlaneDist := (abs(Qz02_b - Zmean) + abs(Qz12_b - Zmean) + abs(Qz01_b - Zmean))/3.0</l>
+<l>            if (PlaneDist &gt; ZTolerance)</l>
+<l>                continue</l>
+<l>            endif</l>
+<l>*             PlaneDist := (abs(Qz02_b) + abs(Qz12_b) + abs(Qz01_b)) / 3.0</l>
+<c>            *PlaneTolerance</c>
+<c></c>
+<l>*             if (PlaneDist &gt; ZTolerance)</l>
+<l>*                 continue</l>
+<l>*             endif</l>
+<c></c>
+<c>            * =====================================================</c>
+<c>            * 三组一致性验证（新增）</c>
+<c>            * =====================================================</c>
+<l>            Dist01_02 := sqrt((Qx01_b-Qx02_b)*(Qx01_b-Qx02_b) + \
+                              (Qy01_b-Qy02_b)*(Qy01_b-Qy02_b) + \
+                              (Qz01_b-Qz02_b)*(Qz01_b-Qz02_b))</l>
+<c></c>
+<l>            Dist01_12 := sqrt((Qx01_b-Qx12_b)*(Qx01_b-Qx12_b) + \
+                              (Qy01_b-Qy12_b)*(Qy01_b-Qy12_b) + \
+                              (Qz01_b-Qz12_b)*(Qz01_b-Qz12_b))</l>
+<c></c>
+<l>            Dist02_12 := sqrt((Qx02_b-Qx12_b)*(Qx02_b-Qx12_b) + \
+                              (Qy02_b-Qy12_b)*(Qy02_b-Qy12_b) + \
+                              (Qz02_b-Qz12_b)*(Qz02_b-Qz12_b))</l>
+<c></c>
+<l>            if (Dist01_02 &gt; XYTolerance or \
+                Dist01_12 &gt; XYTolerance or \
+                Dist02_12 &gt; XYTolerance)</l>
+<l>                continue</l>
+<l>            endif</l>
+<c></c>
+<c>            * =====================================================</c>
+<c>            * 使用平均点（更稳定）</c>
+<c>            * =====================================================</c>
+<l>            AvgQx := (Qx01 + Qx02 + Qx12) / 3.0</l>
+<l>            AvgQy := (Qy01 + Qy02 + Qy12) / 3.0</l>
+<l>            AvgQz := (Qz01 + Qz02 + Qz12) / 3.0</l>
+<c></c>
+<c>            * =====================================================</c>
+<c>            * 三相机重投影验证</c>
+<c>            * =====================================================</c>
+<l>            affine_trans_point_3d (InvertToCamMat0, AvgQx, AvgQy, AvgQz, X0, Y0, Z0)</l>
+<l>            affine_trans_point_3d (InvertToCamMat1, AvgQx, AvgQy, AvgQz, X1, Y1, Z1)</l>
+<l>            affine_trans_point_3d (InvertToCamMat2, AvgQx, AvgQy, AvgQz, X2, Y2, Z2)</l>
 <c></c>
 <l>            project_3d_point (X0, Y0, Z0, CamParamData0, R0p, C0p)</l>
 <l>            project_3d_point (X1, Y1, Z1, CamParamData1, R1p, C1p)</l>
 <l>            project_3d_point (X2, Y2, Z2, CamParamData2, R2p, C2p)</l>
 <c></c>
-<l>            Err0 := sqrt((R0p-Row0)*(R0p-Row0) + (C0p-Col0)*(C0p-Col0))</l>
-<l>            Err1 := sqrt((R1p-Row1)*(R1p-Row1) + (C1p-Col1)*(C1p-Col1))</l>
-<l>            Err2 := sqrt((R2p-Row2)*(R2p-Row2) + (C2p-Col2)*(C2p-Col2))</l>
+<l>            Err0 := sqrt((R0p-Row0)*(R0p-Row0) + \
+                         (C0p-Col0)*(C0p-Col0))</l>
 <c></c>
-<l>            if (Err0+Err1+Err2 &gt; ProjectDiff)</l>
+<l>            Err1 := sqrt((R1p-Row1)*(R1p-Row1) + \
+                         (C1p-Col1)*(C1p-Col1))</l>
+<c></c>
+<l>            Err2 := sqrt((R2p-Row2)*(R2p-Row2) + \
+                         (C2p-Col2)*(C2p-Col2))</l>
+<c></c>
+<l>            TotalErr := Err0 + Err1 + Err2</l>
+<c></c>
+<l>            if (TotalErr &gt; ProjectDiff)</l>
 <l>                continue</l>
 <l>            endif</l>
 <c></c>
-<c>            * &lt;&lt;&lt; 改动点 3：评分，而不是 break &gt;&gt;&gt;</c>
-<l>            Score := Err0 + Err1 + Err2 \
-                     + 2.0*ZDiff \
-                     + 1.0*XYDiff</l>
+<c>            * =====================================================</c>
+<c>            * 最终评分</c>
+<c>            * =====================================================</c>
+<l>            Score := 5.0 * TotalErr + 3.0 * PlaneDist + Dist01_02 + Dist01_12 + Dist02_12</l>
 <c></c>
-<l>            if (Score &lt; BestScore)</l>
-<l>                BestScore := Score</l>
-<l>                BestI := i</l>
-<l>                BestJ := j</l>
-<l>                BestQx := Qx02</l>
-<l>                BestQy := Qy02</l>
-<l>                BestQz := Qz02</l>
-<l>            endif</l>
+<c>            * =====================================================</c>
+<c>            * 保存候选（不立即Used）</c>
+<c>            * =====================================================</c>
+<l>            CandidateScores := [CandidateScores, Score]</l>
+<c></c>
+<l>            CandidateI := [CandidateI, i]</l>
+<l>            CandidateJ := [CandidateJ, j]</l>
+<l>            CandidateK := [CandidateK, k]</l>
+<c></c>
+<l>            CandidateQx := [CandidateQx, AvgQx]</l>
+<l>            CandidateQy := [CandidateQy, AvgQy]</l>
+<l>            CandidateQz := [CandidateQz, AvgQz]</l>
 <c></c>
 <l>        endfor</l>
 <l>    endfor</l>
-<c></c>
-<c>    * ---------- 统一提交最优解 ----------</c>
-<l>    if (BestI &gt;= 0 and BestJ &gt;= 0)</l>
-<l>        Used0[BestI] := true</l>
-<l>        Used1[BestJ] := true</l>
-<l>        Used2[k] := true</l>
-<c></c>
-<l>        ValidTriples := [ValidTriples, \
-                         [Rows0[BestI], Cols0[BestI], \
-                          Rows1[BestJ], Cols1[BestJ], \
-                          Row2, Col2]]</l>
-<c></c>
-<l>        allRows := [allRows, Rows0[BestI], Rows1[BestJ], Row2]</l>
-<l>        allCols := [allCols, Cols0[BestI], Cols1[BestJ], Col2]</l>
-<l>        allCams := [allCams, 0, 1, 2]</l>
-<l>        allIndices := [allIndices, Index, Index, Index]</l>
-<c></c>
-<l>        Index := Index + 1</l>
-<l>    endif</l>
-<c></c>
 <l>endfor</l>
 <c></c>
+<c>* =========================================================</c>
+<c>* 全局排序（核心优化）</c>
+<c>* =========================================================</c>
+<l>tuple_sort_index (CandidateScores, SortedIdx)</l>
+<c></c>
+<l>Used0 := gen_tuple_const(|Rows0|, false)</l>
+<l>Used1 := gen_tuple_const(|Rows1|, false)</l>
+<l>Used2 := gen_tuple_const(|Rows2|, false)</l>
+<c></c>
+<l>allRows := []</l>
+<l>allCols := []</l>
+<l>allCams := []</l>
+<l>allIndices := []</l>
+<c></c>
+<l>Index := 0</l>
+<c></c>
+<l>for s := 0 to |SortedIdx|-1 by 1</l>
+<c></c>
+<l>    idx := SortedIdx[s]</l>
+<c></c>
+<l>    i := CandidateI[idx]</l>
+<l>    j := CandidateJ[idx]</l>
+<l>    k := CandidateK[idx]</l>
+<c></c>
+<l>    if (Used0[i] or Used1[j] or Used2[k])</l>
+<l>        continue</l>
+<l>    endif</l>
+<c></c>
+<l>    Used0[i] := true</l>
+<l>    Used1[j] := true</l>
+<l>    Used2[k] := true</l>
+<c></c>
+<l>    allRows := [allRows, Rows0[i], Rows1[j], Rows2[k]]</l>
+<l>    allCols := [allCols, Cols0[i], Cols1[j], Cols2[k]]</l>
+<c></c>
+<l>    allCams := [allCams, 0,1,2]</l>
+<c></c>
+<l>    allIndices := [allIndices, Index, Index, Index]</l>
+<c></c>
+<l>    Index := Index + 1</l>
+<c></c>
+<l>endfor</l>
 <l>return ()</l>
 <c>                    </c>
 <c>                    </c>

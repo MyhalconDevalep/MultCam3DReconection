@@ -33,6 +33,16 @@ namespace WideVisualPositionMultCam3D
         public CameraInitData CameraInitData10 { get; set; }
         public CameraInitData CameraInitData11 { get; set; }
         public CameraInitData CameraInitData12 { get; set; }
+
+
+        public CameraInitData CameraInitData13 { get; set; }
+        public CameraInitData CameraInitData14 { get; set; }
+        public CameraInitData CameraInitData15 { get; set; }
+
+
+        public CameraInitData CameraInitData16 { get; set; }
+        public CameraInitData CameraInitData17 { get; set; }
+        public CameraInitData CameraInitData18 { get; set; }
         public FormMain()
         {
 
@@ -50,6 +60,15 @@ namespace WideVisualPositionMultCam3D
             CameraInitData10 = new CameraInitData();
             CameraInitData11 = new CameraInitData();
             CameraInitData12 = new CameraInitData();
+
+            CameraInitData13 = new CameraInitData();
+            CameraInitData14 = new CameraInitData();
+            CameraInitData15 = new CameraInitData();
+
+            CameraInitData16 = new CameraInitData();
+            CameraInitData17 = new CameraInitData();
+            CameraInitData18 = new CameraInitData();
+
             GlobalStaticData.UpdataBingdingData = new Models.UpdataBingdingData();
             GlobalStaticData.UpdataBingdingDisplayMsgq = new Models.UpdataBingdingDisplayMsg();
             GlobalStaticData.HeightAligmentData1 = new Models.HeightAligmentData();
@@ -81,6 +100,20 @@ namespace WideVisualPositionMultCam3D
             GlobalStaticData.CameraGroupConfig4.Cam0.CamId = 9;
             GlobalStaticData.CameraGroupConfig4.Cam1.CamId = 10;
             GlobalStaticData.CameraGroupConfig4.Cam2.CamId = 11;
+
+            GlobalStaticData.CameraGroupConfig5 = new Models.CameraGroupConfig();
+            GlobalStaticData.CameraGroupConfig5.GroupId = 4;
+            GlobalStaticData.CameraGroupConfig5.Cam0.CamId = 12;
+            GlobalStaticData.CameraGroupConfig5.Cam1.CamId = 13;
+            GlobalStaticData.CameraGroupConfig5.Cam2.CamId = 14;
+
+            GlobalStaticData.CameraGroupConfig6 = new Models.CameraGroupConfig();
+            GlobalStaticData.CameraGroupConfig6.GroupId = 5;
+            GlobalStaticData.CameraGroupConfig6.Cam0.CamId = 15;
+            GlobalStaticData.CameraGroupConfig6.Cam1.CamId = 16;
+            GlobalStaticData.CameraGroupConfig6.Cam2.CamId = 17;
+
+
             GlobalStaticData.OperateConfig = new OperateConfig();
             GlobalStaticData.OperateConfig.KeyValueFileReader("Config//config.txt");
             //string cam1Number=string.Empty;
@@ -101,6 +134,7 @@ namespace WideVisualPositionMultCam3D
                     GlobalStaticData.CameraCount = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("AllOtherParams", "CamNums"));
                     GlobalStaticData.SendDataState = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("AllOtherParams", "SendDataState"));
                     GlobalStaticData.SendXOffset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("AllOtherParams", "SendXOffset"));
+                    GlobalStaticData.SendRobotNum = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("AllOtherParams", "RobotNum"));
                 }
                 catch (Exception ex)
                 {
@@ -219,6 +253,75 @@ namespace WideVisualPositionMultCam3D
                     GlobalStaticData.HIKCamera12.SetExposureTime(CameraInitData12.ExpsureTime);
                 }
 
+                if (GlobalStaticData.CameraCount > 12)
+                {
+                    CameraInitData12.Number = GlobalStaticData.OperateConfig.GetValue("Camera13", "Number");
+                    CameraInitData12.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera13", "Gain"));
+                    CameraInitData12.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera13", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera12 = new HIKCameraSDK(CameraInitData12.Number, 0, 0);
+                    GlobalStaticData.HIKCamera12.SetGain(CameraInitData12.Gain);
+                    GlobalStaticData.HIKCamera12.SetExposureTime(CameraInitData12.ExpsureTime);
+                }
+
+
+               
+
+
+                if (GlobalStaticData.CameraCount > 13)
+                {
+                    CameraInitData14.Number = GlobalStaticData.OperateConfig.GetValue("Camera14", "Number");
+                    CameraInitData14.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera14", "Gain"));
+                    CameraInitData14.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera14", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera14 = new HIKCameraSDK(CameraInitData14.Number, 0, 0);
+                    GlobalStaticData.HIKCamera14.SetGain(CameraInitData14.Gain);
+                    GlobalStaticData.HIKCamera14.SetExposureTime(CameraInitData14.ExpsureTime);
+                }
+
+
+                if (GlobalStaticData.CameraCount > 14)
+                {
+                    CameraInitData15.Number = GlobalStaticData.OperateConfig.GetValue("Camera15", "Number");
+                    CameraInitData15.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera15", "Gain"));
+                    CameraInitData15.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera15", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera15 = new HIKCameraSDK(CameraInitData15.Number, 0, 0);
+                    GlobalStaticData.HIKCamera15.SetGain(CameraInitData15.Gain);
+                    GlobalStaticData.HIKCamera15.SetExposureTime(CameraInitData15.ExpsureTime);
+                }
+
+                if (GlobalStaticData.CameraCount > 15)
+                {
+                    CameraInitData16.Number = GlobalStaticData.OperateConfig.GetValue("Camera16", "Number");
+                    CameraInitData16.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera16", "Gain"));
+                    CameraInitData16.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera16", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera16 = new HIKCameraSDK(CameraInitData16.Number, 0, 0);
+                    GlobalStaticData.HIKCamera16.SetGain(CameraInitData16.Gain);
+                    GlobalStaticData.HIKCamera16.SetExposureTime(CameraInitData16.ExpsureTime);
+                }
+                if (GlobalStaticData.CameraCount > 16)
+                {
+                    CameraInitData17.Number = GlobalStaticData.OperateConfig.GetValue("Camera17", "Number");
+                    CameraInitData17.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera17", "Gain"));
+                    CameraInitData17.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera17", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera17 = new HIKCameraSDK(CameraInitData17.Number, 0, 0);
+                    GlobalStaticData.HIKCamera17.SetGain(CameraInitData17.Gain);
+                    GlobalStaticData.HIKCamera17.SetExposureTime(CameraInitData17.ExpsureTime);
+                }
+
+                if (GlobalStaticData.CameraCount > 17)
+                {
+                    CameraInitData18.Number = GlobalStaticData.OperateConfig.GetValue("Camera18", "Number");
+                    CameraInitData18.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera18", "Gain"));
+                    CameraInitData18.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera18", "CamExposureTime"));
+                    GlobalStaticData.HIKCamera18 = new HIKCameraSDK(CameraInitData18.Number, 0, 0);
+                    GlobalStaticData.HIKCamera18.SetGain(CameraInitData18.Gain);
+                    GlobalStaticData.HIKCamera18.SetExposureTime(CameraInitData18.ExpsureTime);
+                }
+
+
+
+
+
+
             }
             catch (Exception ex)
             {
@@ -236,7 +339,14 @@ namespace WideVisualPositionMultCam3D
                 GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
                 GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
                 GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "PositioningTolerance"));
+                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "XYTolerance"));
+                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "ZToleranceEx​​"));
+
+            
+
+
                 GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "CalibrationBoardHeight​"));
+          
 
                 GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "XOffset"));
                 GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "YOffset"));
@@ -257,7 +367,9 @@ namespace WideVisualPositionMultCam3D
                 GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
                 GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
                 GlobalStaticData.CameraGroupConfig2.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
+                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
+               GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
 
                 GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "XOffset"));
                 GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "YOffset"));
@@ -280,6 +392,8 @@ namespace WideVisualPositionMultCam3D
                 GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
                 GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
                 GlobalStaticData.CameraGroupConfig3.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
+                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
                 GlobalStaticData.CameraGroupConfig3.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
 
                 GlobalStaticData.CameraGroupConfig3.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam3PositionConfig", "XOffset"));
@@ -303,6 +417,8 @@ namespace WideVisualPositionMultCam3D
                 GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
                 GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
                 GlobalStaticData.CameraGroupConfig4.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
+                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
                 GlobalStaticData.CameraGroupConfig4.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
 
                 GlobalStaticData.CameraGroupConfig4.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam4PositionConfig", "XOffset"));
@@ -318,13 +434,65 @@ namespace WideVisualPositionMultCam3D
 
             try
             {
+
+                GlobalStaticData.CameraGroupConfig5.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig5.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig5.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig5.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig5.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig5.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
+                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
+                GlobalStaticData.CameraGroupConfig5.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
+                                                  
+                GlobalStaticData.CameraGroupConfig5.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "XOffset"));
+                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "YOffset"));
+                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "ZOffset"));
+                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "RzOffset"));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"相机组4参数读取失败:{ex.Message}");
+            }
+
+
+            try
+            {
+
+                GlobalStaticData.CameraGroupConfig6.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig6.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig6.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig6.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig6.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                GlobalStaticData.CameraGroupConfig6.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
+                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
+                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
+                GlobalStaticData.CameraGroupConfig6.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
+                                                  
+                GlobalStaticData.CameraGroupConfig6.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "XOffset"));
+                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "YOffset"));
+                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "ZOffset"));
+                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "RzOffset"));
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"相机组4参数读取失败:{ex.Message}");
+            }
+
+
+            try
+            {
                 GlobalStaticData.UpdataBingdingData.BottleTolerance = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "BottleTolerance"));
                 GlobalStaticData.UpdataBingdingData.XCommandPoint = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "XCommandPoint"));
                 GlobalStaticData.UpdataBingdingData.SafetyClearance = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "SafetyClearance"));
                 GlobalStaticData.UpdataBingdingData.MinHeight = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "MinHeight​"));
                 GlobalStaticData.UpdataBingdingData.MaxHeight = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "MaxHeight​"));
                 GlobalStaticData.UpdataBingdingData.Robot1Threshold = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "Robot1Threshold"));
-
+                GlobalStaticData.UpdataBingdingData.Robot2Threshold = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "Robot2Threshold"));
             }
             catch (Exception ex)
             {
@@ -435,17 +603,22 @@ namespace WideVisualPositionMultCam3D
             Aside.CreateChildNode(node, AddPage(new Calibration2(), Guid.NewGuid()));
             Aside.CreateChildNode(node, AddPage(new Calibration3(), Guid.NewGuid()));
             Aside.CreateChildNode(node, AddPage(new Calibration4(), Guid.NewGuid()));
+            Aside.CreateChildNode(node, AddPage(new Calibration5(), Guid.NewGuid()));
+            Aside.CreateChildNode(node, AddPage(new Calibration6(), Guid.NewGuid()));
             TreeNode CalibrationNode = Aside.CreateNode("标定采集", 61896, 24, 3000);
             Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq1(), Guid.NewGuid()));
             Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq2(), Guid.NewGuid()));
             Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq3(), Guid.NewGuid()));
             Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq4(), Guid.NewGuid()));
+            Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq5(), Guid.NewGuid()));
+            Aside.CreateChildNode(CalibrationNode, AddPage(new CalibrationAcq6(), Guid.NewGuid()));
             TreeNode ConfigSet = Aside.CreateNode("参数设置", 61459, 24, 4000);
             Aside.CreateChildNode(ConfigSet, AddPage(new PublicRuningParams(), Guid.NewGuid()));
             Aside.CreateChildNode(ConfigSet, AddPage(new RobotRegionParams(), Guid.NewGuid()));
             Aside.CreateChildNode(ConfigSet, AddPage(new RuningParamSet(), Guid.NewGuid()));
             Aside.CreateChildNode(ConfigSet, AddPage(new RuningParamSet2(), Guid.NewGuid()));
-           
+            Aside.CreateChildNode(ConfigSet, AddPage(new RuningParamSet3(), Guid.NewGuid()));
+
             TreeNode UserConfigSet = Aside.CreateNode("用户配置", 62142, 24, 5000);
             Aside.CreateChildNode(UserConfigSet, AddPage(new HeightAlignment(), Guid.NewGuid()));
             Aside.CreateChildNode(UserConfigSet, AddPage(new HeightAlignment2(), Guid.NewGuid()));

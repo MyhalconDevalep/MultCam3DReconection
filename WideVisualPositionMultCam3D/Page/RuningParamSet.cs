@@ -14,6 +14,17 @@ namespace WideVisualPositionMultCam3D.Page
 {
     public partial class RuningParamSet : UIPage
     {
+
+
+        private double _cam1_X_Offset = 0;
+        private double _cam1_Y_Offset = 0;
+        private double _cam1_Z_Offset = 0;
+        private double _cam1_Rz_offset = 0;
+
+        private double _cam2_X_Offset = 0;
+        private double _cam2_Y_Offset = 0;
+        private double _cam2_Z_Offset = 0;
+        private double _cam2_Rz_offset = 0;
         public RuningParamSet()
         {
             InitializeComponent();
@@ -27,13 +38,21 @@ namespace WideVisualPositionMultCam3D.Page
             {
                
                 num_Cam1XOffset.Value=GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset;
+                _cam1_X_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset;
                 num_Cam1YOffset.Value = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset;
+                _cam1_Y_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset;
                 num_Cam1ZOffset.Value=GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset;
+                _cam1_Z_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset;
                 num_Cam1RzOffset.Value = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset;
+                _cam1_Rz_offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset;
                 num_Cam2XOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset;
+                _cam2_X_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset;
                 num_Cam2YOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset;
+                _cam2_Y_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset;
                 num_Cam2ZOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset;
+                _cam2_Z_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset;
                 num_Cam2RzOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset;
+                _cam2_Rz_offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset;
 
             }
             catch (Exception ex)
@@ -48,44 +67,52 @@ namespace WideVisualPositionMultCam3D.Page
 
         private void num_Cam1XOffset_ValueChanged(object sender, double value)
         {
-             GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset = value;
+            _cam1_X_Offset=value;
+            
         }
 
         private void num_Cam1YOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset =value;
+            _cam1_Y_Offset=value;
+           
         }
 
         private void num_Cam1ZOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset = value;
+            _cam1_Z_Offset=value;
+           
         }
 
         private void num_Cam1RzOffset_ValueChanged(object sender, double value)
         {
-             GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset = value;
+            _cam1_Rz_offset=value;
+           
         }
 
       
 
         private void num_Cam2XOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset = value;
+            _cam2_X_Offset=value;
+           
         }
 
         private void num_Cam2YOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset = value;
+            _cam2_Y_Offset=value;
+           
         }
 
         private void num_Cam2ZOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset = value;
+            _cam2_Z_Offset=value;
+           
         }
 
         private void num_Cam2RzOffset_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset = value;
+            _cam2_Rz_offset=value;
+           
         }
 
         private void btn_SaveConfig1_Click(object sender, EventArgs e)
@@ -98,10 +125,14 @@ namespace WideVisualPositionMultCam3D.Page
             }
             try
             {
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "XOffset", GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "YOffset", GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "ZOffset", GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "RzOffset", GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "XOffset", _cam1_X_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "YOffset",_cam1_Y_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "ZOffset", _cam1_Z_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "RzOffset", _cam1_Rz_offset.ToString());
+                GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset = _cam1_X_Offset;
+                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset = _cam1_Y_Offset;
+                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset = _cam1_Z_Offset;
+                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset = _cam1_Rz_offset;
                 // GlobalStaticData.PositionRefresh = true;
                 GlobalStaticData.CameraGroupConfig1.Version++;
                 DisplayMessageHalper.displayMessageSuccesses("参数保存成功");
@@ -124,10 +155,14 @@ namespace WideVisualPositionMultCam3D.Page
             }
             try
             {
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "XOffset", GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "YOffset", GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "ZOffset", GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "RzOffset", GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "XOffset", _cam2_X_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "YOffset",_cam2_Y_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "ZOffset", _cam2_Z_Offset.ToString());
+                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "RzOffset", _cam2_Rz_offset.ToString());
+                GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset = _cam2_X_Offset;
+                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset = _cam2_Y_Offset;
+                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset = _cam2_Z_Offset;
+                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset = _cam2_Rz_offset;
                 // GlobalStaticData.PositionRefresh = true;
                 GlobalStaticData.CameraGroupConfig2.Version++;
                 DisplayMessageHalper.displayMessageSuccesses("参数保存成功");

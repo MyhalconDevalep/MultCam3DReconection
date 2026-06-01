@@ -50,6 +50,11 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 {
                     Robot2List.Clear();
                 }
+                lock (_lock3)
+                {
+                    Robot3List.Clear();
+                }
+
                 return true;
             }
             catch (Exception)
@@ -63,9 +68,11 @@ namespace WideVisualPositionMultCam3D.ToolClass
         // 机械手数据集合（你需要的）
         public List<FindCoorData> Robot1List { get; private set; } = new List<FindCoorData>();
         public List<FindCoorData> Robot2List { get; private set; } = new List<FindCoorData>();
+        public List<FindCoorData> Robot3List { get; private set; } = new List<FindCoorData>();
 
         private readonly object _lock1 = new object();
         private readonly object _lock2 = new object();
+        private readonly object _lock3 = new object();
 
 
         public PointProcessor2(double xyTolerance = 50, double minXThreshold = 300,int minHeightThreshold=80,int maxHeightThreshold=400,double safetyClearance=150, double separatorRegionRobot1=700, double separatorRegionRobot2=3000)
@@ -312,8 +319,22 @@ namespace WideVisualPositionMultCam3D.ToolClass
                  
                     };
 
-                    // 归属机械手
-                    int robotId = result.WorldY < _separatorRegionRobot1 ? 1 : 2;
+
+                    // 根据 WorldY 判断属于哪个机器人区域
+                    int robotId;
+
+                    if (result.WorldY < _separatorRegionRobot1)
+                    {
+                        robotId = 1;
+                    }
+                    else if (result.WorldY < _separatorRegionRobot2)
+                    {
+                        robotId = 2;
+                    }
+                    else
+                    {
+                        robotId = 3;
+                    }
 
                     // 标记安全区状态
                     if (robotId == 1)
@@ -321,22 +342,65 @@ namespace WideVisualPositionMultCam3D.ToolClass
                         lock (_lock1)
                         {
                             result.SafeRegionMark = IsInRobot1SafeRegion(result) ? 1 : 0;
-                            Robot1List.Add(result);
-                            Robot1List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
 
+                            Robot1List.Add(result);
+
+                            // 按 X 从大到小排序
+                            Robot1List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
+                        }
+                    }
+                    else if (robotId == 2)
+                    {
+                        lock (_lock2)
+                        {
+                            result.SafeRegionMark = IsInRobot2SafeRegion(result);
+
+                            Robot2List.Add(result);
+
+                            // 按 X 从大到小排序
+                            Robot2List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
                         }
                     }
                     else
                     {
-                        lock (_lock2)
+                        lock (_lock3)
                         {
-                            result.SafeRegionMark = IsInRobot2SafeRegion(result) ? 1 : 0;
-                            Robot2List.Add(result);
-                            //从大到小进行排序
-                            Robot2List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
+                            result.SafeRegionMark = IsInRobot3SafeRegion(result) ? 2 : 0;
 
+                            Robot3List.Add(result);
+
+                            // 按 X 从大到小排序
+                            Robot3List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
                         }
                     }
+
+                    #region  2026.5.27 修改
+                    // 归属机械手
+                    //int robotId = result.WorldY < _separatorRegionRobot1 ? 1 : 2;
+
+                    //// 标记安全区状态
+                    //if (robotId == 1)
+                    //{
+                    //    lock (_lock1)
+                    //    {
+                    //        result.SafeRegionMark = IsInRobot1SafeRegion(result) ? 1 : 0;
+                    //        Robot1List.Add(result);
+                    //        Robot1List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
+
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    lock (_lock2)
+                    //    {
+                    //        result.SafeRegionMark = IsInRobot2SafeRegion(result) ? 1 : 0;
+                    //        Robot2List.Add(result);
+                    //        //从大到小进行排序
+                    //        Robot2List.Sort((a, b) => b.WorldXScurren.D.CompareTo(a.WorldXScurren.D));
+
+                    //    }
+                    //}
+                    #endregion
                 }
                 else
                 {
@@ -360,10 +424,26 @@ namespace WideVisualPositionMultCam3D.ToolClass
             return (y >= _separatorRegionRobot1-_safetyClearance && y <= _separatorRegionRobot1);
         }
 
-        private bool IsInRobot2SafeRegion(FindCoorData p)
+        private int IsInRobot2SafeRegion(FindCoorData p)
         {
             double y = p.WorldY;
-            return (y >= _separatorRegionRobot1 && y <= _separatorRegionRobot1+_safetyClearance);
+            if(y >= _separatorRegionRobot1 && y <= _separatorRegionRobot1 + _safetyClearance)
+            {
+                return 1;
+            }
+            if(y <= _separatorRegionRobot2 && y >= _separatorRegionRobot2 - _safetyClearance)
+            {
+                return 2;
+            }
+
+
+            return 0;
+        }
+
+        private bool IsInRobot3SafeRegion(FindCoorData p)
+        {
+            double y = p.WorldY;
+            return (y >= _separatorRegionRobot2 && y <= _separatorRegionRobot2 + _safetyClearance);
         }
 
 
@@ -490,6 +570,9 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
 
             tcp.Send(str);
+            //临时锁标记
+            SetRobotPending(robotId);
+
             SentRobotAllNumber++;
             _eventMsg?.Invoke(logStr);
             lock (listLock)
@@ -504,91 +587,367 @@ namespace WideVisualPositionMultCam3D.ToolClass
         }
 
 
-        // private FindCoorData SendCurrentCoor = new FindCoorData();
-
-        //public void SendCoorValue(int robotnum1, int robotnum2, SuperSimpleTcpHelper superTcp1, SuperSimpleTcpHelper superTcp2)
-        //{
-        //    try
-        //    {
-        //        // ======================
-        //        // 机器人 2 发送逻辑
-        //        // ======================
-        //        if (robotnum2 == 0)
-        //        {
-        //            if (Robot2List.Count > 0)
-        //            {
-        //                // 没限制 ⇒ 直接发最新
-        //                SendToRobot(2, Robot2List, _lock2, superTcp2, ref SendCurrentCoor);
-
-        //            }
-        //            else
-        //            {
-        //                // 列表空 → 清除当前危险区标记
-        //                SendCurrentCoor.SafeRegionMark = 0;
-        //            }
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        //LogWinform("发送给机器人2坐标数据异常", LogInfoPath);
-        //    }
-
-
-        //    try
-        //    {
-        //        // ======================
-        //        // 机器人 1 发送逻辑
-        //        // ======================
-        //        if (robotnum1 == 0 && Robot1List.Count > 0)
-        //        {
-        //            bool conflict = (Robot1List[Robot1List.Count - 1].SafeRegionMark == 1 &&
-        //                             SendCurrentCoor.SafeRegionMark == 1);
-
-        //            if (!conflict)
-        //            {
-        //                // 正常情况 → 直接发
-        //                SendToRobot(1, Robot1List, _lock1, superTcp1,  ref SendCurrentCoor);
-
-        //            }
-        //            else
-        //            {
-        //                // ---- 冲突情况 ----
-        //                // 最新点作为基准点
-        //                double baseX = Robot1List[Robot1List.Count - 1].WorldXScurren.D;
-
-        //                // 查找符合安全区 且 X 不超过±50 的点
-        //                var alternative = FindAlternativePoint(Robot1List, 1, baseX);
-
-        //                if (alternative != null)
-        //                {
-        //                    // 手动发送 alternative
-        //                    List<FindCoorData> tempList = new List<FindCoorData>() { alternative };
-        //                    SendToRobot(1, tempList, _lock1, superTcp1,  ref SendCurrentCoor);
-
-
-        //                    // 删除该点
-        //                    lock (_lock1)
-        //                    {
-        //                        Robot1List.Remove(alternative);
-        //                    }
-        //                }
-        //                else
-        //                {
-        //                    // 无替代点 → 不发（保持安全区避免撞机）
-        //                }
-        //            }
-
-        //        }
-        //    }
-        //    catch
-        //    {
-        //        // LogWinform("发送给机器人1坐标数据异常", LogInfoPath);
-        //    }
-        //}
+      
 
         private FindCoorData SendCurrentCoor1 = new FindCoorData();
         private FindCoorData SendCurrentCoor2 = new FindCoorData();
+        private FindCoorData SendCurrentCoor3 = new FindCoorData();
+
+
+        private int SendPending1 = 0;
+        private int SendPending2 = 0;
+        private int SendPending3 = 0;
+
+        private bool IsRobotCanSend(int robotId, int robotState)
+        {
+            if (robotState != 0) return false;
+
+            if (robotId == 1 && SendPending1 == 1) return false;
+            if (robotId == 2 && SendPending2 == 1) return false;
+            if (robotId == 3 && SendPending3 == 1) return false;
+
+            return true;
+        }
+
+        private void SetRobotPending(int robotId)
+        {
+            if (robotId == 1) SendPending1 = 1;
+            else if (robotId == 2) SendPending2 = 1;
+            else if (robotId == 3) SendPending3 = 1;
+        }
+
+        private void RefreshRobotPending()
+        {
+            if (GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 == 1)
+                SendPending1 = 0;
+
+            if (GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2 == 1)
+                SendPending2 = 0;
+
+            if (GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3 == 1)
+                SendPending3 = 0;
+        }
+
         //先抓X最小的
+
+        public void SendCoorValue3Robot(double baseOffsetX,SuperSimpleTcpHelper superTcp1,SuperSimpleTcpHelper superTcp2,SuperSimpleTcpHelper superTcp3)
+        {
+
+            RefreshRobotPending();
+            TrySendRobotMinX(
+                2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                _lock2,
+                superTcp2,
+                ref SendCurrentCoor2,
+                SendCurrentCoor1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                Robot1List,
+                1,
+                SendCurrentCoor3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                Robot3List,
+                2);
+
+            Thread.Sleep(20);
+
+            TrySendRobotMinX(
+                1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                Robot1List,
+                _lock1,
+                superTcp1,
+                ref SendCurrentCoor1,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                1,
+                null,
+                0,
+                null,
+                0);
+
+            Thread.Sleep(20);
+
+            TrySendRobotMinX(
+                3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                Robot3List,
+                _lock3,
+                superTcp3,
+                ref SendCurrentCoor3,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                2,
+                null,
+                0,
+                null,
+                0);
+        }
+
+        private void TrySendRobotMinX(int robotId, int robotState,List<FindCoorData> selfList,object selfLock,SuperSimpleTcpHelper tcp, ref FindCoorData currentSend,FindCoorData otherCurrent1,int otherRobotState1,List<FindCoorData> otherList1,int conflictSafeMark1,FindCoorData otherCurrent2, int otherRobotState2,List<FindCoorData> otherList2,int conflictSafeMark2)
+        {
+            try
+            {
+                if (!IsRobotCanSend(robotId, robotState)) return;;
+
+                lock (selfLock)
+                {
+                    if (selfList.Count == 0) return;
+
+                    var target = selfList[selfList.Count - 1];
+
+                    bool canSend = true;
+
+                    if (!CanSendBySafeRegion(target, conflictSafeMark1, otherCurrent1, otherRobotState1, otherList1))
+                        canSend = false;
+
+                    if (canSend && !CanSendBySafeRegion(target, conflictSafeMark2, otherCurrent2, otherRobotState2, otherList2))
+                        canSend = false;
+
+                    if (!canSend) return;
+
+                    List<FindCoorData> temp = new List<FindCoorData>() { target };
+
+                    SendToRobot(robotId, temp, selfLock, tcp, ref currentSend);
+
+                    selfList.Remove(target);
+                }
+            }
+            catch
+            {
+                // 建议加日志
+            }
+        }
+
+        public void SendCoorValueWorldYMinSort3Robot(double baseOffsetX,SuperSimpleTcpHelper superTcp1,SuperSimpleTcpHelper superTcp2,SuperSimpleTcpHelper superTcp3)
+        {
+            RefreshRobotPending();
+            // 先发中间机器人，因为 Robot2 同时可能和 Robot1、Robot3 冲突
+            TrySendRobotForThree(
+                2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                baseOffsetX,
+                Robot2List,
+                _lock2,
+                superTcp2,
+                ref SendCurrentCoor2,
+                SendCurrentCoor1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                Robot1List,
+                1,
+                SendCurrentCoor3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                Robot3List,
+                2,
+                p => p.OrderBy(x => x.WorldY.D));
+
+            Thread.Sleep(20);
+
+            TrySendRobotForThree(
+                1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                baseOffsetX,
+                Robot1List,
+                _lock1,
+                superTcp1,
+                ref SendCurrentCoor1,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                1,
+                null,
+                0,
+                null,
+                0,
+                p => p.OrderBy(x => x.WorldY.D));
+
+            Thread.Sleep(20);
+
+            TrySendRobotForThree(
+                3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                baseOffsetX,
+                Robot3List,
+                _lock3,
+                superTcp3,
+                ref SendCurrentCoor3,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                2,
+                null,
+                0,
+                null,
+                0,
+                p => p.OrderBy(x => x.WorldY.D));
+        }
+
+        public void SendCoorValueHeightMaxSort3Robot(double baseOffsetX, SuperSimpleTcpHelper superTcp1, SuperSimpleTcpHelper superTcp2, SuperSimpleTcpHelper superTcp3)
+        {
+
+            RefreshRobotPending();
+            // 先发中间机器人，因为 Robot2 同时可能和 Robot1、Robot3 冲突
+            TrySendRobotForThree(
+                2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                baseOffsetX,
+                Robot2List,
+                _lock2,
+                superTcp2,
+                ref SendCurrentCoor2,
+                SendCurrentCoor1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                Robot1List,
+                1,
+                SendCurrentCoor3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                Robot3List,
+                2,
+                p => p.OrderByDescending(x => x.Height.D));
+
+            Thread.Sleep(20);
+
+            TrySendRobotForThree(
+                1,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                baseOffsetX,
+                Robot1List,
+                _lock1,
+                superTcp1,
+                ref SendCurrentCoor1,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                1,
+                null,
+                0,
+                null,
+                0,
+               p => p.OrderByDescending(x => x.Height.D));
+
+            Thread.Sleep(20);
+
+            TrySendRobotForThree(
+                3,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                baseOffsetX,
+                Robot3List,
+                _lock3,
+                superTcp3,
+                ref SendCurrentCoor3,
+                SendCurrentCoor2,
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                Robot2List,
+                2,
+                null,
+                0,
+                null,
+                0,
+                p => p.OrderByDescending(x => x.Height.D));
+        }
+
+        private void TrySendRobotForThree(int robotId,int robotState,double baseOffsetX,List<FindCoorData> selfList,object selfLock,SuperSimpleTcpHelper tcp,ref FindCoorData currentSend,FindCoorData otherCurrent1,int otherRobotState1, List<FindCoorData> otherList1,int conflictSafeMark1, FindCoorData otherCurrent2,int otherRobotState2,List<FindCoorData> otherList2,int conflictSafeMark2, Func<IEnumerable<FindCoorData>, IEnumerable<FindCoorData>> sortFunc)
+        {
+            try
+            {
+                if (!IsRobotCanSend(robotId, robotState)) return;
+
+                lock (selfLock)
+                {
+                    if (selfList.Count == 0) return;
+
+                    var basePoint = selfList[selfList.Count - 1];
+                    double baseWorldX = basePoint.WorldXScurren.D;
+
+                    var candidates = selfList
+                        .Where(p => p.WorldXScurren.D <= baseWorldX + baseOffsetX)
+                        .ToList();
+
+                    if (candidates.Count == 0) return;
+
+                    var sorted = sortFunc(candidates).ToList();
+
+                    foreach (var target in sorted)
+                    {
+                        bool canSend = true;
+
+                        if (!CanSendBySafeRegion(
+                            target,
+                            conflictSafeMark1,
+                            otherCurrent1,
+                            otherRobotState1,
+                            otherList1))
+                        {
+                            canSend = false;
+                        }
+
+                        if (canSend &&
+                            !CanSendBySafeRegion(
+                                target,
+                                conflictSafeMark2,
+                                otherCurrent2,
+                                otherRobotState2,
+                                otherList2))
+                        {
+                            canSend = false;
+                        }
+
+                        if (canSend)
+                        {
+                            List<FindCoorData> temp = new List<FindCoorData>() { target };
+
+                            SendToRobot(robotId, temp, selfLock, tcp, ref currentSend);
+
+                            selfList.Remove(target);
+
+                            return;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // 建议这里加日志
+            }
+        }
+        //安全去仲裁方法
+        private bool CanSendBySafeRegion(FindCoorData target,int conflictSafeMark, FindCoorData otherCurrent,int otherRobotState,List<FindCoorData> otherList)
+        {
+            if (target == null) return false;
+
+            if (conflictSafeMark == 0) return true;
+
+            if (target.SafeRegionMark != conflictSafeMark) return true;
+
+            // 对方机械手正在安全区动作，当前点不能发
+            if (otherCurrent != null &&
+                otherCurrent.SafeRegionMark == conflictSafeMark &&
+                otherRobotState == 1)
+            {
+                return false;
+            }
+
+            if (otherList == null || otherList.Count == 0)
+                return true;
+
+            var otherConflictPoint = otherList
+                .Where(p => p.SafeRegionMark == conflictSafeMark)
+                .OrderBy(p => p.WorldXScurren.D)
+                .FirstOrDefault();
+
+            if (otherConflictPoint == null)
+                return true;
+
+            // X 小的先发，避免两个机械手同时抢安全区
+            return target.WorldXScurren.D < otherConflictPoint.WorldXScurren.D;
+        }
+
+
+        #region 2个机械手********************************************************************************************************
+
         public void SendCoorValue(double baseOffsetX, SuperSimpleTcpHelper superTcp1, SuperSimpleTcpHelper superTcp2)
         {
             try
@@ -601,7 +960,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                     var r2Point = Robot2List.Last();
 
                     bool canSendR2 = true;
-                    if (SendCurrentCoor1.SafeRegionMark == 1 && GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1== 1)//判断机器人1是否有坐标且这个坐标是否在安全区
+                    if (SendCurrentCoor1.SafeRegionMark == 1 && GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 == 1)//判断机器人1是否有坐标且这个坐标是否在安全区
                     {
                         canSendR2 = false;
                     }
@@ -666,7 +1025,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 // ======================
                 // 机器人 1 发送逻辑
                 // ======================
-                if (GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1== 0 && Robot1List.Count > 0)
+                if (GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 == 0 && Robot1List.Count > 0)
                 {
                     var r1Point = Robot1List.Last();
 
@@ -733,8 +1092,11 @@ namespace WideVisualPositionMultCam3D.ToolClass
         }
 
 
+
         public void SendCoorValueWorldYMinSort(double baseOffsetX,SuperSimpleTcpHelper superTcp1,SuperSimpleTcpHelper superTcp2)
         {
+            RefreshRobotPending();
+
             // ======================
             // Robot2 优先
             // ======================
@@ -743,7 +1105,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             // ======================
             // Robot1
             // ======================
-            Thread.Sleep(50);
+       
         
             TrySendRobot(1, GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1, baseOffsetX, Robot1List,_lock1,superTcp1,ref SendCurrentCoor1, SendCurrentCoor2, GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2, Robot2List);
         }
@@ -751,11 +1113,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
         public void SendCoorValueHeightMaxSort( double baseOffsetX, SuperSimpleTcpHelper superTcp1, SuperSimpleTcpHelper superTcp2)
         {
+            RefreshRobotPending();
             // ======================
             // Robot2 优先
             // ======================
             TrySendRobotSortZ(2, GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2, baseOffsetX, Robot2List, _lock2, superTcp2, ref SendCurrentCoor2, SendCurrentCoor1, GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1, Robot1List);
-            Thread.Sleep(50);
+        
             // ======================
             // Robot1
             // ======================
@@ -763,12 +1126,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
         }
 
         //先抓Y小的
-        private void TrySendRobot(int robotId,int robotState,double baseOffsetX, /* 0=空闲 1=运行*/ List<FindCoorData> selfList, object selfLock, SuperSimpleTcpHelper tcp, ref FindCoorData currentSend, FindCoorData otherCurrent, int otherRobotState, List<FindCoorData> otherList)
+        private void TrySendRobot(int robotId,int robotState /* 0=空闲 1=运行*/, double baseOffsetX,  List<FindCoorData> selfList, object selfLock, SuperSimpleTcpHelper tcp, ref FindCoorData currentSend, FindCoorData otherCurrent, int otherRobotState, List<FindCoorData> otherList)
         {
             try
             {
-               
-                if (robotState != 0) return;
+
+                if (!IsRobotCanSend(robotId, robotState)) return;
 
                 lock (selfLock)
                 {
@@ -857,8 +1220,8 @@ namespace WideVisualPositionMultCam3D.ToolClass
         {
             try
             {
-              
-                if (robotState != 0) return;
+
+                if (!IsRobotCanSend(robotId, robotState)) return;
 
                 lock (selfLock)
                 {
@@ -941,7 +1304,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 // 可加日志
             }
         }
-
+        #endregion
     }
 
 

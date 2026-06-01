@@ -93,7 +93,9 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
             if (_sectionData.TryGetValue(section, out var kvPairs))
             {
-                return kvPairs.TryGetValue(key, out var value) ? value : null;
+              string returnValue=   kvPairs.TryGetValue(key, out var value) ? value : null;
+
+                return returnValue;
             }
 
             return null;

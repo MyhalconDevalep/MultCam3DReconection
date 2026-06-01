@@ -8,6 +8,12 @@ namespace WideVisualPositionMultCam3D.Page
 {
     public partial class PublicRuningParams : UIPage
     {
+        private float _conf_threshold = 0.6f;
+
+        private double _positionTolerance = 8;
+        private double _calib_Board_H = 12;
+        private double _XY_Tolerance = 0.012;
+        private double _Z_Tolerance = 0.008;
         public PublicRuningParams()
         {
             InitializeComponent();
@@ -17,6 +23,14 @@ namespace WideVisualPositionMultCam3D.Page
                 num_CofThreshold.Value = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
                 num_PositionTolerance.Value = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
                 num_Calib_Board_H.Value = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
+                num_XY_Tolerance.Value = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                num_Z_Tolerance.Value = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
+
+                _conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
+                _positionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
+                _calib_Board_H = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
+                _XY_Tolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
+                _Z_Tolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
 
             }
             catch (Exception ex)
@@ -32,37 +46,37 @@ namespace WideVisualPositionMultCam3D.Page
 
         private void num_CofThreshold_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig1.Cam1.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig2.Cam0.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig2.Cam1.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig3.Cam0.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig3.Cam1.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig4.Cam0.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig4.Cam1.YoloInferData.conf_threshold = (float)value;
-            GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.conf_threshold = (float)value;
+
+            _conf_threshold=(float)value;
+           
         }
 
+      
         private void num_PositionTolerance_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance = value;
-            GlobalStaticData.CameraGroupConfig2.findCoorPairsData.PositionTolerance = value;
-            GlobalStaticData.CameraGroupConfig3.findCoorPairsData.PositionTolerance = value;
-            GlobalStaticData.CameraGroupConfig4.findCoorPairsData.PositionTolerance = value;
+            _positionTolerance= value;
+           
 
         }
-
+       
         private void num_Calib_Board_H_ValueChanged(object sender, double value)
         {
-            GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight = value;
-            GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = value;
-            GlobalStaticData.CameraGroupConfig3.worldTransformerData.BoardHeight = value;
-            GlobalStaticData.CameraGroupConfig4.worldTransformerData.BoardHeight = value;
+            _calib_Board_H= value;
+           
 
         }
+
+
+        private void num_XY_Tolerance_ValueChanged(object sender, double value)
+        {
+            _XY_Tolerance= value;
+        }
+
+        private void num_Z_Tolerance_ValueChanged(object sender, double value)
+        {
+            _Z_Tolerance= value;
+        }
+
 
         private void btn_SaveConfig_Click(object sender, EventArgs e)
         {
@@ -74,9 +88,46 @@ namespace WideVisualPositionMultCam3D.Page
             }
             try
             {
-                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "conf_Score", GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold.ToString());
-                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "PositioningTolerance", GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance.ToString());
-                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "CalibrationBoardHeight​", GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "conf_Score", _conf_threshold.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "PositioningTolerance",_positionTolerance.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "CalibrationBoardHeight​",_calib_Board_H.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "XYTolerance", _XY_Tolerance.ToString());
+                GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "ZToleranceEx​​", _Z_Tolerance.ToString());
+
+                GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig1.Cam1.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig2.Cam0.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig2.Cam1.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig3.Cam0.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig3.Cam1.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig4.Cam0.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig4.Cam1.YoloInferData.conf_threshold = _conf_threshold;
+                GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.conf_threshold = _conf_threshold;
+
+                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance = _positionTolerance;
+                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.PositionTolerance = _positionTolerance;
+                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.PositionTolerance = _positionTolerance;
+                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.PositionTolerance = _positionTolerance;
+
+                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
+                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
+                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
+                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
+
+                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
+                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
+                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
+                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
+
+                GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight = _calib_Board_H;
+                GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = _calib_Board_H;
+                GlobalStaticData.CameraGroupConfig3.worldTransformerData.BoardHeight = _calib_Board_H;
+                GlobalStaticData.CameraGroupConfig4.worldTransformerData.BoardHeight = _calib_Board_H;
+
+
                 GlobalStaticData.PositionRefresh = true;
                 GlobalStaticData.CameraGroupConfig1.Version++;
                 GlobalStaticData.CameraGroupConfig2.Version++;
@@ -91,5 +142,6 @@ namespace WideVisualPositionMultCam3D.Page
                // UIMessageTip.ShowError($"参数保存失败:{ex.Message}");
             }
         }
+
     }
 }

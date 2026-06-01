@@ -50,6 +50,9 @@ namespace WideVisualPositionMultCam3D.Page
         CameraGroup groupB;
         CameraGroup groupC;
         CameraGroup groupD;
+        CameraGroup groupE;
+        CameraGroup groupF;
+
 
         public SuperSimpleTcpHelper _superSimpleTcp1;
         public SuperSimpleTcpHelper _superSimpleTcp2;
@@ -67,6 +70,8 @@ namespace WideVisualPositionMultCam3D.Page
         private TableLayoutHalconDispZoomHWindow_final halconController2;
         private TableLayoutHalconDispZoomHWindow_final halconController3;
         private TableLayoutHalconDispZoomHWindow_final halconController4;
+        private TableLayoutHalconDispZoomHWindow_final halconController5;
+        private TableLayoutHalconDispZoomHWindow_final halconController6;
         private void Page1_Load(object sender, EventArgs e)
         {
 
@@ -120,6 +125,20 @@ namespace WideVisualPositionMultCam3D.Page
             halconController4.Register(hWindowControl16);
 
 
+            halconController5 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel12);
+            halconController5.Register(hWindowControl17);
+            halconController5.Register(hWindowControl18);
+            halconController5.Register(hWindowControl19);
+            halconController5.Register(hWindowControl20);
+
+
+            halconController6 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel13);
+            halconController6.Register(hWindowControl21);
+            halconController6.Register(hWindowControl22);
+            halconController6.Register(hWindowControl23);
+            halconController6.Register(hWindowControl24);
+
+
             try
             {
                 IP1 = GlobalStaticData.OperateConfig.GetValue("TcpIp", "IP1");
@@ -160,6 +179,7 @@ namespace WideVisualPositionMultCam3D.Page
             GlobalStaticData.blockingCollectiontest = new ConcurrentBag<FindCoorData>();
             lbl_hasBeenSent.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "RobotUseData1");
             lbl_hasBeenSent2.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "RobotUseData2");
+            lbl_hasBeenSent3.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "RobotUseData3");
             lbl_SendDataNum.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "SendDataNum");
 
           
@@ -188,6 +208,18 @@ namespace WideVisualPositionMultCam3D.Page
                 MessageBox.Show("相机组4标定参数加载失败");
             }
 
+            bool resCalib5 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data5.cal", out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig5.hv_StereoModelIDGroup);
+            if (!resCalib5)
+            {
+                MessageBox.Show("相机组5标定参数加载失败");
+            }
+
+            bool resCalib6 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data6.cal", out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig6.hv_StereoModelIDGroup);
+            if (!resCalib6)
+            {
+                MessageBox.Show("相机组6标定参数加载失败");
+            }
+
             //for (int i = 0; i < CameraCount; i++)
             //{
             //    autoResetEvents.Add(new AutoResetEvent(false));
@@ -211,6 +243,14 @@ namespace WideVisualPositionMultCam3D.Page
             groupD = new CameraGroup(GlobalStaticData.CameraGroupConfig4);
             groupD.ActionDispImageEvent += groupDDispImageEvent;
             groupD.ActionDispYoloRoiEvent += groupDDispYoloRoiEvent;
+
+            groupE = new CameraGroup(GlobalStaticData.CameraGroupConfig4);
+            groupE.ActionDispImageEvent += groupEDispImageEvent;
+            groupE.ActionDispYoloRoiEvent += groupEDispYoloRoiEvent;
+
+            groupF = new CameraGroup(GlobalStaticData.CameraGroupConfig4);
+            groupF.ActionDispImageEvent += groupFDispImageEvent;
+            groupF.ActionDispYoloRoiEvent += groupFDispYoloRoiEvent;
 
             //相机同步管理
             pairingMgr = new MultiCameraPairingManager(GlobalStaticData.CameraCount, TimeoutMs);
@@ -264,6 +304,31 @@ namespace WideVisualPositionMultCam3D.Page
             {
                 GlobalStaticData.HIKCamera12.eventRun += HIKCamera12_eventRun;
             }
+            if (GlobalStaticData.CameraCount > 12)
+            {
+                GlobalStaticData.HIKCamera13.eventRun += HIKCamera13_eventRun;
+            }
+            if (GlobalStaticData.CameraCount > 13)
+            {
+                GlobalStaticData.HIKCamera14.eventRun += HIKCamera14_eventRun;
+            }
+            if (GlobalStaticData.CameraCount > 14)
+            {
+                GlobalStaticData.HIKCamera15.eventRun += HIKCamera15_eventRun;
+            }
+            if (GlobalStaticData.CameraCount > 15)
+            {
+                GlobalStaticData.HIKCamera16.eventRun += HIKCamera16_eventRun;
+            }
+            if (GlobalStaticData.CameraCount > 16)
+            {
+                GlobalStaticData.HIKCamera17.eventRun += HIKCamera17_eventRun;
+            }
+            if (GlobalStaticData.CameraCount > 17)
+            {
+                GlobalStaticData.HIKCamera18.eventRun += HIKCamera18_eventRun;
+            }
+
 
 
 
@@ -309,6 +374,22 @@ namespace WideVisualPositionMultCam3D.Page
             dispYoloRoiD(hWindowControl13, obj[0]);
             dispYoloRoiD(hWindowControl14, obj[1]);
             dispYoloRoiD(hWindowControl15, obj[2]);
+        }
+
+        private void groupEDispYoloRoiEvent(YoloResult[] obj)
+        {
+
+            dispYoloRoiD(hWindowControl17, obj[0]);
+            dispYoloRoiD(hWindowControl18, obj[1]);
+            dispYoloRoiD(hWindowControl19, obj[2]);
+        }
+
+        private void groupFDispYoloRoiEvent(YoloResult[] obj)
+        {
+
+            dispYoloRoiD(hWindowControl21, obj[0]);
+            dispYoloRoiD(hWindowControl22, obj[1]);
+            dispYoloRoiD(hWindowControl23, obj[2]);
         }
 
         private void groupADispImageEvent(HObject image1, HObject image2, HObject image3)
@@ -422,8 +503,60 @@ namespace WideVisualPositionMultCam3D.Page
             }
         }
 
+        private void groupEDispImageEvent(HObject image1, HObject image2, HObject image3)
+        {
+            if (image1 != null)
+            {
 
-      
+
+                hWindowControl17.HobjectToHimage(image1);
+
+
+                hWindowControl20.HobjectToHimage(image1);
+                //hWindowControl15.HalconWindow.SetColor("red");
+            }
+            if (image2 != null)
+            {
+
+
+                hWindowControl18.HobjectToHimage(image2);
+            }
+            if (image3 != null)
+            {
+
+
+                hWindowControl19.HobjectToHimage(image3);
+            }
+        }
+
+        private void groupFDispImageEvent(HObject image1, HObject image2, HObject image3)
+        {
+            if (image1 != null)
+            {
+
+
+                hWindowControl21.HobjectToHimage(image1);
+
+
+                hWindowControl24.HobjectToHimage(image1);
+                //hWindowControl15.HalconWindow.SetColor("red");
+            }
+            if (image2 != null)
+            {
+
+
+                hWindowControl22.HobjectToHimage(image2);
+            }
+            if (image3 != null)
+            {
+
+
+                hWindowControl23.HobjectToHimage(image3);
+            }
+        }
+
+
+
         private void dispYoloRoiA(HWindow_Final hwindow,YoloResult yoloResult)
         {
             // 先判断控件是否有效
@@ -488,6 +621,7 @@ namespace WideVisualPositionMultCam3D.Page
 
             if (yoloResult._rows.Length > 0)
             {
+             
                 for (int i = 0; i < yoloResult._rows.Length; i++)
                 {
                     int local_i = i;
@@ -498,8 +632,9 @@ namespace WideVisualPositionMultCam3D.Page
                     hwindow.DispObj(rectangle3.Clone());
                     hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height - 20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
 
-
                 }
+
+               
             }
 
         }
@@ -522,6 +657,7 @@ namespace WideVisualPositionMultCam3D.Page
                     HOperatorSet.GenRectangle2(out HObject rectangle3, yoloResult._rows[local_i], yoloResult._cols[local_i], 0, yoloResult._height[local_i] / 2, yoloResult._width[local_i] / 2);
                     //hwindow.HalconWindow.SetColor("red");
                     //hwindow.HalconWindow.SetDraw("margin");
+                    
                     hwindow.DispObj(rectangle3.Clone());
                     hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height - 20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
 
@@ -539,24 +675,45 @@ namespace WideVisualPositionMultCam3D.Page
             {
 
                 RefreshCoorSendSelect(GlobalStaticData.SendRobotCoorRefresh);
-                //为发送X最小的
-                if (GlobalStaticData.SendDataState == 0)
-                { 
-                    _pointProcessor.SendCoorValue(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
-                }
-                else if(GlobalStaticData.SendDataState==1)//发送Y坐标最小的
+                if (GlobalStaticData.SendRobotNum <= 2)
                 {
-                    _pointProcessor.SendCoorValueWorldYMinSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
+                    //为发送X最小的
+                    if (GlobalStaticData.SendDataState == 0)
+                    {
+                        _pointProcessor.SendCoorValue(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
+                    }
+                    else if (GlobalStaticData.SendDataState == 1)//发送Y坐标最小的
+                    {
+                        _pointProcessor.SendCoorValueWorldYMinSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
+                    }
+                    else//发送Height最大的
+                    {
+                        _pointProcessor.SendCoorValueHeightMaxSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
+                    }
                 }
-                else//发送Height最大的
+                else
                 {
-                    _pointProcessor.SendCoorValueHeightMaxSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
+                    //为发送X最小的
+                    if (GlobalStaticData.SendDataState == 0)
+                    {
+                        _pointProcessor.SendCoorValue3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2,_superSimpleTcp3);
+                    }
+                    else if (GlobalStaticData.SendDataState == 1)//发送Y坐标最小的
+                    {
+                        _pointProcessor.SendCoorValueWorldYMinSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2, _superSimpleTcp3);
+                    }
+                    else//发送Height最大的
+                    {
+                        _pointProcessor.SendCoorValueHeightMaxSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2, _superSimpleTcp3);
+                    }
                 }
-                    BeginInvoke(new Action(()=>
+                    BeginInvoke(new Action(() =>
                     {
                         lbl_SendData.Text = _pointProcessor.Robot1List.Count().ToString();
-                        lbl_SendData2.Text= _pointProcessor.Robot2List.Count().ToString();
-                     }
+                        lbl_SendData2.Text = _pointProcessor.Robot2List.Count().ToString();
+                        lbl_SendData3.Text = _pointProcessor.Robot3List.Count().ToString();
+
+                    }
                     ));
                 Thread.Sleep(50);
             }
@@ -573,6 +730,7 @@ namespace WideVisualPositionMultCam3D.Page
                     {
                         GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 = BitConverter.ToInt32(obj, 4);
                         GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2= BitConverter.ToInt32(obj, 8);
+                        GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3= BitConverter.ToInt32(obj, 12);
                     }
                 }));
             }
@@ -742,6 +900,7 @@ namespace WideVisualPositionMultCam3D.Page
                 _pointProcessor._minHeightThreshold = GlobalStaticData.UpdataBingdingData.MinHeight;
                 _pointProcessor._maxHeightThreshold=GlobalStaticData.UpdataBingdingData.MaxHeight;
                 _pointProcessor._separatorRegionRobot1 = GlobalStaticData.UpdataBingdingData.Robot1Threshold;
+                _pointProcessor._separatorRegionRobot2 = GlobalStaticData.UpdataBingdingData.Robot2Threshold;
                 _pointProcessor._safetyClearance =GlobalStaticData.UpdataBingdingData.SafetyClearance;
                 GlobalStaticData.CoorSelectRefresh = false;
             }
@@ -799,16 +958,21 @@ namespace WideVisualPositionMultCam3D.Page
                    int encodings= GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding;
 
 
-                    var groupAResult = await Task.Run(() => groupA.Process(encodings));
-                    var groupBResult = await Task.Run(() => groupB.Process(encodings));
-                    var groupCResult = await Task.Run(() => groupC.Process(encodings));
-                    var groupDResult = await Task.Run(() => groupD.Process(encodings));
-                   //  var taskAllResult = await Task.WhenAll(groupAResultTask, groupBResultTask, groupCResultTask, groupDResultTask);
-                    //var taskAllResult = await Task.WhenAll(groupBResultTask);
-                    //var groupAResult = taskAllResult[0];
-                    //var groupBResult = taskAllResult[1];
-                    //var groupCResult = taskAllResult[2];
-                    //var groupDResult = taskAllResult[3];
+                    var groupAResultTask =  Task.Run(() => groupA.Process(encodings));
+                    var groupBResultTask =  Task.Run(() => groupB.Process(encodings));
+                    var groupCResultTask =  Task.Run(() => groupC.Process(encodings));
+                    var groupDResultTask =  Task.Run(() => groupD.Process(encodings));
+                    var groupEResultTask = Task.Run(() => groupE.Process(encodings));
+                    var groupFResultTask = Task.Run(() => groupF.Process(encodings));
+                    var taskAllResult = await Task.WhenAll(groupAResultTask, groupBResultTask, groupCResultTask, groupDResultTask,groupEResultTask,groupFResultTask);
+            
+                    var groupAResult = taskAllResult[0];
+                    var groupBResult = taskAllResult[1];
+                    var groupCResult = taskAllResult[2];
+                    var groupDResult = taskAllResult[3];
+                    var groupEResult = taskAllResult[4];
+                    var groupFResult = taskAllResult[5];
+
                     for (int i = 0; i < groupAResult.Count; i++)
                     {
                         int local_i = i;
@@ -864,6 +1028,34 @@ namespace WideVisualPositionMultCam3D.Page
                         hWindowControl16.DispObj(cross_result.Clone());
                         hWindowControl16.hWindowControl.HalconWindow.DispText($" x:{groupDResult[local_i].WorldX.D.ToString("f2")} y:{groupDResult[local_i].WorldY.D.ToString("f2")} z:{groupDResult[local_i].Height.D.ToString("f2")}", "image", groupDResult[local_i].pixelRow.D, groupDResult[local_i].pixelCol.D, "green", "box", "false");
                     }
+
+                    for (int i = 0; i < groupEResult.Count; i++)
+                    {
+                        int local_i = i;
+
+                        //这里对应的机械手坐标和图像坐标的X\Y是反的
+                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupEResult[local_i].encoding, WorldX = groupEResult[local_i].WorldX, WorldY = groupEResult[local_i].WorldY, WorldXScurren = groupEResult[local_i].WorldXScurren, Height = groupEResult[local_i].Height, Score = groupEResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
+                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupEResult[local_i].pixelRow, groupEResult[local_i].pixelCol, 20, 0);
+                        hWindowControl20.DispObj(cross_result.Clone());
+                        hWindowControl20.hWindowControl.HalconWindow.DispText($" x:{groupEResult[local_i].WorldX.D.ToString("f2")} y:{groupEResult[local_i].WorldY.D.ToString("f2")} z:{groupEResult[local_i].Height.D.ToString("f2")}", "image", groupEResult[local_i].pixelRow.D, groupEResult[local_i].pixelCol.D, "green", "box", "false");
+                    }
+
+                    for (int i = 0; i < groupFResult.Count; i++)
+                    {
+                        int local_i = i;
+
+                        //这里对应的机械手坐标和图像坐标的X\Y是反的
+                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupFResult[local_i].encoding, WorldX = groupFResult[local_i].WorldX, WorldY = groupFResult[local_i].WorldY, WorldXScurren = groupFResult[local_i].WorldXScurren, Height = groupFResult[local_i].Height, Score = groupFResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
+                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupFResult[local_i].pixelRow, groupFResult[local_i].pixelCol, 20, 0);
+                        hWindowControl24.DispObj(cross_result.Clone());
+                        hWindowControl24.hWindowControl.HalconWindow.DispText($" x:{groupFResult[local_i].WorldX.D.ToString("f2")} y:{groupFResult[local_i].WorldY.D.ToString("f2")} z:{groupFResult[local_i].Height.D.ToString("f2")}", "image", groupFResult[local_i].pixelRow.D, groupFResult[local_i].pixelCol.D, "green", "box", "false");
+                    }
+
+
                     watch.Stop();
                     BeginInvoke(new Action(() => { 
                     GlobalStaticData.UpdataBingdingDisplayMsgq.RunTime=Convert.ToInt32(watch.ElapsedMilliseconds);
@@ -896,6 +1088,14 @@ namespace WideVisualPositionMultCam3D.Page
         private readonly object _lock10 = new object();
         private readonly object _lock11 = new object();
         private readonly object _lock12 = new object();
+
+        private readonly object _lock13 = new object();
+        private readonly object _lock14 = new object();
+        private readonly object _lock15 = new object();
+
+        private readonly object _lock16 = new object();
+        private readonly object _lock17 = new object();
+        private readonly object _lock18 = new object();
         private void HIKCamera1_eventRun(HObject Himage)
         {
             if (_isProcessing)
@@ -1068,6 +1268,84 @@ namespace WideVisualPositionMultCam3D.Page
                     WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "12");
             }
             pairingMgr.SignalCamera(11);
+        }
+
+        private void HIKCamera13_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock13)
+            {
+                GlobalStaticData._imageBuffer[12] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "13");
+            }
+            pairingMgr.SignalCamera(12);
+        }
+
+        private void HIKCamera14_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock14)
+            {
+                GlobalStaticData._imageBuffer[13] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "14");
+            }
+            pairingMgr.SignalCamera(13);
+        }
+
+        private void HIKCamera15_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock15)
+            {
+                GlobalStaticData._imageBuffer[14] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "15");
+            }
+            pairingMgr.SignalCamera(14);
+        }
+
+
+        private void HIKCamera16_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock16)
+            {
+                GlobalStaticData._imageBuffer[15] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "16");
+            }
+            pairingMgr.SignalCamera(15);
+        }
+
+        private void HIKCamera17_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock17)
+            {
+                GlobalStaticData._imageBuffer[16] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "17");
+            }
+            pairingMgr.SignalCamera(16);
+        }
+        private void HIKCamera18_eventRun(HObject Himage)
+        {
+            if (_isProcessing)
+                return;
+            lock (_lock18)
+            {
+                GlobalStaticData._imageBuffer[17] = Himage.Clone();
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "18");
+            }
+            pairingMgr.SignalCamera(17);
         }
 
 

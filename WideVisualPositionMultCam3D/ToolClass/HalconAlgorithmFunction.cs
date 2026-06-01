@@ -825,7 +825,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 throw HDevExpDefaultException;
             }
         }
-        public void Find_coordinate_pairs_sss(HTuple hv_Rows0, HTuple hv_Rows1, HTuple hv_Rows2,
+        public void Find_coordinate_pairs1(HTuple hv_Rows0, HTuple hv_Rows1, HTuple hv_Rows2,
          HTuple hv_Cols0, HTuple hv_Cols1, HTuple hv_Cols2, HTuple hv_ProjectDiff, HTuple hv_StereoModelID,
          HTuple hv_CamParamData0, HTuple hv_CamParamData1, HTuple hv_CamParamData2, HTuple hv_InvertToCamMat0,
          HTuple hv_InvertToCamMat1, HTuple hv_InvertToCamMat2, out HTuple hv_ValidTriples,
@@ -2028,7 +2028,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             }
         }
 
-        public void Find_coordinate_pairs(HTuple hv_Rows0, HTuple hv_Rows1, HTuple hv_Rows2,
+        public void Find_coordinate_pairs3(HTuple hv_Rows0, HTuple hv_Rows1, HTuple hv_Rows2,
            HTuple hv_Cols0, HTuple hv_Cols1, HTuple hv_Cols2, HTuple hv_ProjectDiff, HTuple hv_ZTolerance,
            HTuple hv_XYTolerance, HTuple hv_StereoModelID, HTuple hv_PlanePose, HTuple hv_CamParamData0,
            HTuple hv_CamParamData1, HTuple hv_CamParamData2, HTuple hv_InvertToCamMat0,
@@ -2711,6 +2711,833 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 hv_R2p.Dispose();
                 hv_C2p.Dispose();
                 hv_Score.Dispose();
+
+                throw HDevExpDefaultException;
+            }
+        }
+
+        public void Find_coordinate_pairs(HTuple hv_Rows0, HTuple hv_Rows1, HTuple hv_Rows2,
+            HTuple hv_Cols0, HTuple hv_Cols1, HTuple hv_Cols2, HTuple hv_ProjectDiff, HTuple hv_ZTolerance,
+            HTuple hv_XYTolerance, HTuple hv_StereoModelID, HTuple hv_PlanePose, HTuple hv_CamParamData0,
+            HTuple hv_CamParamData1, HTuple hv_CamParamData2, HTuple hv_InvertToCamMat0,
+            HTuple hv_InvertToCamMat1, HTuple hv_InvertToCamMat2, out HTuple hv_ValidTriples,
+            out HTuple hv_allRows, out HTuple hv_allCols, out HTuple hv_allCams, out HTuple hv_allIndices)
+        {
+
+
+
+            // Local iconic variables 
+
+            // Local control variables 
+
+            HTuple hv_Used0 = new HTuple(), hv_Used1 = new HTuple();
+            HTuple hv_Used2 = new HTuple(), hv_Index = new HTuple();
+            HTuple hv_BoardToWorld = new HTuple(), hv_WorldToBoard = new HTuple();
+            HTuple hv_k = new HTuple(), hv_Row2 = new HTuple(), hv_Col2 = new HTuple();
+            HTuple hv_i = new HTuple(), hv_Row0 = new HTuple(), hv_Col0 = new HTuple();
+            HTuple hv_Qx02 = new HTuple(), hv_Qy02 = new HTuple();
+            HTuple hv_Qz02 = new HTuple(), hv_CovWP = new HTuple();
+            HTuple hv_PointIndexOut = new HTuple(), hv_j = new HTuple();
+            HTuple hv_Row1 = new HTuple(), hv_Col1 = new HTuple();
+            HTuple hv_Qx12 = new HTuple(), hv_Qy12 = new HTuple();
+            HTuple hv_Qz12 = new HTuple(), hv_Qx02_b = new HTuple();
+            HTuple hv_Qy02_b = new HTuple(), hv_Qz02_b = new HTuple();
+            HTuple hv_Qx12_b = new HTuple(), hv_Qy12_b = new HTuple();
+            HTuple hv_Qz12_b = new HTuple(), hv_X0 = new HTuple();
+            HTuple hv_Y0 = new HTuple(), hv_Z0 = new HTuple(), hv_X1 = new HTuple();
+            HTuple hv_Y1 = new HTuple(), hv_Z1 = new HTuple(), hv_X2 = new HTuple();
+            HTuple hv_Y2 = new HTuple(), hv_Z2 = new HTuple(), hv_R0p = new HTuple();
+            HTuple hv_C0p = new HTuple(), hv_R1p = new HTuple(), hv_C1p = new HTuple();
+            HTuple hv_R2p = new HTuple(), hv_C2p = new HTuple(), hv_Err0 = new HTuple();
+            HTuple hv_Err1 = new HTuple(), hv_Err2 = new HTuple();
+            HTuple hv_Score = new HTuple(), hv_CandidateScores = new HTuple();
+            HTuple hv_CandidateI = new HTuple(), hv_CandidateJ = new HTuple();
+            HTuple hv_CandidateK = new HTuple(), hv_CandidateQx = new HTuple();
+            HTuple hv_CandidateQy = new HTuple(), hv_CandidateQz = new HTuple();
+            HTuple hv_Qx01 = new HTuple(), hv_Qy01 = new HTuple();
+            HTuple hv_Qz01 = new HTuple(), hv_Qx01_b = new HTuple();
+            HTuple hv_Qy01_b = new HTuple(), hv_Qz01_b = new HTuple();
+            HTuple hv_Zmean = new HTuple(), hv_PlaneDist = new HTuple();
+            HTuple hv_Dist01_02 = new HTuple(), hv_Dist01_12 = new HTuple();
+            HTuple hv_Dist02_12 = new HTuple(), hv_AvgQx = new HTuple();
+            HTuple hv_AvgQy = new HTuple(), hv_AvgQz = new HTuple();
+            HTuple hv_TotalErr = new HTuple(), hv_SortedIdx = new HTuple();
+            HTuple hv_s = new HTuple(), hv_idx = new HTuple();
+            // Initialize local and output iconic variables 
+            hv_ValidTriples = new HTuple();
+            hv_allRows = new HTuple();
+            hv_allCols = new HTuple();
+            hv_allCams = new HTuple();
+            hv_allIndices = new HTuple();
+            try
+            {
+
+                //***********************************************已经在用的版本***********************************************************
+                //初始化使用标志
+                //---------- 参数初始化 ----------
+                //Used0 := gen_tuple_const(|Rows0|, false)
+                //Used1 := gen_tuple_const(|Rows1|, false)
+                //Used2 := gen_tuple_const(|Rows2|, false)
+
+                //Index := 0
+                //ValidTriples := []
+                //allRows := []
+                //allCols := []
+                //allCams := []
+                //allIndices := []
+
+                //---------- 世界坐标系变换 ----------
+                //pose_to_hom_mat3d (PlanePose, BoardToWorld)
+                //hom_mat3d_invert (BoardToWorld, WorldToBoard)
+
+                //---------- 主循环：以相机2为基准 ----------
+                //for k := 0 to |Rows2|-1 by 1
+                //if (Used2[k])
+                //continue
+                //endif
+
+                //Row2 := Rows2[k]
+                //Col2 := Cols2[k]
+
+                //<<< 改动点 1：最优解缓存 >>>
+                //BestScore := 1e9
+                //BestI := -1
+                //BestJ := -1
+                //BestQx := 0
+                //BestQy := 0
+                //BestQz := 0
+
+                //---------- 遍历 cam0 ----------
+                //for i := 0 to |Rows0|-1 by 1
+                //if (Used0[i])
+                //continue
+                //endif
+
+                //Row0 := Rows0[i]
+                //Col0 := Cols0[i]
+
+                //reconstruct_points_stereo (StereoModelID, [Row0,Row2], [Col0,Col2], [], [0,2], [0,0], Qx02, Qy02, Qz02, CovWP, PointIndexOut)
+
+                //---------- 遍历 cam1 ----------
+                //for j := 0 to |Rows1|-1 by 1
+                //if (Used1[j])
+                //continue
+                //endif
+
+                //Row1 := Rows1[j]
+                //Col1 := Cols1[j]
+
+                //reconstruct_points_stereo (StereoModelID, [Row1,Row2], [Col1,Col2], [], [1,2], [0,0], Qx12, Qy12, Qz12, CovWP, PointIndexOut)
+
+                //---------- 转到标定板坐标 ----------
+                //affine_trans_point_3d (WorldToBoard, Qx02, Qy02, Qz02, Qx02_b, Qy02_b, Qz02_b)
+                //affine_trans_point_3d (WorldToBoard, Qx12, Qy12, Qz12, Qx12_b, Qy12_b, Qz12_b)
+
+                //ZDiff := abs(Qz02_b - Qz12_b)
+                //if (ZDiff > ZTolerance)
+                //continue
+                //endif
+
+                //XYDiff := sqrt((Qx02_b-Qx12_b)*(Qx02_b-Qx12_b) + (Qy02_b-Qy12_b)*(Qy02_b-Qy12_b))
+                //if (XYDiff > XYTolerance)
+                //continue
+                //endif
+
+                //=====================================================
+                //<<< 改动点 2：只用 Q02，一个 3D 点投影三相机 >>>
+                //=====================================================
+                //affine_trans_point_3d (InvertToCamMat0, Qx02, Qy02, Qz02, X0, Y0, Z0)
+                //affine_trans_point_3d (InvertToCamMat1, Qx02, Qy02, Qz02, X1, Y1, Z1)
+                //affine_trans_point_3d (InvertToCamMat2, Qx02, Qy02, Qz02, X2, Y2, Z2)
+
+                //project_3d_point (X0, Y0, Z0, CamParamData0, R0p, C0p)
+                //project_3d_point (X1, Y1, Z1, CamParamData1, R1p, C1p)
+                //project_3d_point (X2, Y2, Z2, CamParamData2, R2p, C2p)
+
+                //Err0 := sqrt((R0p-Row0)*(R0p-Row0) + (C0p-Col0)*(C0p-Col0))
+                //Err1 := sqrt((R1p-Row1)*(R1p-Row1) + (C1p-Col1)*(C1p-Col1))
+                //Err2 := sqrt((R2p-Row2)*(R2p-Row2) + (C2p-Col2)*(C2p-Col2))
+
+                //if (Err0+Err1+Err2 > ProjectDiff)
+                //continue
+                //endif
+
+                //<<< 改动点 3：评分，而不是 break >>>
+                //Score := Err0 + Err1 + Err2                        + 2.0*ZDiff                        + 1.0*XYDiff
+
+                //if (Score < BestScore)
+                //BestScore := Score
+                //BestI := i
+                //BestJ := j
+                //BestQx := Qx02
+                //BestQy := Qy02
+                //BestQz := Qz02
+                //endif
+
+                //endfor
+                //endfor
+
+                //---------- 统一提交最优解 ----------
+                //if (BestI >= 0 and BestJ >= 0)
+                //Used0[BestI] := true
+                //Used1[BestJ] := true
+                //Used2[k] := true
+
+                //ValidTriples := [ValidTriples, [Rows0[BestI], Cols0[BestI],  Rows1[BestJ], Cols1[BestJ], Row2, Col2]]
+
+                //allRows := [allRows, Rows0[BestI], Rows1[BestJ], Row2]
+                //allCols := [allCols, Cols0[BestI], Cols1[BestJ], Col2]
+                //allCams := [allCams, 0, 1, 2]
+                //allIndices := [allIndices, Index, Index, Index]
+
+                //Index := Index + 1
+                //endif
+
+                //endfor
+                //****************************************************************************************************************************************
+                //=========================================================
+                //初始化
+                //=========================================================
+                hv_CandidateScores.Dispose();
+                hv_CandidateScores = new HTuple();
+                hv_CandidateI.Dispose();
+                hv_CandidateI = new HTuple();
+                hv_CandidateJ.Dispose();
+                hv_CandidateJ = new HTuple();
+                hv_CandidateK.Dispose();
+                hv_CandidateK = new HTuple();
+                hv_CandidateQx.Dispose();
+                hv_CandidateQx = new HTuple();
+                hv_CandidateQy.Dispose();
+                hv_CandidateQy = new HTuple();
+                hv_CandidateQz.Dispose();
+                hv_CandidateQz = new HTuple();
+
+                //=========================================================
+                //世界坐标系变换
+                //=========================================================
+                hv_BoardToWorld.Dispose();
+                HOperatorSet.PoseToHomMat3d(hv_PlanePose, out hv_BoardToWorld);
+                hv_WorldToBoard.Dispose();
+                HOperatorSet.HomMat3dInvert(hv_BoardToWorld, out hv_WorldToBoard);
+
+                //=========================================================
+                //遍历所有组合（不再立即Used）
+                //=========================================================
+                for (hv_k = 0; (int)hv_k <= (int)((new HTuple(hv_Rows2.TupleLength())) - 1); hv_k = (int)hv_k + 1)
+                {
+
+                    hv_Row2.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_Row2 = hv_Rows2.TupleSelect(
+                            hv_k);
+                    }
+                    hv_Col2.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_Col2 = hv_Cols2.TupleSelect(
+                            hv_k);
+                    }
+
+                    for (hv_i = 0; (int)hv_i <= (int)((new HTuple(hv_Rows0.TupleLength())) - 1); hv_i = (int)hv_i + 1)
+                    {
+
+                        hv_Row0.Dispose();
+                        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                        {
+                            hv_Row0 = hv_Rows0.TupleSelect(
+                                hv_i);
+                        }
+                        hv_Col0.Dispose();
+                        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                        {
+                            hv_Col0 = hv_Cols0.TupleSelect(
+                                hv_i);
+                        }
+
+                        //-------------------------------------------------
+                        //Q02
+                        //-------------------------------------------------
+                        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                        {
+                            hv_Qx02.Dispose(); hv_Qy02.Dispose(); hv_Qz02.Dispose(); hv_CovWP.Dispose(); hv_PointIndexOut.Dispose();
+                            HOperatorSet.ReconstructPointsStereo(hv_StereoModelID, hv_Row0.TupleConcat(
+                                hv_Row2), hv_Col0.TupleConcat(hv_Col2), new HTuple(), (new HTuple(0)).TupleConcat(
+                                2), (new HTuple(0)).TupleConcat(0), out hv_Qx02, out hv_Qy02, out hv_Qz02,
+                                out hv_CovWP, out hv_PointIndexOut);
+                        }
+
+                        for (hv_j = 0; (int)hv_j <= (int)((new HTuple(hv_Rows1.TupleLength())) - 1); hv_j = (int)hv_j + 1)
+                        {
+
+                            hv_Row1.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Row1 = hv_Rows1.TupleSelect(
+                                    hv_j);
+                            }
+                            hv_Col1.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Col1 = hv_Cols1.TupleSelect(
+                                    hv_j);
+                            }
+
+                            //-------------------------------------------------
+                            //Q12
+                            //-------------------------------------------------
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Qx12.Dispose(); hv_Qy12.Dispose(); hv_Qz12.Dispose(); hv_CovWP.Dispose(); hv_PointIndexOut.Dispose();
+                                HOperatorSet.ReconstructPointsStereo(hv_StereoModelID, hv_Row1.TupleConcat(
+                                    hv_Row2), hv_Col1.TupleConcat(hv_Col2), new HTuple(), (new HTuple(1)).TupleConcat(
+                                    2), (new HTuple(0)).TupleConcat(0), out hv_Qx12, out hv_Qy12, out hv_Qz12,
+                                    out hv_CovWP, out hv_PointIndexOut);
+                            }
+
+                            //-------------------------------------------------
+                            //Q01
+                            //新增：第三组重建
+                            //-------------------------------------------------
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Qx01.Dispose(); hv_Qy01.Dispose(); hv_Qz01.Dispose(); hv_CovWP.Dispose(); hv_PointIndexOut.Dispose();
+                                HOperatorSet.ReconstructPointsStereo(hv_StereoModelID, hv_Row0.TupleConcat(
+                                    hv_Row1), hv_Col0.TupleConcat(hv_Col1), new HTuple(), (new HTuple(0)).TupleConcat(
+                                    1), (new HTuple(0)).TupleConcat(0), out hv_Qx01, out hv_Qy01, out hv_Qz01,
+                                    out hv_CovWP, out hv_PointIndexOut);
+                            }
+
+                            //=====================================================
+                            //转到标定板坐标系
+                            //=====================================================
+                            hv_Qx02_b.Dispose(); hv_Qy02_b.Dispose(); hv_Qz02_b.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_WorldToBoard, hv_Qx02, hv_Qy02, hv_Qz02,
+                                out hv_Qx02_b, out hv_Qy02_b, out hv_Qz02_b);
+
+                            hv_Qx12_b.Dispose(); hv_Qy12_b.Dispose(); hv_Qz12_b.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_WorldToBoard, hv_Qx12, hv_Qy12, hv_Qz12,
+                                out hv_Qx12_b, out hv_Qy12_b, out hv_Qz12_b);
+
+                            hv_Qx01_b.Dispose(); hv_Qy01_b.Dispose(); hv_Qz01_b.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_WorldToBoard, hv_Qx01, hv_Qy01, hv_Qz01,
+                                out hv_Qx01_b, out hv_Qy01_b, out hv_Qz01_b);
+
+                            //=====================================================
+                            //平面约束（新增）
+                            //=====================================================
+                            hv_Zmean.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Zmean = ((hv_Qz02_b + hv_Qz12_b) + hv_Qz01_b) / 3.0;
+                            }
+                            hv_PlaneDist.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_PlaneDist = (((((hv_Qz02_b - hv_Zmean)).TupleAbs()
+                                    ) + (((hv_Qz12_b - hv_Zmean)).TupleAbs())) + (((hv_Qz01_b - hv_Zmean)).TupleAbs()
+                                    )) / 3.0;
+                            }
+                            if ((int)(new HTuple(hv_PlaneDist.TupleGreater(hv_ZTolerance))) != 0)
+                            {
+                                continue;
+                            }
+                            //PlaneDist := (abs(Qz02_b) + abs(Qz12_b) + abs(Qz01_b)) / 3.0
+                            //PlaneTolerance
+
+                            //if (PlaneDist > ZTolerance)
+                            //continue
+                            //endif
+
+                            //=====================================================
+                            //三组一致性验证（新增）
+                            //=====================================================
+                            hv_Dist01_02.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Dist01_02 = (((((hv_Qx01_b - hv_Qx02_b) * (hv_Qx01_b - hv_Qx02_b)) + ((hv_Qy01_b - hv_Qy02_b) * (hv_Qy01_b - hv_Qy02_b))) + ((hv_Qz01_b - hv_Qz02_b) * (hv_Qz01_b - hv_Qz02_b)))).TupleSqrt()
+                                    ;
+                            }
+
+                            hv_Dist01_12.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Dist01_12 = (((((hv_Qx01_b - hv_Qx12_b) * (hv_Qx01_b - hv_Qx12_b)) + ((hv_Qy01_b - hv_Qy12_b) * (hv_Qy01_b - hv_Qy12_b))) + ((hv_Qz01_b - hv_Qz12_b) * (hv_Qz01_b - hv_Qz12_b)))).TupleSqrt()
+                                    ;
+                            }
+
+                            hv_Dist02_12.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Dist02_12 = (((((hv_Qx02_b - hv_Qx12_b) * (hv_Qx02_b - hv_Qx12_b)) + ((hv_Qy02_b - hv_Qy12_b) * (hv_Qy02_b - hv_Qy12_b))) + ((hv_Qz02_b - hv_Qz12_b) * (hv_Qz02_b - hv_Qz12_b)))).TupleSqrt()
+                                    ;
+                            }
+
+                            if ((int)((new HTuple((new HTuple(hv_Dist01_02.TupleGreater(hv_XYTolerance))).TupleOr(
+                                new HTuple(hv_Dist01_12.TupleGreater(hv_XYTolerance))))).TupleOr(
+                                new HTuple(hv_Dist02_12.TupleGreater(hv_XYTolerance)))) != 0)
+                            {
+                                continue;
+                            }
+
+                            //=====================================================
+                            //使用平均点（更稳定）
+                            //=====================================================
+                            hv_AvgQx.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_AvgQx = ((hv_Qx01 + hv_Qx02) + hv_Qx12) / 3.0;
+                            }
+                            hv_AvgQy.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_AvgQy = ((hv_Qy01 + hv_Qy02) + hv_Qy12) / 3.0;
+                            }
+                            hv_AvgQz.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_AvgQz = ((hv_Qz01 + hv_Qz02) + hv_Qz12) / 3.0;
+                            }
+
+                            //=====================================================
+                            //三相机重投影验证
+                            //=====================================================
+                            hv_X0.Dispose(); hv_Y0.Dispose(); hv_Z0.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_InvertToCamMat0, hv_AvgQx, hv_AvgQy,
+                                hv_AvgQz, out hv_X0, out hv_Y0, out hv_Z0);
+                            hv_X1.Dispose(); hv_Y1.Dispose(); hv_Z1.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_InvertToCamMat1, hv_AvgQx, hv_AvgQy,
+                                hv_AvgQz, out hv_X1, out hv_Y1, out hv_Z1);
+                            hv_X2.Dispose(); hv_Y2.Dispose(); hv_Z2.Dispose();
+                            HOperatorSet.AffineTransPoint3d(hv_InvertToCamMat2, hv_AvgQx, hv_AvgQy,
+                                hv_AvgQz, out hv_X2, out hv_Y2, out hv_Z2);
+
+                            hv_R0p.Dispose(); hv_C0p.Dispose();
+                            HOperatorSet.Project3dPoint(hv_X0, hv_Y0, hv_Z0, hv_CamParamData0, out hv_R0p,
+                                out hv_C0p);
+                            hv_R1p.Dispose(); hv_C1p.Dispose();
+                            HOperatorSet.Project3dPoint(hv_X1, hv_Y1, hv_Z1, hv_CamParamData1, out hv_R1p,
+                                out hv_C1p);
+                            hv_R2p.Dispose(); hv_C2p.Dispose();
+                            HOperatorSet.Project3dPoint(hv_X2, hv_Y2, hv_Z2, hv_CamParamData2, out hv_R2p,
+                                out hv_C2p);
+
+                            hv_Err0.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Err0 = ((((hv_R0p - hv_Row0) * (hv_R0p - hv_Row0)) + ((hv_C0p - hv_Col0) * (hv_C0p - hv_Col0)))).TupleSqrt()
+                                    ;
+                            }
+
+                            hv_Err1.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Err1 = ((((hv_R1p - hv_Row1) * (hv_R1p - hv_Row1)) + ((hv_C1p - hv_Col1) * (hv_C1p - hv_Col1)))).TupleSqrt()
+                                    ;
+                            }
+
+                            hv_Err2.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Err2 = ((((hv_R2p - hv_Row2) * (hv_R2p - hv_Row2)) + ((hv_C2p - hv_Col2) * (hv_C2p - hv_Col2)))).TupleSqrt()
+                                    ;
+                            }
+
+                            hv_TotalErr.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_TotalErr = (hv_Err0 + hv_Err1) + hv_Err2;
+                            }
+
+                            if ((int)(new HTuple(hv_TotalErr.TupleGreater(hv_ProjectDiff))) != 0)
+                            {
+                                continue;
+                            }
+
+                            //=====================================================
+                            //最终评分
+                            //=====================================================
+                            hv_Score.Dispose();
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                hv_Score = ((((5.0 * hv_TotalErr) + (3.0 * hv_PlaneDist)) + hv_Dist01_02) + hv_Dist01_12) + hv_Dist02_12;
+                            }
+
+                            //=====================================================
+                            //保存候选（不立即Used）
+                            //=====================================================
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateScores = hv_CandidateScores.TupleConcat(
+                                        hv_Score);
+                                    hv_CandidateScores.Dispose();
+                                    hv_CandidateScores = ExpTmpLocalVar_CandidateScores;
+                                }
+                            }
+
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateI = hv_CandidateI.TupleConcat(
+                                        hv_i);
+                                    hv_CandidateI.Dispose();
+                                    hv_CandidateI = ExpTmpLocalVar_CandidateI;
+                                }
+                            }
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateJ = hv_CandidateJ.TupleConcat(
+                                        hv_j);
+                                    hv_CandidateJ.Dispose();
+                                    hv_CandidateJ = ExpTmpLocalVar_CandidateJ;
+                                }
+                            }
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateK = hv_CandidateK.TupleConcat(
+                                        hv_k);
+                                    hv_CandidateK.Dispose();
+                                    hv_CandidateK = ExpTmpLocalVar_CandidateK;
+                                }
+                            }
+
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateQx = hv_CandidateQx.TupleConcat(
+                                        hv_AvgQx);
+                                    hv_CandidateQx.Dispose();
+                                    hv_CandidateQx = ExpTmpLocalVar_CandidateQx;
+                                }
+                            }
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateQy = hv_CandidateQy.TupleConcat(
+                                        hv_AvgQy);
+                                    hv_CandidateQy.Dispose();
+                                    hv_CandidateQy = ExpTmpLocalVar_CandidateQy;
+                                }
+                            }
+                            using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                            {
+                                {
+                                    HTuple
+                                      ExpTmpLocalVar_CandidateQz = hv_CandidateQz.TupleConcat(
+                                        hv_AvgQz);
+                                    hv_CandidateQz.Dispose();
+                                    hv_CandidateQz = ExpTmpLocalVar_CandidateQz;
+                                }
+                            }
+
+                        }
+                    }
+                }
+
+                //=========================================================
+                //全局排序（核心优化）
+                //=========================================================
+                hv_SortedIdx.Dispose();
+                HOperatorSet.TupleSortIndex(hv_CandidateScores, out hv_SortedIdx);
+
+                hv_Used0.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_Used0 = HTuple.TupleGenConst(
+                        new HTuple(hv_Rows0.TupleLength()), 0);
+                }
+                hv_Used1.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_Used1 = HTuple.TupleGenConst(
+                        new HTuple(hv_Rows1.TupleLength()), 0);
+                }
+                hv_Used2.Dispose();
+                using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                {
+                    hv_Used2 = HTuple.TupleGenConst(
+                        new HTuple(hv_Rows2.TupleLength()), 0);
+                }
+
+                hv_allRows.Dispose();
+                hv_allRows = new HTuple();
+                hv_allCols.Dispose();
+                hv_allCols = new HTuple();
+                hv_allCams.Dispose();
+                hv_allCams = new HTuple();
+                hv_allIndices.Dispose();
+                hv_allIndices = new HTuple();
+
+                hv_Index.Dispose();
+                hv_Index = 0;
+
+                for (hv_s = 0; (int)hv_s <= (int)((new HTuple(hv_SortedIdx.TupleLength())) - 1); hv_s = (int)hv_s + 1)
+                {
+
+                    hv_idx.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_idx = hv_SortedIdx.TupleSelect(
+                            hv_s);
+                    }
+
+                    hv_i.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_i = hv_CandidateI.TupleSelect(
+                            hv_idx);
+                    }
+                    hv_j.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_j = hv_CandidateJ.TupleSelect(
+                            hv_idx);
+                    }
+                    hv_k.Dispose();
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        hv_k = hv_CandidateK.TupleSelect(
+                            hv_idx);
+                    }
+
+                    if ((int)((new HTuple(((hv_Used0.TupleSelect(hv_i))).TupleOr(hv_Used1.TupleSelect(
+                        hv_j)))).TupleOr(hv_Used2.TupleSelect(hv_k))) != 0)
+                    {
+                        continue;
+                    }
+
+                    if (hv_Used0 == null)
+                        hv_Used0 = new HTuple();
+                    hv_Used0[hv_i] = 1;
+                    if (hv_Used1 == null)
+                        hv_Used1 = new HTuple();
+                    hv_Used1[hv_j] = 1;
+                    if (hv_Used2 == null)
+                        hv_Used2 = new HTuple();
+                    hv_Used2[hv_k] = 1;
+
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_allRows = ((((hv_allRows.TupleConcat(
+                                hv_Rows0.TupleSelect(hv_i)))).TupleConcat(hv_Rows1.TupleSelect(hv_j)))).TupleConcat(
+                                hv_Rows2.TupleSelect(hv_k));
+                            hv_allRows.Dispose();
+                            hv_allRows = ExpTmpLocalVar_allRows;
+                        }
+                    }
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_allCols = ((((hv_allCols.TupleConcat(
+                                hv_Cols0.TupleSelect(hv_i)))).TupleConcat(hv_Cols1.TupleSelect(hv_j)))).TupleConcat(
+                                hv_Cols2.TupleSelect(hv_k));
+                            hv_allCols.Dispose();
+                            hv_allCols = ExpTmpLocalVar_allCols;
+                        }
+                    }
+
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_allCams = hv_allCams.TupleConcat(
+                                ((new HTuple(0)).TupleConcat(1)).TupleConcat(2));
+                            hv_allCams.Dispose();
+                            hv_allCams = ExpTmpLocalVar_allCams;
+                        }
+                    }
+
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_allIndices = ((((hv_allIndices.TupleConcat(
+                                hv_Index))).TupleConcat(hv_Index))).TupleConcat(hv_Index);
+                            hv_allIndices.Dispose();
+                            hv_allIndices = ExpTmpLocalVar_allIndices;
+                        }
+                    }
+
+                    using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                    {
+                        {
+                            HTuple
+                              ExpTmpLocalVar_Index = hv_Index + 1;
+                            hv_Index.Dispose();
+                            hv_Index = ExpTmpLocalVar_Index;
+                        }
+                    }
+
+                }
+
+                hv_Used0.Dispose();
+                hv_Used1.Dispose();
+                hv_Used2.Dispose();
+                hv_Index.Dispose();
+                hv_BoardToWorld.Dispose();
+                hv_WorldToBoard.Dispose();
+                hv_k.Dispose();
+                hv_Row2.Dispose();
+                hv_Col2.Dispose();
+                hv_i.Dispose();
+                hv_Row0.Dispose();
+                hv_Col0.Dispose();
+                hv_Qx02.Dispose();
+                hv_Qy02.Dispose();
+                hv_Qz02.Dispose();
+                hv_CovWP.Dispose();
+                hv_PointIndexOut.Dispose();
+                hv_j.Dispose();
+                hv_Row1.Dispose();
+                hv_Col1.Dispose();
+                hv_Qx12.Dispose();
+                hv_Qy12.Dispose();
+                hv_Qz12.Dispose();
+                hv_Qx02_b.Dispose();
+                hv_Qy02_b.Dispose();
+                hv_Qz02_b.Dispose();
+                hv_Qx12_b.Dispose();
+                hv_Qy12_b.Dispose();
+                hv_Qz12_b.Dispose();
+                hv_X0.Dispose();
+                hv_Y0.Dispose();
+                hv_Z0.Dispose();
+                hv_X1.Dispose();
+                hv_Y1.Dispose();
+                hv_Z1.Dispose();
+                hv_X2.Dispose();
+                hv_Y2.Dispose();
+                hv_Z2.Dispose();
+                hv_R0p.Dispose();
+                hv_C0p.Dispose();
+                hv_R1p.Dispose();
+                hv_C1p.Dispose();
+                hv_R2p.Dispose();
+                hv_C2p.Dispose();
+                hv_Err0.Dispose();
+                hv_Err1.Dispose();
+                hv_Err2.Dispose();
+                hv_Score.Dispose();
+                hv_CandidateScores.Dispose();
+                hv_CandidateI.Dispose();
+                hv_CandidateJ.Dispose();
+                hv_CandidateK.Dispose();
+                hv_CandidateQx.Dispose();
+                hv_CandidateQy.Dispose();
+                hv_CandidateQz.Dispose();
+                hv_Qx01.Dispose();
+                hv_Qy01.Dispose();
+                hv_Qz01.Dispose();
+                hv_Qx01_b.Dispose();
+                hv_Qy01_b.Dispose();
+                hv_Qz01_b.Dispose();
+                hv_Zmean.Dispose();
+                hv_PlaneDist.Dispose();
+                hv_Dist01_02.Dispose();
+                hv_Dist01_12.Dispose();
+                hv_Dist02_12.Dispose();
+                hv_AvgQx.Dispose();
+                hv_AvgQy.Dispose();
+                hv_AvgQz.Dispose();
+                hv_TotalErr.Dispose();
+                hv_SortedIdx.Dispose();
+                hv_s.Dispose();
+                hv_idx.Dispose();
+
+                return;
+
+
+
+            }
+            catch (HalconException HDevExpDefaultException)
+            {
+
+                hv_Used0.Dispose();
+                hv_Used1.Dispose();
+                hv_Used2.Dispose();
+                hv_Index.Dispose();
+                hv_BoardToWorld.Dispose();
+                hv_WorldToBoard.Dispose();
+                hv_k.Dispose();
+                hv_Row2.Dispose();
+                hv_Col2.Dispose();
+                hv_i.Dispose();
+                hv_Row0.Dispose();
+                hv_Col0.Dispose();
+                hv_Qx02.Dispose();
+                hv_Qy02.Dispose();
+                hv_Qz02.Dispose();
+                hv_CovWP.Dispose();
+                hv_PointIndexOut.Dispose();
+                hv_j.Dispose();
+                hv_Row1.Dispose();
+                hv_Col1.Dispose();
+                hv_Qx12.Dispose();
+                hv_Qy12.Dispose();
+                hv_Qz12.Dispose();
+                hv_Qx02_b.Dispose();
+                hv_Qy02_b.Dispose();
+                hv_Qz02_b.Dispose();
+                hv_Qx12_b.Dispose();
+                hv_Qy12_b.Dispose();
+                hv_Qz12_b.Dispose();
+                hv_X0.Dispose();
+                hv_Y0.Dispose();
+                hv_Z0.Dispose();
+                hv_X1.Dispose();
+                hv_Y1.Dispose();
+                hv_Z1.Dispose();
+                hv_X2.Dispose();
+                hv_Y2.Dispose();
+                hv_Z2.Dispose();
+                hv_R0p.Dispose();
+                hv_C0p.Dispose();
+                hv_R1p.Dispose();
+                hv_C1p.Dispose();
+                hv_R2p.Dispose();
+                hv_C2p.Dispose();
+                hv_Err0.Dispose();
+                hv_Err1.Dispose();
+                hv_Err2.Dispose();
+                hv_Score.Dispose();
+                hv_CandidateScores.Dispose();
+                hv_CandidateI.Dispose();
+                hv_CandidateJ.Dispose();
+                hv_CandidateK.Dispose();
+                hv_CandidateQx.Dispose();
+                hv_CandidateQy.Dispose();
+                hv_CandidateQz.Dispose();
+                hv_Qx01.Dispose();
+                hv_Qy01.Dispose();
+                hv_Qz01.Dispose();
+                hv_Qx01_b.Dispose();
+                hv_Qy01_b.Dispose();
+                hv_Qz01_b.Dispose();
+                hv_Zmean.Dispose();
+                hv_PlaneDist.Dispose();
+                hv_Dist01_02.Dispose();
+                hv_Dist01_12.Dispose();
+                hv_Dist02_12.Dispose();
+                hv_AvgQx.Dispose();
+                hv_AvgQy.Dispose();
+                hv_AvgQz.Dispose();
+                hv_TotalErr.Dispose();
+                hv_SortedIdx.Dispose();
+                hv_s.Dispose();
+                hv_idx.Dispose();
 
                 throw HDevExpDefaultException;
             }

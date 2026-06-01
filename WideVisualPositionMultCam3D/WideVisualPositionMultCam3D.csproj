@@ -86,8 +86,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\x64\Debug\HWindow_Tool.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ML.OnnxRuntime, Version=1.23.2.0, Culture=neutral, PublicKeyToken=f27f157f0a5b7bb6, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.ML.OnnxRuntime.Managed.1.23.2\lib\netstandard2.0\Microsoft.ML.OnnxRuntime.dll</HintPath>
+    <Reference Include="Microsoft.ML.OnnxRuntime, Version=1.24.4.0, Culture=neutral, PublicKeyToken=f27f157f0a5b7bb6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ML.OnnxRuntime.Managed.1.24.4\lib\netstandard2.0\Microsoft.ML.OnnxRuntime.dll</HintPath>
     </Reference>
     <Reference Include="MvCameraControl.Net, Version=3.2.0.2, Culture=neutral, PublicKeyToken=52fddfb3f94be800, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -180,6 +180,18 @@
     <Compile Include="Page\Calibration3.Designer.cs">
       <DependentUpon>Calibration3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Page\Calibration5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Page\Calibration5.Designer.cs">
+      <DependentUpon>Calibration5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Page\Calibration6.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Page\Calibration6.Designer.cs">
+      <DependentUpon>Calibration6.cs</DependentUpon>
+    </Compile>
     <Compile Include="Page\Calibration4.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -203,6 +215,18 @@
     </Compile>
     <Compile Include="Page\CalibrationAcq3.Designer.cs">
       <DependentUpon>CalibrationAcq3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Page\CalibrationAcq6.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Page\CalibrationAcq6.Designer.cs">
+      <DependentUpon>CalibrationAcq6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Page\CalibrationAcq5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Page\CalibrationAcq5.Designer.cs">
+      <DependentUpon>CalibrationAcq5.cs</DependentUpon>
     </Compile>
     <Compile Include="Page\CalibrationAcq4.cs">
       <SubType>Form</SubType>
@@ -258,6 +282,12 @@
     <Compile Include="Page\RuningParamSet.Designer.cs">
       <DependentUpon>RuningParamSet.cs</DependentUpon>
     </Compile>
+    <Compile Include="Page\RuningParamSet3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Page\RuningParamSet3.Designer.cs">
+      <DependentUpon>RuningParamSet3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Page\RuningParamSet2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +328,12 @@
     <EmbeddedResource Include="Page\Calibration3.resx">
       <DependentUpon>Calibration3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Page\Calibration5.resx">
+      <DependentUpon>Calibration5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Page\Calibration6.resx">
+      <DependentUpon>Calibration6.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Page\Calibration4.resx">
       <DependentUpon>Calibration4.cs</DependentUpon>
     </EmbeddedResource>
@@ -309,6 +345,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Page\CalibrationAcq3.resx">
       <DependentUpon>CalibrationAcq3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Page\CalibrationAcq6.resx">
+      <DependentUpon>CalibrationAcq6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Page\CalibrationAcq5.resx">
+      <DependentUpon>CalibrationAcq5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Page\CalibrationAcq4.resx">
       <DependentUpon>CalibrationAcq4.cs</DependentUpon>
@@ -336,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Page\RuningParamSet.resx">
       <DependentUpon>RuningParamSet.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Page\RuningParamSet3.resx">
+      <DependentUpon>RuningParamSet3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Page\RuningParamSet2.resx">
       <DependentUpon>RuningParamSet2.cs</DependentUpon>
@@ -385,7 +430,7 @@
       <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\netstandard\OpenCvSharp4.runtime.win.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\OpenCvSharp4.runtime.win.4.11.0.20250507\build\netstandard\OpenCvSharp4.runtime.win.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.23.2\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.OnnxRuntime.Managed.1.23.2\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.24.4\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.ML.OnnxRuntime.Managed.1.24.4\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets'))" />
   </Target>
-  <Import Project="..\packages\Microsoft.ML.OnnxRuntime.Managed.1.23.2\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets" Condition="Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.23.2\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" />
+  <Import Project="..\packages\Microsoft.ML.OnnxRuntime.Managed.1.24.4\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets" Condition="Exists('..\packages\Microsoft.ML.OnnxRuntime.Managed.1.24.4\build\netstandard2.0\Microsoft.ML.OnnxRuntime.Managed.targets')" />
 </Project>

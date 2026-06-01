@@ -19,6 +19,10 @@ namespace WideVisualPositionMultCam3D
         public static CameraGroupConfig CameraGroupConfig2 { get; set; }
         public static CameraGroupConfig CameraGroupConfig3 { get; set; }
         public static CameraGroupConfig CameraGroupConfig4 { get; set; }
+
+        public static CameraGroupConfig CameraGroupConfig5 { get; set; }
+
+        public static CameraGroupConfig CameraGroupConfig6 { get; set; }
         public static  CameraGroupConfig GetGroupConfig(int grop)
         {
             switch(grop)
@@ -27,6 +31,8 @@ namespace WideVisualPositionMultCam3D
                     case 1: return CameraGroupConfig2;
                     case 2: return CameraGroupConfig3;
                     case 3: return CameraGroupConfig4;
+                    case 4: return CameraGroupConfig5;
+                    case 5: return CameraGroupConfig6;
                     default:return CameraGroupConfig1;
             }
         }
@@ -55,6 +61,15 @@ namespace WideVisualPositionMultCam3D
         public static HIKCameraSDK HIKCamera11 { get; set; }
         public static HIKCameraSDK HIKCamera12{ get; set; }
 
+
+        public static HIKCameraSDK HIKCamera13 { get; set; }
+        public static HIKCameraSDK HIKCamera14 { get; set; }
+        public static HIKCameraSDK HIKCamera15 { get; set; }
+
+        public static HIKCameraSDK HIKCamera16 { get; set; }
+        public static HIKCameraSDK HIKCamera17 { get; set; }
+        public static HIKCameraSDK HIKCamera18 { get; set; }
+
         public static bool PositionRefresh { get; set; } = false;
         public static bool CoorSelectRefresh { get; set; } = false;
         public static bool SendRobotCoorRefresh {  get; set; } = false;
@@ -82,6 +97,8 @@ namespace WideVisualPositionMultCam3D
         //相机个数
         public static int CameraCount { get; set; } = 3;
         public static int SendDataState { get; set; } = 0;
+
+        public static int SendRobotNum {  get; set; } = 0;
         public static double SendXOffset { get; set; } = 50;
         //存图权限
         public static bool WriteGlobalImage { get; set; } =false;

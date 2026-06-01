@@ -38,10 +38,10 @@
             this.lbl_userName = new System.Windows.Forms.Label();
             this.lbl_userPower = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbl_RunTime = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.lbl_cacheNum = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.lbl_RunTime = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.Footer.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -189,27 +189,16 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(1350, 30);
             this.tableLayoutPanel1.TabIndex = 4;
             // 
-            // label3
+            // lbl_cacheNum
             // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label3.AutoSize = true;
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.label3.Location = new System.Drawing.Point(19, 4);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 21);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "运行时间:";
-            // 
-            // lbl_RunTime
-            // 
-            this.lbl_RunTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lbl_RunTime.AutoSize = true;
-            this.lbl_RunTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_RunTime.Location = new System.Drawing.Point(103, 4);
-            this.lbl_RunTime.Name = "lbl_RunTime";
-            this.lbl_RunTime.Size = new System.Drawing.Size(19, 21);
-            this.lbl_RunTime.TabIndex = 5;
-            this.lbl_RunTime.Text = "0";
+            this.lbl_cacheNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lbl_cacheNum.AutoSize = true;
+            this.lbl_cacheNum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
+            this.lbl_cacheNum.Location = new System.Drawing.Point(273, 4);
+            this.lbl_cacheNum.Name = "lbl_cacheNum";
+            this.lbl_cacheNum.Size = new System.Drawing.Size(19, 21);
+            this.lbl_cacheNum.TabIndex = 7;
+            this.lbl_cacheNum.Text = "0";
             // 
             // label5
             // 
@@ -222,16 +211,27 @@
             this.label5.TabIndex = 6;
             this.label5.Text = "缓存数据:";
             // 
-            // lbl_cacheNum
+            // lbl_RunTime
             // 
-            this.lbl_cacheNum.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lbl_cacheNum.AutoSize = true;
-            this.lbl_cacheNum.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_cacheNum.Location = new System.Drawing.Point(273, 4);
-            this.lbl_cacheNum.Name = "lbl_cacheNum";
-            this.lbl_cacheNum.Size = new System.Drawing.Size(19, 21);
-            this.lbl_cacheNum.TabIndex = 7;
-            this.lbl_cacheNum.Text = "0";
+            this.lbl_RunTime.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lbl_RunTime.AutoSize = true;
+            this.lbl_RunTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
+            this.lbl_RunTime.Location = new System.Drawing.Point(103, 4);
+            this.lbl_RunTime.Name = "lbl_RunTime";
+            this.lbl_RunTime.Size = new System.Drawing.Size(19, 21);
+            this.lbl_RunTime.TabIndex = 5;
+            this.lbl_RunTime.Text = "0";
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
+            this.label3.Location = new System.Drawing.Point(19, 4);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(78, 21);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "运行时间:";
             // 
             // FormMain
             // 
@@ -242,6 +242,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormMain";
             this.Text = "玻璃瓶视觉定位系统";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ZoomScaleRect = new System.Drawing.Rectangle(15, 15, 800, 450);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.Controls.SetChildIndex(this.Header, 0);

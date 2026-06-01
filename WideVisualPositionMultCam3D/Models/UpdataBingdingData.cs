@@ -176,6 +176,21 @@ namespace WideVisualPositionMultCam3D.Models
             }
         }
 
+        private int _robot2Threshold;
+
+        public int Robot2Threshold
+        {
+            get { return _robot2Threshold; }
+            set
+            {
+                if (_robot2Threshold != value)
+                {
+                    _robot2Threshold = value;
+                    OnPropertyChanged("Robot2Threshold");
+                }
+            }
+        }
+
 
         private int _cam1xOffset;
 
