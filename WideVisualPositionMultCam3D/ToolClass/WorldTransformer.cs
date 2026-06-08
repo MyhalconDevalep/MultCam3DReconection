@@ -20,6 +20,11 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
         public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,int Encoding)
         {
+            return Transform(X, Y, Z, rowImg, colImg, Encoding, null);
+        }
+
+        public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,int Encoding, IList<MouthSizeMm> mouthSizes)
+        {
             GlobalStaticData.HalconAlgorithmFunction.Coordinate_Transformation_Result(
                 X, Y, Z,
                 config.BoardHeight/1000*-1,
@@ -34,6 +39,8 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
             for (int i = 0; i < X.Length; i++)
             {
+                MouthSizeMm mouthSize = mouthSizes != null && i < mouthSizes.Count ? mouthSizes[i] : null;
+
                 list.Add(new FindCoorData
                 {
                     pixelRow = row[i],
@@ -43,7 +50,10 @@ namespace WideVisualPositionMultCam3D.ToolClass
                     Height = z_mm[i] + config.Z_Offset,
                     // WorldXScurren = Encoding - y_mm[i],
                     WorldXScurren = Encoding - y_mm[i]- config.X_Offset,
-                    encoding = Encoding
+                    encoding = Encoding,
+                    MouthWidthMm = mouthSize?.WidthMm ?? -1,
+                    MouthHeightMm = mouthSize?.HeightMm ?? -1,
+                    MouthAverageDiameterMm = mouthSize?.AverageDiameterMm ?? -1
                 }); 
             }
 

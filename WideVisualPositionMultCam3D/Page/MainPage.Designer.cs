@@ -158,7 +158,7 @@
             // 
             this.uiSplitContainer1.Panel2.Controls.Add(this.splitContainer1);
             this.uiSplitContainer1.Size = new System.Drawing.Size(1000, 600);
-            this.uiSplitContainer1.SplitterDistance = 620;
+            this.uiSplitContainer1.SplitterDistance = 619;
             this.uiSplitContainer1.SplitterWidth = 11;
             this.uiSplitContainer1.Style = Sunny.UI.UIStyle.Custom;
             this.uiSplitContainer1.TabIndex = 0;
@@ -180,7 +180,7 @@
             this.uiTabControl1.MainPage = "";
             this.uiTabControl1.Name = "uiTabControl1";
             this.uiTabControl1.SelectedIndex = 0;
-            this.uiTabControl1.Size = new System.Drawing.Size(620, 600);
+            this.uiTabControl1.Size = new System.Drawing.Size(619, 600);
             this.uiTabControl1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.uiTabControl1.Style = Sunny.UI.UIStyle.Custom;
             this.uiTabControl1.TabIndex = 1;
@@ -193,7 +193,7 @@
             this.tabPage1.Controls.Add(this.tableLayoutPanel4);
             this.tabPage1.Location = new System.Drawing.Point(0, 40);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(620, 560);
+            this.tabPage1.Size = new System.Drawing.Size(619, 560);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "相机组1";
             // 
@@ -212,7 +212,7 @@
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(619, 560);
             this.tableLayoutPanel4.TabIndex = 1;
             // 
             // hWindowControl1
@@ -225,7 +225,7 @@
             this.hWindowControl1.Image = null;
             this.hWindowControl1.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl1.Name = "hWindowControl1";
-            this.hWindowControl1.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl1.Size = new System.Drawing.Size(303, 274);
             this.hWindowControl1.TabIndex = 4;
             // 
             // hWindowControl2
@@ -236,7 +236,7 @@
             this.hWindowControl2.DrawModel = false;
             this.hWindowControl2.EditModel = true;
             this.hWindowControl2.Image = null;
-            this.hWindowControl2.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl2.Location = new System.Drawing.Point(312, 3);
             this.hWindowControl2.Name = "hWindowControl2";
             this.hWindowControl2.Size = new System.Drawing.Size(304, 274);
             this.hWindowControl2.TabIndex = 5;
@@ -251,7 +251,7 @@
             this.hWindowControl3.Image = null;
             this.hWindowControl3.Location = new System.Drawing.Point(3, 283);
             this.hWindowControl3.Name = "hWindowControl3";
-            this.hWindowControl3.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl3.Size = new System.Drawing.Size(303, 274);
             this.hWindowControl3.TabIndex = 6;
             // 
             // hWindowControl4
@@ -262,7 +262,7 @@
             this.hWindowControl4.DrawModel = false;
             this.hWindowControl4.EditModel = true;
             this.hWindowControl4.Image = null;
-            this.hWindowControl4.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl4.Location = new System.Drawing.Point(312, 283);
             this.hWindowControl4.Name = "hWindowControl4";
             this.hWindowControl4.Size = new System.Drawing.Size(304, 274);
             this.hWindowControl4.TabIndex = 7;
@@ -273,7 +273,7 @@
             this.tabPage2.Controls.Add(this.tableLayoutPanel8);
             this.tabPage2.Location = new System.Drawing.Point(0, 40);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(620, 560);
+            this.tabPage2.Size = new System.Drawing.Size(200, 60);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "相机组2";
             // 
@@ -292,7 +292,7 @@
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(200, 60);
             this.tableLayoutPanel8.TabIndex = 3;
             // 
             // hWindowControl5
@@ -305,7 +305,7 @@
             this.hWindowControl5.Image = null;
             this.hWindowControl5.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl5.Name = "hWindowControl5";
-            this.hWindowControl5.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl5.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl5.TabIndex = 0;
             // 
             // hWindowControl6
@@ -316,9 +316,9 @@
             this.hWindowControl6.DrawModel = false;
             this.hWindowControl6.EditModel = true;
             this.hWindowControl6.Image = null;
-            this.hWindowControl6.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl6.Location = new System.Drawing.Point(103, 3);
             this.hWindowControl6.Name = "hWindowControl6";
-            this.hWindowControl6.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl6.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl6.TabIndex = 1;
             // 
             // hWindowControl7
@@ -329,9 +329,9 @@
             this.hWindowControl7.DrawModel = false;
             this.hWindowControl7.EditModel = true;
             this.hWindowControl7.Image = null;
-            this.hWindowControl7.Location = new System.Drawing.Point(3, 283);
+            this.hWindowControl7.Location = new System.Drawing.Point(3, 33);
             this.hWindowControl7.Name = "hWindowControl7";
-            this.hWindowControl7.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl7.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl7.TabIndex = 2;
             // 
             // hWindowControl8
@@ -342,9 +342,9 @@
             this.hWindowControl8.DrawModel = false;
             this.hWindowControl8.EditModel = true;
             this.hWindowControl8.Image = null;
-            this.hWindowControl8.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl8.Location = new System.Drawing.Point(103, 33);
             this.hWindowControl8.Name = "hWindowControl8";
-            this.hWindowControl8.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl8.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl8.TabIndex = 3;
             // 
             // tabPage3
@@ -353,7 +353,7 @@
             this.tabPage3.Controls.Add(this.tableLayoutPanel9);
             this.tabPage3.Location = new System.Drawing.Point(0, 40);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(620, 560);
+            this.tabPage3.Size = new System.Drawing.Size(200, 60);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "相机组3";
             // 
@@ -372,7 +372,7 @@
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(200, 60);
             this.tableLayoutPanel9.TabIndex = 2;
             // 
             // hWindowControl9
@@ -385,7 +385,7 @@
             this.hWindowControl9.Image = null;
             this.hWindowControl9.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl9.Name = "hWindowControl9";
-            this.hWindowControl9.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl9.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl9.TabIndex = 0;
             // 
             // hWindowControl10
@@ -396,9 +396,9 @@
             this.hWindowControl10.DrawModel = false;
             this.hWindowControl10.EditModel = true;
             this.hWindowControl10.Image = null;
-            this.hWindowControl10.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl10.Location = new System.Drawing.Point(103, 3);
             this.hWindowControl10.Name = "hWindowControl10";
-            this.hWindowControl10.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl10.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl10.TabIndex = 1;
             // 
             // hWindowControl11
@@ -409,9 +409,9 @@
             this.hWindowControl11.DrawModel = false;
             this.hWindowControl11.EditModel = true;
             this.hWindowControl11.Image = null;
-            this.hWindowControl11.Location = new System.Drawing.Point(3, 283);
+            this.hWindowControl11.Location = new System.Drawing.Point(3, 33);
             this.hWindowControl11.Name = "hWindowControl11";
-            this.hWindowControl11.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl11.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl11.TabIndex = 2;
             // 
             // hWindowControl12
@@ -422,9 +422,9 @@
             this.hWindowControl12.DrawModel = false;
             this.hWindowControl12.EditModel = true;
             this.hWindowControl12.Image = null;
-            this.hWindowControl12.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl12.Location = new System.Drawing.Point(103, 33);
             this.hWindowControl12.Name = "hWindowControl12";
-            this.hWindowControl12.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl12.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl12.TabIndex = 3;
             // 
             // tabPage4
@@ -433,7 +433,7 @@
             this.tabPage4.Controls.Add(this.tableLayoutPanel7);
             this.tabPage4.Location = new System.Drawing.Point(0, 40);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(620, 560);
+            this.tabPage4.Size = new System.Drawing.Size(200, 60);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "相机组4";
             // 
@@ -452,7 +452,7 @@
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(200, 60);
             this.tableLayoutPanel7.TabIndex = 3;
             // 
             // hWindowControl13
@@ -465,7 +465,7 @@
             this.hWindowControl13.Image = null;
             this.hWindowControl13.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl13.Name = "hWindowControl13";
-            this.hWindowControl13.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl13.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl13.TabIndex = 0;
             // 
             // hWindowControl14
@@ -476,9 +476,9 @@
             this.hWindowControl14.DrawModel = false;
             this.hWindowControl14.EditModel = true;
             this.hWindowControl14.Image = null;
-            this.hWindowControl14.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl14.Location = new System.Drawing.Point(103, 3);
             this.hWindowControl14.Name = "hWindowControl14";
-            this.hWindowControl14.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl14.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl14.TabIndex = 1;
             // 
             // hWindowControl15
@@ -489,9 +489,9 @@
             this.hWindowControl15.DrawModel = false;
             this.hWindowControl15.EditModel = true;
             this.hWindowControl15.Image = null;
-            this.hWindowControl15.Location = new System.Drawing.Point(3, 283);
+            this.hWindowControl15.Location = new System.Drawing.Point(3, 33);
             this.hWindowControl15.Name = "hWindowControl15";
-            this.hWindowControl15.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl15.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl15.TabIndex = 2;
             // 
             // hWindowControl16
@@ -502,9 +502,9 @@
             this.hWindowControl16.DrawModel = false;
             this.hWindowControl16.EditModel = true;
             this.hWindowControl16.Image = null;
-            this.hWindowControl16.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl16.Location = new System.Drawing.Point(103, 33);
             this.hWindowControl16.Name = "hWindowControl16";
-            this.hWindowControl16.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl16.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl16.TabIndex = 3;
             // 
             // tabPage5
@@ -513,7 +513,7 @@
             this.tabPage5.Controls.Add(this.tableLayoutPanel12);
             this.tabPage5.Location = new System.Drawing.Point(0, 40);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(620, 560);
+            this.tabPage5.Size = new System.Drawing.Size(200, 60);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "相机组5";
             // 
@@ -532,7 +532,7 @@
             this.tableLayoutPanel12.RowCount = 2;
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel12.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel12.Size = new System.Drawing.Size(200, 60);
             this.tableLayoutPanel12.TabIndex = 3;
             // 
             // hWindowControl17
@@ -545,7 +545,7 @@
             this.hWindowControl17.Image = null;
             this.hWindowControl17.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl17.Name = "hWindowControl17";
-            this.hWindowControl17.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl17.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl17.TabIndex = 0;
             // 
             // hWindowControl18
@@ -556,9 +556,9 @@
             this.hWindowControl18.DrawModel = false;
             this.hWindowControl18.EditModel = true;
             this.hWindowControl18.Image = null;
-            this.hWindowControl18.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl18.Location = new System.Drawing.Point(103, 3);
             this.hWindowControl18.Name = "hWindowControl18";
-            this.hWindowControl18.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl18.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl18.TabIndex = 1;
             // 
             // hWindowControl19
@@ -569,9 +569,9 @@
             this.hWindowControl19.DrawModel = false;
             this.hWindowControl19.EditModel = true;
             this.hWindowControl19.Image = null;
-            this.hWindowControl19.Location = new System.Drawing.Point(3, 283);
+            this.hWindowControl19.Location = new System.Drawing.Point(3, 33);
             this.hWindowControl19.Name = "hWindowControl19";
-            this.hWindowControl19.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl19.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl19.TabIndex = 2;
             // 
             // hWindowControl20
@@ -582,9 +582,9 @@
             this.hWindowControl20.DrawModel = false;
             this.hWindowControl20.EditModel = true;
             this.hWindowControl20.Image = null;
-            this.hWindowControl20.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl20.Location = new System.Drawing.Point(103, 33);
             this.hWindowControl20.Name = "hWindowControl20";
-            this.hWindowControl20.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl20.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl20.TabIndex = 3;
             // 
             // tabPage6
@@ -593,7 +593,7 @@
             this.tabPage6.Controls.Add(this.tableLayoutPanel13);
             this.tabPage6.Location = new System.Drawing.Point(0, 40);
             this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Size = new System.Drawing.Size(620, 560);
+            this.tabPage6.Size = new System.Drawing.Size(200, 60);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "相机组6";
             // 
@@ -612,7 +612,7 @@
             this.tableLayoutPanel13.RowCount = 2;
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(620, 560);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(200, 60);
             this.tableLayoutPanel13.TabIndex = 3;
             // 
             // hWindowControl21
@@ -625,7 +625,7 @@
             this.hWindowControl21.Image = null;
             this.hWindowControl21.Location = new System.Drawing.Point(3, 3);
             this.hWindowControl21.Name = "hWindowControl21";
-            this.hWindowControl21.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl21.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl21.TabIndex = 0;
             // 
             // hWindowControl22
@@ -636,9 +636,9 @@
             this.hWindowControl22.DrawModel = false;
             this.hWindowControl22.EditModel = true;
             this.hWindowControl22.Image = null;
-            this.hWindowControl22.Location = new System.Drawing.Point(313, 3);
+            this.hWindowControl22.Location = new System.Drawing.Point(103, 3);
             this.hWindowControl22.Name = "hWindowControl22";
-            this.hWindowControl22.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl22.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl22.TabIndex = 1;
             // 
             // hWindowControl23
@@ -649,9 +649,9 @@
             this.hWindowControl23.DrawModel = false;
             this.hWindowControl23.EditModel = true;
             this.hWindowControl23.Image = null;
-            this.hWindowControl23.Location = new System.Drawing.Point(3, 283);
+            this.hWindowControl23.Location = new System.Drawing.Point(3, 33);
             this.hWindowControl23.Name = "hWindowControl23";
-            this.hWindowControl23.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl23.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl23.TabIndex = 2;
             // 
             // hWindowControl24
@@ -662,9 +662,9 @@
             this.hWindowControl24.DrawModel = false;
             this.hWindowControl24.EditModel = true;
             this.hWindowControl24.Image = null;
-            this.hWindowControl24.Location = new System.Drawing.Point(313, 283);
+            this.hWindowControl24.Location = new System.Drawing.Point(103, 33);
             this.hWindowControl24.Name = "hWindowControl24";
-            this.hWindowControl24.Size = new System.Drawing.Size(304, 274);
+            this.hWindowControl24.Size = new System.Drawing.Size(94, 24);
             this.hWindowControl24.TabIndex = 3;
             // 
             // splitContainer1
@@ -683,7 +683,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel2);
-            this.splitContainer1.Size = new System.Drawing.Size(369, 600);
+            this.splitContainer1.Size = new System.Drawing.Size(370, 600);
             this.splitContainer1.SplitterDistance = 253;
             this.splitContainer1.TabIndex = 0;
             // 
@@ -694,7 +694,7 @@
             this.groupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.groupBox3.Location = new System.Drawing.Point(3, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(363, 247);
+            this.groupBox3.Size = new System.Drawing.Size(364, 247);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "设备状态";
@@ -711,7 +711,7 @@
             this.tableLayoutPanel10.RowCount = 2;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(357, 219);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(358, 219);
             this.tableLayoutPanel10.TabIndex = 1;
             // 
             // tableLayoutPanel11
@@ -730,7 +730,7 @@
             this.tableLayoutPanel11.RowCount = 2;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(351, 103);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(352, 103);
             this.tableLayoutPanel11.TabIndex = 0;
             // 
             // uiLabel9
@@ -818,7 +818,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(351, 104);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(352, 104);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // uiLabel6
@@ -827,7 +827,7 @@
             this.uiLabel6.AutoSize = true;
             this.uiLabel6.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiLabel6.Location = new System.Drawing.Point(125, 7);
+            this.uiLabel6.Location = new System.Drawing.Point(126, 7);
             this.uiLabel6.Name = "uiLabel6";
             this.uiLabel6.Size = new System.Drawing.Size(60, 19);
             this.uiLabel6.Style = Sunny.UI.UIStyle.Custom;
@@ -842,7 +842,7 @@
             this.uiLabel7.AutoSize = true;
             this.uiLabel7.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiLabel7.Location = new System.Drawing.Point(202, 7);
+            this.uiLabel7.Location = new System.Drawing.Point(204, 7);
             this.uiLabel7.Name = "uiLabel7";
             this.uiLabel7.Size = new System.Drawing.Size(60, 19);
             this.uiLabel7.Style = Sunny.UI.UIStyle.Custom;
@@ -857,7 +857,7 @@
             this.lbl_SendData2.AutoSize = true;
             this.lbl_SendData2.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_SendData2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_SendData2.Location = new System.Drawing.Point(220, 38);
+            this.lbl_SendData2.Location = new System.Drawing.Point(222, 38);
             this.lbl_SendData2.Name = "lbl_SendData2";
             this.lbl_SendData2.Size = new System.Drawing.Size(24, 26);
             this.lbl_SendData2.Style = Sunny.UI.UIStyle.Custom;
@@ -872,7 +872,7 @@
             this.lbl_SendData.AutoSize = true;
             this.lbl_SendData.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_SendData.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_SendData.Location = new System.Drawing.Point(143, 38);
+            this.lbl_SendData.Location = new System.Drawing.Point(144, 38);
             this.lbl_SendData.Name = "lbl_SendData";
             this.lbl_SendData.Size = new System.Drawing.Size(24, 26);
             this.lbl_SendData.Style = Sunny.UI.UIStyle.Custom;
@@ -887,7 +887,7 @@
             this.lbl_hasBeenSent.AutoSize = true;
             this.lbl_hasBeenSent.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_hasBeenSent.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_hasBeenSent.Location = new System.Drawing.Point(139, 73);
+            this.lbl_hasBeenSent.Location = new System.Drawing.Point(140, 73);
             this.lbl_hasBeenSent.Name = "lbl_hasBeenSent";
             this.lbl_hasBeenSent.Size = new System.Drawing.Size(32, 26);
             this.lbl_hasBeenSent.Style = Sunny.UI.UIStyle.Custom;
@@ -902,7 +902,7 @@
             this.lbl_hasBeenSent2.AutoSize = true;
             this.lbl_hasBeenSent2.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_hasBeenSent2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_hasBeenSent2.Location = new System.Drawing.Point(216, 73);
+            this.lbl_hasBeenSent2.Location = new System.Drawing.Point(218, 73);
             this.lbl_hasBeenSent2.Name = "lbl_hasBeenSent2";
             this.lbl_hasBeenSent2.Size = new System.Drawing.Size(32, 26);
             this.lbl_hasBeenSent2.Style = Sunny.UI.UIStyle.Custom;
@@ -947,7 +947,7 @@
             this.uiLabel10.AutoSize = true;
             this.uiLabel10.Font = new System.Drawing.Font("微软雅黑", 10.5F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiLabel10.Location = new System.Drawing.Point(281, 7);
+            this.uiLabel10.Location = new System.Drawing.Point(282, 7);
             this.uiLabel10.Name = "uiLabel10";
             this.uiLabel10.Size = new System.Drawing.Size(60, 19);
             this.uiLabel10.Style = Sunny.UI.UIStyle.Custom;
@@ -962,7 +962,7 @@
             this.lbl_SendData3.AutoSize = true;
             this.lbl_SendData3.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_SendData3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_SendData3.Location = new System.Drawing.Point(299, 38);
+            this.lbl_SendData3.Location = new System.Drawing.Point(300, 38);
             this.lbl_SendData3.Name = "lbl_SendData3";
             this.lbl_SendData3.Size = new System.Drawing.Size(24, 26);
             this.lbl_SendData3.Style = Sunny.UI.UIStyle.Custom;
@@ -977,7 +977,7 @@
             this.lbl_hasBeenSent3.AutoSize = true;
             this.lbl_hasBeenSent3.Font = new System.Drawing.Font("微软雅黑", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_hasBeenSent3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.lbl_hasBeenSent3.Location = new System.Drawing.Point(295, 73);
+            this.lbl_hasBeenSent3.Location = new System.Drawing.Point(296, 73);
             this.lbl_hasBeenSent3.Name = "lbl_hasBeenSent3";
             this.lbl_hasBeenSent3.Size = new System.Drawing.Size(32, 26);
             this.lbl_hasBeenSent3.Style = Sunny.UI.UIStyle.Custom;
@@ -998,7 +998,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(369, 343);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(370, 343);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // groupBox1
@@ -1008,7 +1008,7 @@
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.groupBox1.Location = new System.Drawing.Point(3, 140);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(363, 200);
+            this.groupBox1.Size = new System.Drawing.Size(364, 200);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "日志消息";
@@ -1025,7 +1025,7 @@
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(357, 172);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(358, 172);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // listView1
@@ -1042,7 +1042,7 @@
             this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(3, 37);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(351, 132);
+            this.listView1.Size = new System.Drawing.Size(352, 132);
             this.listView1.TabIndex = 0;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
@@ -1055,7 +1055,7 @@
             // columnHeader2
             // 
             this.columnHeader2.Text = "     摘要";
-            this.columnHeader2.Width = 500;
+            this.columnHeader2.Width = 650;
             // 
             // ClearContent
             // 
@@ -1084,7 +1084,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(351, 28);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(352, 28);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // uiLabel5
@@ -1094,7 +1094,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.uiLabel5.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.uiLabel5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
-            this.uiLabel5.Location = new System.Drawing.Point(125, 0);
+            this.uiLabel5.Location = new System.Drawing.Point(126, 0);
             this.uiLabel5.Name = "uiLabel5";
             this.uiLabel5.Size = new System.Drawing.Size(223, 28);
             this.uiLabel5.Style = Sunny.UI.UIStyle.Custom;
@@ -1112,7 +1112,7 @@
             this.uiLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.uiLabel4.Location = new System.Drawing.Point(3, 0);
             this.uiLabel4.Name = "uiLabel4";
-            this.uiLabel4.Size = new System.Drawing.Size(116, 28);
+            this.uiLabel4.Size = new System.Drawing.Size(117, 28);
             this.uiLabel4.Style = Sunny.UI.UIStyle.Custom;
             this.uiLabel4.TabIndex = 0;
             this.uiLabel4.Text = "时间";
@@ -1126,7 +1126,7 @@
             this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(80)))), ((int)(((byte)(160)))), ((int)(((byte)(255)))));
             this.groupBox2.Location = new System.Drawing.Point(3, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(363, 131);
+            this.groupBox2.Size = new System.Drawing.Size(364, 131);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "操作控制";
@@ -1146,14 +1146,14 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(357, 103);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(358, 103);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // ck_AllImageSave
             // 
             this.ck_AllImageSave.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.ck_AllImageSave.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ck_AllImageSave.Location = new System.Drawing.Point(230, 63);
+            this.ck_AllImageSave.Location = new System.Drawing.Point(231, 63);
             this.ck_AllImageSave.MinimumSize = new System.Drawing.Size(1, 1);
             this.ck_AllImageSave.Name = "ck_AllImageSave";
             this.ck_AllImageSave.Size = new System.Drawing.Size(75, 28);
@@ -1199,7 +1199,7 @@
             this.btn_Reset.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btn_Reset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btn_Reset.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.btn_Reset.Location = new System.Drawing.Point(217, 11);
+            this.btn_Reset.Location = new System.Drawing.Point(218, 11);
             this.btn_Reset.MinimumSize = new System.Drawing.Size(1, 1);
             this.btn_Reset.Name = "btn_Reset";
             this.btn_Reset.Radius = 8;

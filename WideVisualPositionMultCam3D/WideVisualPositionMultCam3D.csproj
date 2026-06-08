@@ -157,6 +157,7 @@
     <Compile Include="Models\FindCoorData.cs" />
     <Compile Include="Models\FindCoorPairsData.cs" />
     <Compile Include="Models\HeightAligmentData.cs" />
+    <Compile Include="Models\MouthSizeMm.cs" />
     <Compile Include="Models\PlaceWebBeltSelectData.cs" />
     <Compile Include="Models\UpdataBingdingData.cs" />
     <Compile Include="Models\UpdataBingdingDisplayMsg.cs" />
@@ -307,6 +308,7 @@
     <Compile Include="ToolClass\MultiCameraPairingManager.cs" />
     <Compile Include="ToolClass\OperateConfig.cs" />
     <Compile Include="ToolClass\PairMatcher.cs" />
+    <Compile Include="ToolClass\PixelToMmConverter.cs" />
     <Compile Include="ToolClass\PointProcessor2.cs" />
     <Compile Include="ToolClass\StereoReconstructor.cs" />
     <Compile Include="ToolClass\SuperSimpleTcpHelper.cs" />

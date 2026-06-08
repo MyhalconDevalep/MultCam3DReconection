@@ -315,7 +315,10 @@ namespace WideVisualPositionMultCam3D.ToolClass
                         Score = AverageXData.Score,
                         WorldXScurren = AverageXData.WorldXScurren,
                         Attribute = AverageXData.Attribute,
-                        encoding = AverageXData.encoding
+                        encoding = AverageXData.encoding,
+                        MouthWidthMm = MinHeightData.MouthWidthMm >= 0 ? MinHeightData.MouthWidthMm : AverageXData.MouthWidthMm,
+                        MouthHeightMm = MinHeightData.MouthHeightMm >= 0 ? MinHeightData.MouthHeightMm : AverageXData.MouthHeightMm,
+                        MouthAverageDiameterMm = MinHeightData.MouthAverageDiameterMm >= 0 ? MinHeightData.MouthAverageDiameterMm : AverageXData.MouthAverageDiameterMm
                  
                     };
 
@@ -499,7 +502,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
             // 判断是否在 256 ~ 265 之间
             if(heightAligmentData.IsEnable)
             {
-                if (height >= heightAligmentData.DownCompensation && height <= heightAligmentData.UpCompensation)
+                bool heightMatched = height >= heightAligmentData.DownCompensation && height <= heightAligmentData.UpCompensation;
+                bool mouthMatched = point != null &&
+                    point.MouthAverageDiameterMm >= heightAligmentData.MouthMinMm &&
+                    point.MouthAverageDiameterMm <= heightAligmentData.MouthMaxMm;
+
+                if (heightMatched && mouthMatched)
                 {
                     height = heightAligmentData.BaseHeight;
                     point.Attribute =Convert.ToInt32(heightAligmentData.PlaceAttr);
@@ -565,7 +573,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             //正常生产
             string str = string.Format("Image\r\n[X:{0};Y:{1};Z:{2};ATTR:{3};ID:{4}]\r\nDone", Math.Round(GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding - last.encoding + last.WorldX.D, 2), Math.Round(last.WorldY.D, 2), Math.Round(-sendHeight, 2), attribute, last.placeCompensation);
 
-            string logStr = string.Format("Image\r\n[X:{0};Y:{1};Z:{2};ATTR:{3};ID:{4};Safe:{5};Rob:{6}]\r\nDone", Math.Round(GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding - last.encoding + last.WorldX.D, 2), Math.Round(last.WorldY.D, 2), Math.Round(-sendHeight, 2), attribute, last.placeCompensation, last.SafeRegionMark, robotId);
+            string logStr = string.Format("Image\r\n[X:{0};Y:{1};Z:{2};ATTR:{3};ID:{4};Safe:{5};Rob:{6};Mouth:{7}]\r\nDone", Math.Round(GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding - last.encoding + last.WorldX.D, 2), Math.Round(last.WorldY.D, 2), Math.Round(-sendHeight, 2), attribute, last.placeCompensation, last.SafeRegionMark, robotId, Math.Round(last.MouthAverageDiameterMm, 2));
 
 
 
@@ -722,6 +730,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             }
         }
 
+        //先抓Y最大的
         public void SendCoorValueWorldYMinSort3Robot(double baseOffsetX,SuperSimpleTcpHelper superTcp1,SuperSimpleTcpHelper superTcp2,SuperSimpleTcpHelper superTcp3)
         {
             RefreshRobotPending();
@@ -785,6 +794,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 p => p.OrderBy(x => x.WorldY.D));
         }
 
+        //先抓高度最大的
         public void SendCoorValueHeightMaxSort3Robot(double baseOffsetX, SuperSimpleTcpHelper superTcp1, SuperSimpleTcpHelper superTcp2, SuperSimpleTcpHelper superTcp3)
         {
 

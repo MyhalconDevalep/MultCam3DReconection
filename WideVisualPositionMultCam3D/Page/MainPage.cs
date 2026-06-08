@@ -58,6 +58,7 @@ namespace WideVisualPositionMultCam3D.Page
         public SuperSimpleTcpHelper _superSimpleTcp2;
         public SuperSimpleTcpHelper _superSimpleTcp3;
         public SuperSimpleTcpHelper _superSimpleTcp4;
+        public SuperSimpleTcpHelper _superSimpleTcp5;
         string IP1;
         int port1 = 0;
         string IP2;
@@ -66,6 +67,8 @@ namespace WideVisualPositionMultCam3D.Page
         int port3 = 0;
         string IP4;
         int port4 = 0;
+        string IP5;
+        int port5 = 0;
         private TableLayoutHalconDispZoomHWindow_final halconController1;
         private TableLayoutHalconDispZoomHWindow_final halconController2;
         private TableLayoutHalconDispZoomHWindow_final halconController3;
@@ -149,6 +152,8 @@ namespace WideVisualPositionMultCam3D.Page
                 port3 = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("TcpIp", "Port3"));
                 IP4 = GlobalStaticData.OperateConfig.GetValue("TcpIp", "IP4");
                 port4 = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("TcpIp", "Port4"));
+                IP5 = GlobalStaticData.OperateConfig.GetValue("TcpIp", "IP5");
+                port5 = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("TcpIp", "Port5"));
 
             }
             catch (Exception ex)
@@ -159,16 +164,20 @@ namespace WideVisualPositionMultCam3D.Page
             _superSimpleTcp1 =new SuperSimpleTcpHelper(IP1, port1,false);
             _superSimpleTcp1.ActionPrintConnectionLog += actionPrintConnectionLog1;
 
-            _superSimpleTcp2 = new SuperSimpleTcpHelper(IP2, port2, true);
+            _superSimpleTcp2 = new SuperSimpleTcpHelper(IP2, port2, false);
             _superSimpleTcp2.ActionPrintConnectionLog += actionPrintConnectionLog2;
             _superSimpleTcp2.ActionReceivedMsg += ReceivedMsg2;
 
             _superSimpleTcp3 = new SuperSimpleTcpHelper(IP3, port3, false);
             _superSimpleTcp3.ActionPrintConnectionLog += actionPrintConnectionLog3;
 
-            _superSimpleTcp4 = new SuperSimpleTcpHelper(IP4, port4, true);
+            _superSimpleTcp4 = new SuperSimpleTcpHelper(IP4, port4, false);
             _superSimpleTcp4.ActionPrintConnectionLog += actionPrintConnectionLog4;
             _superSimpleTcp4.ActionReceivedMsg += ReceivedMsg4;
+
+            _superSimpleTcp5 = new SuperSimpleTcpHelper(IP5, port5, true);
+            _superSimpleTcp5.ActionPrintConnectionLog += actionPrintConnectionLog5;
+            _superSimpleTcp5.ActionReceivedMsg += ReceivedMsg5;
 
             //给数据处理类绑定一个显示发送消息的信息显示委托  
             _pointProcessor._eventMsg = LogWinform;
@@ -338,6 +347,8 @@ namespace WideVisualPositionMultCam3D.Page
             Task.Factory.StartNew(() => { SendCoorMsg(); }, TaskCreationOptions.LongRunning);
 
         }
+
+       
 
         private void groupADispYoloRoiEvent(YoloResult[] obj)
         {
@@ -761,6 +772,11 @@ namespace WideVisualPositionMultCam3D.Page
             //}));
         }
 
+        private void ReceivedMsg5(byte[] obj)
+        {
+
+        }
+
         private void actionPrintConnectionLog1(int arg1, string arg2)
         {
             LogWinform($"prot:{arg1} " + arg2);
@@ -796,6 +812,13 @@ namespace WideVisualPositionMultCam3D.Page
 
 
         }
+
+
+        private void actionPrintConnectionLog5(int arg1, string arg2)
+        {
+            LogWinform($"prot:{arg1} " + arg2);
+        }
+
 
         private static readonly Mutex Logmutex = new Mutex();
         private void LogWinform(string Info)
@@ -979,11 +1002,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupAResult[local_i].encoding, WorldX = groupAResult[local_i].WorldX, WorldY = groupAResult[local_i].WorldY, WorldXScurren = groupAResult[local_i].WorldXScurren, Height = groupAResult[local_i].Height, Score = groupAResult[local_i].Score,Attribute=1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupAResult[local_i].encoding, WorldX = groupAResult[local_i].WorldX, WorldY = groupAResult[local_i].WorldY, WorldXScurren = groupAResult[local_i].WorldXScurren, Height = groupAResult[local_i].Height, Score = groupAResult[local_i].Score,Attribute=1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupAResult[local_i].MouthWidthMm, MouthHeightMm = groupAResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupAResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupAResult[local_i].pixelRow, groupAResult[local_i].pixelCol, 20, 0);
                         hWindowControl4.DispObj(cross_result.Clone());
-                        hWindowControl4.hWindowControl.HalconWindow.DispText($" x:{groupAResult[local_i].WorldX.D.ToString("f2")} y:{groupAResult[local_i].WorldY.D.ToString("f2")} z:{groupAResult[local_i].Height.D.ToString("f2")}", "image", groupAResult[local_i].pixelRow.D, groupAResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl4.hWindowControl.HalconWindow.DispText($" x:{groupAResult[local_i].WorldX.D.ToString("f2")} y:{groupAResult[local_i].WorldY.D.ToString("f2")} z:{groupAResult[local_i].Height.D.ToString("f2")} Mouth:{groupAResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupAResult[local_i].pixelRow.D, groupAResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
                   
@@ -993,11 +1016,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupBResult[local_i].encoding, WorldX = groupBResult[local_i].WorldX, WorldY = groupBResult[local_i].WorldY, WorldXScurren = groupBResult[local_i].WorldXScurren, Height = groupBResult[local_i].Height, Score = groupBResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupBResult[local_i].encoding, WorldX = groupBResult[local_i].WorldX, WorldY = groupBResult[local_i].WorldY, WorldXScurren = groupBResult[local_i].WorldXScurren, Height = groupBResult[local_i].Height, Score = groupBResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupBResult[local_i].MouthWidthMm, MouthHeightMm = groupBResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupBResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupBResult[local_i].pixelRow, groupBResult[local_i].pixelCol, 20, 0);
                         hWindowControl8.DispObj(cross_result.Clone());
-                        hWindowControl8.hWindowControl.HalconWindow. DispText($" x:{groupBResult[local_i].WorldX.D.ToString("f2")} y:{groupBResult[local_i].WorldY.D.ToString("f2")} z:{groupBResult[local_i].Height.D.ToString("f2")}", "image", groupBResult[local_i].pixelRow.D, groupBResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl8.hWindowControl.HalconWindow. DispText($" x:{groupBResult[local_i].WorldX.D.ToString("f2")} y:{groupBResult[local_i].WorldY.D.ToString("f2")} z:{groupBResult[local_i].Height.D.ToString("f2")} Mouth:{groupBResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupBResult[local_i].pixelRow.D, groupBResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
 
@@ -1008,11 +1031,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupCResult[local_i].encoding, WorldX = groupCResult[local_i].WorldX, WorldY = groupCResult[local_i].WorldY, WorldXScurren = groupCResult[local_i].WorldXScurren, Height = groupCResult[local_i].Height, Score = groupCResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupCResult[local_i].encoding, WorldX = groupCResult[local_i].WorldX, WorldY = groupCResult[local_i].WorldY, WorldXScurren = groupCResult[local_i].WorldXScurren, Height = groupCResult[local_i].Height, Score = groupCResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupCResult[local_i].MouthWidthMm, MouthHeightMm = groupCResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupCResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupCResult[local_i].pixelRow, groupCResult[local_i].pixelCol, 20, 0);
                         hWindowControl12.DispObj(cross_result.Clone());
-                        hWindowControl12.hWindowControl.HalconWindow.DispText($" x:{groupCResult[local_i].WorldX.D.ToString("f2")} y:{groupCResult[local_i].WorldY.D.ToString("f2")} z:{groupCResult[local_i].Height.D.ToString("f2")}", "image", groupCResult[local_i].pixelRow.D, groupCResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl12.hWindowControl.HalconWindow.DispText($" x:{groupCResult[local_i].WorldX.D.ToString("f2")} y:{groupCResult[local_i].WorldY.D.ToString("f2")} z:{groupCResult[local_i].Height.D.ToString("f2")} Mouth:{groupCResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupCResult[local_i].pixelRow.D, groupCResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
                  
@@ -1022,11 +1045,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupDResult[local_i].encoding, WorldX = groupDResult[local_i].WorldX, WorldY = groupDResult[local_i].WorldY, WorldXScurren = groupDResult[local_i].WorldXScurren, Height = groupDResult[local_i].Height, Score = groupDResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupDResult[local_i].encoding, WorldX = groupDResult[local_i].WorldX, WorldY = groupDResult[local_i].WorldY, WorldXScurren = groupDResult[local_i].WorldXScurren, Height = groupDResult[local_i].Height, Score = groupDResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupDResult[local_i].MouthWidthMm, MouthHeightMm = groupDResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupDResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupDResult[local_i].pixelRow, groupDResult[local_i].pixelCol, 20, 0);
                         hWindowControl16.DispObj(cross_result.Clone());
-                        hWindowControl16.hWindowControl.HalconWindow.DispText($" x:{groupDResult[local_i].WorldX.D.ToString("f2")} y:{groupDResult[local_i].WorldY.D.ToString("f2")} z:{groupDResult[local_i].Height.D.ToString("f2")}", "image", groupDResult[local_i].pixelRow.D, groupDResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl16.hWindowControl.HalconWindow.DispText($" x:{groupDResult[local_i].WorldX.D.ToString("f2")} y:{groupDResult[local_i].WorldY.D.ToString("f2")} z:{groupDResult[local_i].Height.D.ToString("f2")} Mouth:{groupDResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupDResult[local_i].pixelRow.D, groupDResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
                     for (int i = 0; i < groupEResult.Count; i++)
@@ -1035,11 +1058,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupEResult[local_i].encoding, WorldX = groupEResult[local_i].WorldX, WorldY = groupEResult[local_i].WorldY, WorldXScurren = groupEResult[local_i].WorldXScurren, Height = groupEResult[local_i].Height, Score = groupEResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupEResult[local_i].encoding, WorldX = groupEResult[local_i].WorldX, WorldY = groupEResult[local_i].WorldY, WorldXScurren = groupEResult[local_i].WorldXScurren, Height = groupEResult[local_i].Height, Score = groupEResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupEResult[local_i].MouthWidthMm, MouthHeightMm = groupEResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupEResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupEResult[local_i].pixelRow, groupEResult[local_i].pixelCol, 20, 0);
                         hWindowControl20.DispObj(cross_result.Clone());
-                        hWindowControl20.hWindowControl.HalconWindow.DispText($" x:{groupEResult[local_i].WorldX.D.ToString("f2")} y:{groupEResult[local_i].WorldY.D.ToString("f2")} z:{groupEResult[local_i].Height.D.ToString("f2")}", "image", groupEResult[local_i].pixelRow.D, groupEResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl20.hWindowControl.HalconWindow.DispText($" x:{groupEResult[local_i].WorldX.D.ToString("f2")} y:{groupEResult[local_i].WorldY.D.ToString("f2")} z:{groupEResult[local_i].Height.D.ToString("f2")} Mouth:{groupEResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupEResult[local_i].pixelRow.D, groupEResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
                     for (int i = 0; i < groupFResult.Count; i++)
@@ -1048,11 +1071,11 @@ namespace WideVisualPositionMultCam3D.Page
 
                         //这里对应的机械手坐标和图像坐标的X\Y是反的
                         //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupFResult[local_i].encoding, WorldX = groupFResult[local_i].WorldX, WorldY = groupFResult[local_i].WorldY, WorldXScurren = groupFResult[local_i].WorldXScurren, Height = groupFResult[local_i].Height, Score = groupFResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0 });
+                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupFResult[local_i].encoding, WorldX = groupFResult[local_i].WorldX, WorldY = groupFResult[local_i].WorldY, WorldXScurren = groupFResult[local_i].WorldXScurren, Height = groupFResult[local_i].Height, Score = groupFResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupFResult[local_i].MouthWidthMm, MouthHeightMm = groupFResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupFResult[local_i].MouthAverageDiameterMm });
                         // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
                         HOperatorSet.GenCrossContourXld(out HObject cross_result, groupFResult[local_i].pixelRow, groupFResult[local_i].pixelCol, 20, 0);
                         hWindowControl24.DispObj(cross_result.Clone());
-                        hWindowControl24.hWindowControl.HalconWindow.DispText($" x:{groupFResult[local_i].WorldX.D.ToString("f2")} y:{groupFResult[local_i].WorldY.D.ToString("f2")} z:{groupFResult[local_i].Height.D.ToString("f2")}", "image", groupFResult[local_i].pixelRow.D, groupFResult[local_i].pixelCol.D, "green", "box", "false");
+                        hWindowControl24.hWindowControl.HalconWindow.DispText($" x:{groupFResult[local_i].WorldX.D.ToString("f2")} y:{groupFResult[local_i].WorldY.D.ToString("f2")} z:{groupFResult[local_i].Height.D.ToString("f2")} Mouth:{groupFResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupFResult[local_i].pixelRow.D, groupFResult[local_i].pixelCol.D, "green", "box", "false");
                     }
 
 
@@ -1499,3 +1522,7 @@ namespace WideVisualPositionMultCam3D.Page
         }
     }
 }
+
+
+
+

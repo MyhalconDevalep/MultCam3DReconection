@@ -14,5 +14,7 @@ namespace WideVisualPositionMultCam3D.Models
         public double BaseHeight {  get; set; }
         public double PlaceAttr { get; set; }
         public double PlaceHeightCompeensation {  get; set; }
+        public double MouthMinMm { get; set; } = 0;
+        public double MouthMaxMm { get; set; } = 9999;
     }
 }

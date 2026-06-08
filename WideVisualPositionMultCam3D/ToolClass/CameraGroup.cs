@@ -92,13 +92,102 @@ namespace WideVisualPositionMultCam3D.ToolClass
             ActionDispYoloRoiEvent?.Invoke(yoloResults);
             // 3. 点对三相机配对
             matcher.Match(yoloResults, out var rows, out var cols, out var cams, out var indices);
+            List<MouthSizeMm> mouthSizes = BuildCam0MouthSizes(yoloResults[0], rows, cols, cams, GlobalStaticData.GetGroupConfig(GroupId).worldTransformerData);
 
             // 4. 重建三维
             reconstructor.Reconstruct(rows, cols, cams, indices,out var X, out var Y, out var Z);
 
             // 5. 世界坐标转换
-            return transformer.Transform(X, Y, Z, rows, cols, endcoding);
+            return transformer.Transform(X, Y, Z, rows, cols, endcoding, mouthSizes);
            // return new List<FindCoorData>();
+        }
+
+        private List<MouthSizeMm> BuildCam0MouthSizes(YoloResult cam0Result, HTuple rows, HTuple cols, HTuple cams, WorldTransformerData worldTransformerData)
+        {
+            List<MouthSizeMm> mouthSizes = new List<MouthSizeMm>();
+            if (rows == null || cols == null || cams == null)
+                return mouthSizes;
+
+            int pointCount = Math.Min(rows.Length, Math.Min(cols.Length, cams.Length)) / 3;
+
+            for (int i = 0; i < pointCount; i++)
+            {
+                int cam0TupleIndex = FindCamTupleIndex(cams, i, 0);
+                if (cam0TupleIndex < 0)
+                {
+                    mouthSizes.Add(null);
+                    continue;
+                }
+
+                mouthSizes.Add(TryConvertCam0MouthSize(cam0Result, rows[cam0TupleIndex], cols[cam0TupleIndex], worldTransformerData));
+            }
+
+            return mouthSizes;
+        }
+
+        private int FindCamTupleIndex(HTuple cams, int pointIndex, int camId)
+        {
+            int start = pointIndex * 3;
+            for (int offset = 0; offset < 3; offset++)
+            {
+                int tupleIndex = start + offset;
+                if (tupleIndex < cams.Length && cams[tupleIndex].I == camId)
+                    return tupleIndex;
+            }
+
+            return -1;
+        }
+
+        private MouthSizeMm TryConvertCam0MouthSize(YoloResult cam0Result, HTuple cam0Row, HTuple cam0Col, WorldTransformerData worldTransformerData)
+        {
+            try
+            {
+                int index = FindYoloBoxIndex(cam0Result, cam0Row.D, cam0Col.D);
+                if (cam0Result == null || index < 0 || index >= cam0Result._rows.Length)
+                    return null;
+
+                if (worldTransformerData == null || worldTransformerData.hv_CamParamData0 == null || worldTransformerData.hv_PlanePose == null)
+                    return null;
+
+                return PixelToMmConverter.ConvertYoloCenterBoxToMm(
+                    cam0Result._rows[index].D,
+                    cam0Result._cols[index].D,
+                    cam0Result._width[index].D,
+                    cam0Result._height[index].D,
+                    worldTransformerData.hv_CamParamData0,
+                    worldTransformerData.hv_PlanePose);
+            }
+            catch (Exception ex)
+            {
+                LoggerHelper._.Warn($"瓶口尺寸转换失败:{ex.Message}");
+                return null;
+            }
+        }
+
+        private int FindYoloBoxIndex(YoloResult cam0Result, double row, double col)
+        {
+            if (cam0Result == null ||
+                cam0Result._rows == null ||
+                cam0Result._cols == null ||
+                cam0Result._width == null ||
+                cam0Result._height == null)
+                return -1;
+
+            int count = Math.Min(
+                Math.Min(cam0Result._rows.Length, cam0Result._cols.Length),
+                Math.Min(cam0Result._width.Length, cam0Result._height.Length));
+
+            const double tolerance = 0.001;
+            for (int i = 0; i < count; i++)
+            {
+                if (Math.Abs(cam0Result._rows[i].D - row) <= tolerance &&
+                    Math.Abs(cam0Result._cols[i].D - col) <= tolerance)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
         }
     }
 }

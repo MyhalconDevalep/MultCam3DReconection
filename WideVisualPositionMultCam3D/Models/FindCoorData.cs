@@ -26,6 +26,9 @@ namespace WideVisualPositionMultCam3D.Models
 
         public HTuple ImageHeight { get; set; }
         public HTuple ImageWidtht { get; set; }
+        public double MouthWidthMm { get; set; } = -1;
+        public double MouthHeightMm { get; set; } = -1;
+        public double MouthAverageDiameterMm { get; set; } = -1;
 
         public int encoding { get; set; }
         public int placeCompensation {  get; set; }

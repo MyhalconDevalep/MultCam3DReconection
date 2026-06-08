@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WideVisualPositionMultCam3D.Models;
 using WideVisualPositionMultCam3D.ToolClass;
 
 namespace WideVisualPositionMultCam3D.Page
@@ -33,6 +34,8 @@ namespace WideVisualPositionMultCam3D.Page
                 num_DownCompensation1.Value = GlobalStaticData.HeightAligmentData1.DownCompensation;
                 num_BaseHeight1.Value = GlobalStaticData.HeightAligmentData1.BaseHeight;
                 num_placeAttr.Value = GlobalStaticData.HeightAligmentData1.PlaceAttr;
+                num_MouthMin1.Value = GlobalStaticData.HeightAligmentData1.MouthMinMm;
+                num_MouthMax1.Value = GlobalStaticData.HeightAligmentData1.MouthMaxMm;
                // num_PlaceCompensation1.Value = GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation;
             }
             catch (Exception ex)
@@ -52,6 +55,8 @@ namespace WideVisualPositionMultCam3D.Page
                 num_DownCompensation2.Value = GlobalStaticData.HeightAligmentData2.DownCompensation;
                 num_BaseHeight2.Value = GlobalStaticData.HeightAligmentData2.BaseHeight;
                 num_placeAttr2.Value = GlobalStaticData.HeightAligmentData2.PlaceAttr;
+                num_MouthMin2.Value = GlobalStaticData.HeightAligmentData2.MouthMinMm;
+                num_MouthMax2.Value = GlobalStaticData.HeightAligmentData2.MouthMaxMm;
                 // num_PlaceCompensation1.Value = GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation;
             }
             catch (Exception ex)
@@ -70,6 +75,8 @@ namespace WideVisualPositionMultCam3D.Page
                 num_DownCompensation3.Value = GlobalStaticData.HeightAligmentData3.DownCompensation;
                 num_BaseHeight3.Value = GlobalStaticData.HeightAligmentData3.BaseHeight;
                 num_placeAttr3.Value = GlobalStaticData.HeightAligmentData3.PlaceAttr;
+                num_MouthMin3.Value = GlobalStaticData.HeightAligmentData3.MouthMinMm;
+                num_MouthMax3.Value = GlobalStaticData.HeightAligmentData3.MouthMaxMm;
                 // num_PlaceCompensation1.Value = GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation;
             }
             catch (Exception ex)
@@ -88,6 +95,8 @@ namespace WideVisualPositionMultCam3D.Page
                 num_DownCompensation4.Value = GlobalStaticData.HeightAligmentData4.DownCompensation;
                 num_BaseHeight4.Value = GlobalStaticData.HeightAligmentData4.BaseHeight;
                 num_placeAttr4.Value = GlobalStaticData.HeightAligmentData4.PlaceAttr;
+                num_MouthMin4.Value = GlobalStaticData.HeightAligmentData4.MouthMinMm;
+                num_MouthMax4.Value = GlobalStaticData.HeightAligmentData4.MouthMaxMm;
                 // num_PlaceCompensation1.Value = GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation;
             }
             catch (Exception ex)
@@ -108,12 +117,15 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.HeightAligmentData1.DownCompensation = num_DownCompensation1.Value;
                 GlobalStaticData.HeightAligmentData1.BaseHeight = num_BaseHeight1.Value;
                 GlobalStaticData.HeightAligmentData1.PlaceAttr = num_placeAttr.Value;
+                GlobalStaticData.HeightAligmentData1.MouthMinMm = num_MouthMin1.Value;
+                GlobalStaticData.HeightAligmentData1.MouthMaxMm = num_MouthMax1.Value;
                 //GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation = num_PlaceCompensation1.Value;
                 GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "IsEnable", GlobalStaticData.HeightAligmentData1.IsEnable.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "UpCompensation", GlobalStaticData.HeightAligmentData1.UpCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "DownCompensation", GlobalStaticData.HeightAligmentData1.DownCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "BaseHeight​", GlobalStaticData.HeightAligmentData1.BaseHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "PlaceAttr", GlobalStaticData.HeightAligmentData1.PlaceAttr.ToString());
+                SaveMouthSizeConfig(GlobalStaticData.HeightAligmentData1, "Bottle1AlignmentCompensation");
                // GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "PlaceCompensation", GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation.ToString());
                 GlobalStaticData.SendRobotCoorRefresh = true;
                 DisplayMessageHalper.displayMessageSuccesses("瓶型对齐参数1保存成功");
@@ -136,12 +148,15 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.HeightAligmentData2.DownCompensation = num_DownCompensation2.Value;
                 GlobalStaticData.HeightAligmentData2.BaseHeight = num_BaseHeight2.Value;
                 GlobalStaticData.HeightAligmentData2.PlaceAttr = num_placeAttr2.Value;
+                GlobalStaticData.HeightAligmentData2.MouthMinMm = num_MouthMin2.Value;
+                GlobalStaticData.HeightAligmentData2.MouthMaxMm = num_MouthMax2.Value;
                 //GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation = num_PlaceCompensation1.Value;
                 GlobalStaticData.OperateConfig.SetValue("Bottle2AlignmentCompensation", "IsEnable", GlobalStaticData.HeightAligmentData2.IsEnable.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle2AlignmentCompensation", "UpCompensation", GlobalStaticData.HeightAligmentData2.UpCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle2AlignmentCompensation", "DownCompensation", GlobalStaticData.HeightAligmentData2.DownCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle2AlignmentCompensation", "BaseHeight​", GlobalStaticData.HeightAligmentData2.BaseHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle2AlignmentCompensation", "PlaceAttr", GlobalStaticData.HeightAligmentData2.PlaceAttr.ToString());
+                SaveMouthSizeConfig(GlobalStaticData.HeightAligmentData2, "Bottle2AlignmentCompensation");
                 // GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "PlaceCompensation", GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation.ToString());
                 GlobalStaticData.SendRobotCoorRefresh = true;
                 DisplayMessageHalper.displayMessageSuccesses("瓶型对齐参数2保存成功");
@@ -164,12 +179,15 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.HeightAligmentData3.DownCompensation = num_DownCompensation3.Value;
                 GlobalStaticData.HeightAligmentData3.BaseHeight = num_BaseHeight3.Value;
                 GlobalStaticData.HeightAligmentData3.PlaceAttr = num_placeAttr3.Value;
+                GlobalStaticData.HeightAligmentData3.MouthMinMm = num_MouthMin3.Value;
+                GlobalStaticData.HeightAligmentData3.MouthMaxMm = num_MouthMax3.Value;
                 //GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation = num_PlaceCompensation1.Value;
                 GlobalStaticData.OperateConfig.SetValue("Bottle3AlignmentCompensation", "IsEnable", GlobalStaticData.HeightAligmentData3.IsEnable.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle3AlignmentCompensation", "UpCompensation", GlobalStaticData.HeightAligmentData3.UpCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle3AlignmentCompensation", "DownCompensation", GlobalStaticData.HeightAligmentData3.DownCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle3AlignmentCompensation", "BaseHeight​", GlobalStaticData.HeightAligmentData3.BaseHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle3AlignmentCompensation", "PlaceAttr", GlobalStaticData.HeightAligmentData3.PlaceAttr.ToString());
+                SaveMouthSizeConfig(GlobalStaticData.HeightAligmentData3, "Bottle3AlignmentCompensation");
                 // GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "PlaceCompensation", GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation.ToString());
                 GlobalStaticData.SendRobotCoorRefresh = true;
                 DisplayMessageHalper.displayMessageSuccesses("瓶型对齐参数3保存成功");
@@ -192,12 +210,15 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.HeightAligmentData4.DownCompensation = num_DownCompensation4.Value;
                 GlobalStaticData.HeightAligmentData4.BaseHeight = num_BaseHeight4.Value;
                 GlobalStaticData.HeightAligmentData4.PlaceAttr = num_placeAttr4.Value;
+                GlobalStaticData.HeightAligmentData4.MouthMinMm = num_MouthMin4.Value;
+                GlobalStaticData.HeightAligmentData4.MouthMaxMm = num_MouthMax4.Value;
                 //GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation = num_PlaceCompensation1.Value;
                 GlobalStaticData.OperateConfig.SetValue("Bottle4AlignmentCompensation", "IsEnable", GlobalStaticData.HeightAligmentData4.IsEnable.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle4AlignmentCompensation", "UpCompensation", GlobalStaticData.HeightAligmentData4.UpCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle4AlignmentCompensation", "DownCompensation", GlobalStaticData.HeightAligmentData4.DownCompensation.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle4AlignmentCompensation", "BaseHeight​", GlobalStaticData.HeightAligmentData4.BaseHeight.ToString());
                 GlobalStaticData.OperateConfig.SetValue("Bottle4AlignmentCompensation", "PlaceAttr", GlobalStaticData.HeightAligmentData4.PlaceAttr.ToString());
+                SaveMouthSizeConfig(GlobalStaticData.HeightAligmentData4, "Bottle4AlignmentCompensation");
                 // GlobalStaticData.OperateConfig.SetValue("Bottle1AlignmentCompensation", "PlaceCompensation", GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation.ToString());
                 GlobalStaticData.SendRobotCoorRefresh = true;
                 DisplayMessageHalper.displayMessageSuccesses("瓶型对齐参数4保存成功");
@@ -260,7 +281,11 @@ namespace WideVisualPositionMultCam3D.Page
             }
         }
 
-      
+        private void SaveMouthSizeConfig(HeightAligmentData data, string section)
+        {
+            GlobalStaticData.OperateConfig.SetValue(section, "MouthMinMm", data.MouthMinMm.ToString());
+            GlobalStaticData.OperateConfig.SetValue(section, "MouthMaxMm", data.MouthMaxMm.ToString());
+        }
      
     }
 }
