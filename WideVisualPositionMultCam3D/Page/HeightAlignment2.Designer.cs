@@ -32,13 +32,13 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.num_UpCompensation2 = new Sunny.UI.UIDoubleUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.num_placeAttr2 = new Sunny.UI.UIDoubleUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
-            this.num_BaseHeight2 = new Sunny.UI.UIDoubleUpDown();
             this.num_DownCompensation2 = new Sunny.UI.UIDoubleUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.num_BaseHeight2 = new Sunny.UI.UIDoubleUpDown();
             this.label23 = new System.Windows.Forms.Label();
             this.num_MouthMin2 = new Sunny.UI.UIDoubleUpDown();
             this.label24 = new System.Windows.Forms.Label();
@@ -51,32 +51,32 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.num_UpCompensation3 = new Sunny.UI.UIDoubleUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.num_placeAttr3 = new Sunny.UI.UIDoubleUpDown();
             this.label13 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
-            this.num_BaseHeight3 = new Sunny.UI.UIDoubleUpDown();
             this.num_DownCompensation3 = new Sunny.UI.UIDoubleUpDown();
+            this.num_MouthMax3 = new Sunny.UI.UIDoubleUpDown();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.num_placeAttr3 = new Sunny.UI.UIDoubleUpDown();
             this.label25 = new System.Windows.Forms.Label();
             this.num_MouthMin3 = new Sunny.UI.UIDoubleUpDown();
-            this.label26 = new System.Windows.Forms.Label();
-            this.num_MouthMax3 = new Sunny.UI.UIDoubleUpDown();
+            this.label12 = new System.Windows.Forms.Label();
+            this.num_BaseHeight3 = new Sunny.UI.UIDoubleUpDown();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.num_UpCompensation1 = new Sunny.UI.UIDoubleUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.num_placeAttr = new Sunny.UI.UIDoubleUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.num_BaseHeight1 = new Sunny.UI.UIDoubleUpDown();
             this.num_DownCompensation1 = new Sunny.UI.UIDoubleUpDown();
+            this.num_BaseHeight1 = new Sunny.UI.UIDoubleUpDown();
             this.label21 = new System.Windows.Forms.Label();
             this.num_MouthMin1 = new Sunny.UI.UIDoubleUpDown();
             this.label22 = new System.Windows.Forms.Label();
             this.num_MouthMax1 = new Sunny.UI.UIDoubleUpDown();
+            this.label4 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_SaveHeight1 = new Sunny.UI.UISymbolButton();
             this.cb_BottleEnable = new System.Windows.Forms.CheckBox();
@@ -88,17 +88,17 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.num_UpCompensation4 = new Sunny.UI.UIDoubleUpDown();
-            this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
-            this.num_placeAttr4 = new Sunny.UI.UIDoubleUpDown();
             this.label18 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.num_BaseHeight4 = new Sunny.UI.UIDoubleUpDown();
             this.num_DownCompensation4 = new Sunny.UI.UIDoubleUpDown();
+            this.num_MouthMax4 = new Sunny.UI.UIDoubleUpDown();
+            this.label28 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.num_placeAttr4 = new Sunny.UI.UIDoubleUpDown();
             this.label27 = new System.Windows.Forms.Label();
             this.num_MouthMin4 = new Sunny.UI.UIDoubleUpDown();
-            this.label28 = new System.Windows.Forms.Label();
-            this.num_MouthMax4 = new Sunny.UI.UIDoubleUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.num_BaseHeight4 = new Sunny.UI.UIDoubleUpDown();
             this.label20 = new System.Windows.Forms.Label();
             this.btn_SaveHeight4 = new Sunny.UI.UISymbolButton();
             this.cb_BottleEnable4 = new System.Windows.Forms.CheckBox();
@@ -204,26 +204,6 @@
             this.num_UpCompensation2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_UpCompensation2.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label6
-            // 
-            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(33, 441);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(74, 21);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "放置属性";
-            // 
-            // label7
-            // 
-            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(33, 358);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(74, 21);
-            this.label7.TabIndex = 0;
-            this.label7.Text = "对齐标准";
-            // 
             // num_placeAttr2
             // 
             this.num_placeAttr2.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -234,7 +214,7 @@
             this.num_placeAttr2.HasMinimum = true;
             this.num_placeAttr2.Location = new System.Drawing.Point(152, 437);
             this.num_placeAttr2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_placeAttr2.Maximum = 5D;
+            this.num_placeAttr2.Maximum = 8D;
             this.num_placeAttr2.MaximumEnabled = true;
             this.num_placeAttr2.Minimum = 1D;
             this.num_placeAttr2.MinimumEnabled = true;
@@ -248,6 +228,16 @@
             this.num_placeAttr2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_placeAttr2.Value = 1D;
             this.num_placeAttr2.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(33, 441);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(74, 21);
+            this.label6.TabIndex = 0;
+            this.label6.Text = "放置属性";
             // 
             // label8
             // 
@@ -269,24 +259,6 @@
             this.label9.TabIndex = 0;
             this.label9.Text = "波动下限";
             // 
-            // num_BaseHeight2
-            // 
-            this.num_BaseHeight2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_BaseHeight2.Decimal = 0;
-            this.num_BaseHeight2.DecimalPlaces = 0;
-            this.num_BaseHeight2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_BaseHeight2.Location = new System.Drawing.Point(152, 354);
-            this.num_BaseHeight2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_BaseHeight2.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_BaseHeight2.Name = "num_BaseHeight2";
-            this.num_BaseHeight2.ShowText = false;
-            this.num_BaseHeight2.Size = new System.Drawing.Size(116, 29);
-            this.num_BaseHeight2.Step = 1D;
-            this.num_BaseHeight2.TabIndex = 2;
-            this.num_BaseHeight2.Text = "uiDoubleUpDown1";
-            this.num_BaseHeight2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_BaseHeight2.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // num_DownCompensation2
             // 
             this.num_DownCompensation2.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -304,6 +276,34 @@
             this.num_DownCompensation2.Text = "uiDoubleUpDown1";
             this.num_DownCompensation2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_DownCompensation2.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(33, 358);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(74, 21);
+            this.label7.TabIndex = 0;
+            this.label7.Text = "对齐标准";
+            // 
+            // num_BaseHeight2
+            // 
+            this.num_BaseHeight2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_BaseHeight2.Decimal = 0;
+            this.num_BaseHeight2.DecimalPlaces = 0;
+            this.num_BaseHeight2.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_BaseHeight2.Location = new System.Drawing.Point(152, 354);
+            this.num_BaseHeight2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_BaseHeight2.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_BaseHeight2.Name = "num_BaseHeight2";
+            this.num_BaseHeight2.ShowText = false;
+            this.num_BaseHeight2.Size = new System.Drawing.Size(116, 29);
+            this.num_BaseHeight2.Step = 1D;
+            this.num_BaseHeight2.TabIndex = 2;
+            this.num_BaseHeight2.Text = "uiDoubleUpDown1";
+            this.num_BaseHeight2.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_BaseHeight2.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // label23
             // 
@@ -487,51 +487,6 @@
             this.num_UpCompensation3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_UpCompensation3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label11
-            // 
-            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(33, 441);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(74, 21);
-            this.label11.TabIndex = 0;
-            this.label11.Text = "放置属性";
-            // 
-            // label12
-            // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(33, 358);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(74, 21);
-            this.label12.TabIndex = 0;
-            this.label12.Text = "对齐标准";
-            // 
-            // num_placeAttr3
-            // 
-            this.num_placeAttr3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_placeAttr3.Decimal = 0;
-            this.num_placeAttr3.DecimalPlaces = 0;
-            this.num_placeAttr3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_placeAttr3.HasMaximum = true;
-            this.num_placeAttr3.HasMinimum = true;
-            this.num_placeAttr3.Location = new System.Drawing.Point(152, 437);
-            this.num_placeAttr3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_placeAttr3.Maximum = 5D;
-            this.num_placeAttr3.MaximumEnabled = true;
-            this.num_placeAttr3.Minimum = 1D;
-            this.num_placeAttr3.MinimumEnabled = true;
-            this.num_placeAttr3.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_placeAttr3.Name = "num_placeAttr3";
-            this.num_placeAttr3.ShowText = false;
-            this.num_placeAttr3.Size = new System.Drawing.Size(116, 29);
-            this.num_placeAttr3.Step = 1D;
-            this.num_placeAttr3.TabIndex = 2;
-            this.num_placeAttr3.Text = "uiDoubleUpDown1";
-            this.num_placeAttr3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_placeAttr3.Value = 1D;
-            this.num_placeAttr3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // label13
             // 
             this.label13.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -552,24 +507,6 @@
             this.label14.TabIndex = 0;
             this.label14.Text = "波动下限";
             // 
-            // num_BaseHeight3
-            // 
-            this.num_BaseHeight3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_BaseHeight3.Decimal = 0;
-            this.num_BaseHeight3.DecimalPlaces = 0;
-            this.num_BaseHeight3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_BaseHeight3.Location = new System.Drawing.Point(152, 354);
-            this.num_BaseHeight3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_BaseHeight3.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_BaseHeight3.Name = "num_BaseHeight3";
-            this.num_BaseHeight3.ShowText = false;
-            this.num_BaseHeight3.Size = new System.Drawing.Size(116, 29);
-            this.num_BaseHeight3.Step = 1D;
-            this.num_BaseHeight3.TabIndex = 2;
-            this.num_BaseHeight3.Text = "uiDoubleUpDown1";
-            this.num_BaseHeight3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_BaseHeight3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // num_DownCompensation3
             // 
             this.num_DownCompensation3.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -587,6 +524,72 @@
             this.num_DownCompensation3.Text = "uiDoubleUpDown1";
             this.num_DownCompensation3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_DownCompensation3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // num_MouthMax3
+            // 
+            this.num_MouthMax3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_MouthMax3.Decimal = 2;
+            this.num_MouthMax3.DecimalPlaces = 2;
+            this.num_MouthMax3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_MouthMax3.HasMinimum = true;
+            this.num_MouthMax3.Location = new System.Drawing.Point(152, 272);
+            this.num_MouthMax3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_MouthMax3.Minimum = 0D;
+            this.num_MouthMax3.MinimumEnabled = true;
+            this.num_MouthMax3.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_MouthMax3.Name = "num_MouthMax3";
+            this.num_MouthMax3.ShowText = false;
+            this.num_MouthMax3.Size = new System.Drawing.Size(116, 29);
+            this.num_MouthMax3.TabIndex = 2;
+            this.num_MouthMax3.Text = "uiDoubleUpDown1";
+            this.num_MouthMax3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_MouthMax3.Value = 9999D;
+            this.num_MouthMax3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label26
+            // 
+            this.label26.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(13, 276);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(114, 21);
+            this.label26.TabIndex = 0;
+            this.label26.Text = "瓶口上限(mm)";
+            // 
+            // label11
+            // 
+            this.label11.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(33, 441);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 21);
+            this.label11.TabIndex = 0;
+            this.label11.Text = "放置属性";
+            // 
+            // num_placeAttr3
+            // 
+            this.num_placeAttr3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_placeAttr3.Decimal = 0;
+            this.num_placeAttr3.DecimalPlaces = 0;
+            this.num_placeAttr3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_placeAttr3.HasMaximum = true;
+            this.num_placeAttr3.HasMinimum = true;
+            this.num_placeAttr3.Location = new System.Drawing.Point(152, 437);
+            this.num_placeAttr3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_placeAttr3.Maximum = 8D;
+            this.num_placeAttr3.MaximumEnabled = true;
+            this.num_placeAttr3.Minimum = 1D;
+            this.num_placeAttr3.MinimumEnabled = true;
+            this.num_placeAttr3.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_placeAttr3.Name = "num_placeAttr3";
+            this.num_placeAttr3.ShowText = false;
+            this.num_placeAttr3.Size = new System.Drawing.Size(116, 29);
+            this.num_placeAttr3.Step = 1D;
+            this.num_placeAttr3.TabIndex = 2;
+            this.num_placeAttr3.Text = "uiDoubleUpDown1";
+            this.num_placeAttr3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_placeAttr3.Value = 1D;
+            this.num_placeAttr3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // label25
             // 
@@ -618,36 +621,33 @@
             this.num_MouthMin3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_MouthMin3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label26
+            // label12
             // 
-            this.label26.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(13, 276);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(114, 21);
-            this.label26.TabIndex = 0;
-            this.label26.Text = "瓶口上限(mm)";
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(33, 358);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(74, 21);
+            this.label12.TabIndex = 0;
+            this.label12.Text = "对齐标准";
             // 
-            // num_MouthMax3
+            // num_BaseHeight3
             // 
-            this.num_MouthMax3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_MouthMax3.Decimal = 2;
-            this.num_MouthMax3.DecimalPlaces = 2;
-            this.num_MouthMax3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_MouthMax3.HasMinimum = true;
-            this.num_MouthMax3.Location = new System.Drawing.Point(152, 272);
-            this.num_MouthMax3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_MouthMax3.Minimum = 0D;
-            this.num_MouthMax3.MinimumEnabled = true;
-            this.num_MouthMax3.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_MouthMax3.Name = "num_MouthMax3";
-            this.num_MouthMax3.ShowText = false;
-            this.num_MouthMax3.Size = new System.Drawing.Size(116, 29);
-            this.num_MouthMax3.TabIndex = 2;
-            this.num_MouthMax3.Text = "uiDoubleUpDown1";
-            this.num_MouthMax3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_MouthMax3.Value = 9999D;
-            this.num_MouthMax3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.num_BaseHeight3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_BaseHeight3.Decimal = 0;
+            this.num_BaseHeight3.DecimalPlaces = 0;
+            this.num_BaseHeight3.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_BaseHeight3.Location = new System.Drawing.Point(152, 354);
+            this.num_BaseHeight3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_BaseHeight3.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_BaseHeight3.Name = "num_BaseHeight3";
+            this.num_BaseHeight3.ShowText = false;
+            this.num_BaseHeight3.Size = new System.Drawing.Size(116, 29);
+            this.num_BaseHeight3.Step = 1D;
+            this.num_BaseHeight3.TabIndex = 2;
+            this.num_BaseHeight3.Text = "uiDoubleUpDown1";
+            this.num_BaseHeight3.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_BaseHeight3.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // tableLayoutPanel2
             // 
@@ -727,26 +727,6 @@
             this.num_UpCompensation1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_UpCompensation1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label5
-            // 
-            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(33, 441);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(74, 21);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "放置属性";
-            // 
-            // label4
-            // 
-            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(33, 358);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(74, 21);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "对齐标准";
-            // 
             // num_placeAttr
             // 
             this.num_placeAttr.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -757,7 +737,7 @@
             this.num_placeAttr.HasMinimum = true;
             this.num_placeAttr.Location = new System.Drawing.Point(152, 437);
             this.num_placeAttr.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_placeAttr.Maximum = 5D;
+            this.num_placeAttr.Maximum = 8D;
             this.num_placeAttr.MaximumEnabled = true;
             this.num_placeAttr.Minimum = 1D;
             this.num_placeAttr.MinimumEnabled = true;
@@ -771,6 +751,16 @@
             this.num_placeAttr.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_placeAttr.Value = 1D;
             this.num_placeAttr.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label5
+            // 
+            this.label5.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(33, 441);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(74, 21);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "放置属性";
             // 
             // label3
             // 
@@ -792,24 +782,6 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "波动下限";
             // 
-            // num_BaseHeight1
-            // 
-            this.num_BaseHeight1.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_BaseHeight1.Decimal = 0;
-            this.num_BaseHeight1.DecimalPlaces = 0;
-            this.num_BaseHeight1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_BaseHeight1.Location = new System.Drawing.Point(152, 354);
-            this.num_BaseHeight1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_BaseHeight1.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_BaseHeight1.Name = "num_BaseHeight1";
-            this.num_BaseHeight1.ShowText = false;
-            this.num_BaseHeight1.Size = new System.Drawing.Size(116, 29);
-            this.num_BaseHeight1.Step = 1D;
-            this.num_BaseHeight1.TabIndex = 2;
-            this.num_BaseHeight1.Text = "uiDoubleUpDown1";
-            this.num_BaseHeight1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_BaseHeight1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // num_DownCompensation1
             // 
             this.num_DownCompensation1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -827,6 +799,24 @@
             this.num_DownCompensation1.Text = "uiDoubleUpDown1";
             this.num_DownCompensation1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_DownCompensation1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // num_BaseHeight1
+            // 
+            this.num_BaseHeight1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_BaseHeight1.Decimal = 0;
+            this.num_BaseHeight1.DecimalPlaces = 0;
+            this.num_BaseHeight1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_BaseHeight1.Location = new System.Drawing.Point(152, 354);
+            this.num_BaseHeight1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_BaseHeight1.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_BaseHeight1.Name = "num_BaseHeight1";
+            this.num_BaseHeight1.ShowText = false;
+            this.num_BaseHeight1.Size = new System.Drawing.Size(116, 29);
+            this.num_BaseHeight1.Step = 1D;
+            this.num_BaseHeight1.TabIndex = 2;
+            this.num_BaseHeight1.Text = "uiDoubleUpDown1";
+            this.num_BaseHeight1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_BaseHeight1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // label21
             // 
@@ -888,6 +878,16 @@
             this.num_MouthMax1.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_MouthMax1.Value = 9999D;
             this.num_MouthMax1.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(33, 358);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(74, 21);
+            this.label4.TabIndex = 0;
+            this.label4.Text = "对齐标准";
             // 
             // label1
             // 
@@ -1060,51 +1060,6 @@
             this.num_UpCompensation4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_UpCompensation4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label16
-            // 
-            this.label16.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(33, 441);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(74, 21);
-            this.label16.TabIndex = 0;
-            this.label16.Text = "放置属性";
-            // 
-            // label17
-            // 
-            this.label17.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(33, 358);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(74, 21);
-            this.label17.TabIndex = 0;
-            this.label17.Text = "对齐标准";
-            // 
-            // num_placeAttr4
-            // 
-            this.num_placeAttr4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_placeAttr4.Decimal = 0;
-            this.num_placeAttr4.DecimalPlaces = 0;
-            this.num_placeAttr4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_placeAttr4.HasMaximum = true;
-            this.num_placeAttr4.HasMinimum = true;
-            this.num_placeAttr4.Location = new System.Drawing.Point(152, 437);
-            this.num_placeAttr4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_placeAttr4.Maximum = 5D;
-            this.num_placeAttr4.MaximumEnabled = true;
-            this.num_placeAttr4.Minimum = 1D;
-            this.num_placeAttr4.MinimumEnabled = true;
-            this.num_placeAttr4.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_placeAttr4.Name = "num_placeAttr4";
-            this.num_placeAttr4.ShowText = false;
-            this.num_placeAttr4.Size = new System.Drawing.Size(116, 29);
-            this.num_placeAttr4.Step = 1D;
-            this.num_placeAttr4.TabIndex = 2;
-            this.num_placeAttr4.Text = "uiDoubleUpDown1";
-            this.num_placeAttr4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_placeAttr4.Value = 1D;
-            this.num_placeAttr4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // label18
             // 
             this.label18.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1125,24 +1080,6 @@
             this.label19.TabIndex = 0;
             this.label19.Text = "波动下限";
             // 
-            // num_BaseHeight4
-            // 
-            this.num_BaseHeight4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_BaseHeight4.Decimal = 0;
-            this.num_BaseHeight4.DecimalPlaces = 0;
-            this.num_BaseHeight4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_BaseHeight4.Location = new System.Drawing.Point(152, 354);
-            this.num_BaseHeight4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_BaseHeight4.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_BaseHeight4.Name = "num_BaseHeight4";
-            this.num_BaseHeight4.ShowText = false;
-            this.num_BaseHeight4.Size = new System.Drawing.Size(116, 29);
-            this.num_BaseHeight4.Step = 1D;
-            this.num_BaseHeight4.TabIndex = 2;
-            this.num_BaseHeight4.Text = "uiDoubleUpDown1";
-            this.num_BaseHeight4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_BaseHeight4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
-            // 
             // num_DownCompensation4
             // 
             this.num_DownCompensation4.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -1160,6 +1097,72 @@
             this.num_DownCompensation4.Text = "uiDoubleUpDown1";
             this.num_DownCompensation4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_DownCompensation4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // num_MouthMax4
+            // 
+            this.num_MouthMax4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_MouthMax4.Decimal = 2;
+            this.num_MouthMax4.DecimalPlaces = 2;
+            this.num_MouthMax4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_MouthMax4.HasMinimum = true;
+            this.num_MouthMax4.Location = new System.Drawing.Point(152, 272);
+            this.num_MouthMax4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_MouthMax4.Minimum = 0D;
+            this.num_MouthMax4.MinimumEnabled = true;
+            this.num_MouthMax4.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_MouthMax4.Name = "num_MouthMax4";
+            this.num_MouthMax4.ShowText = false;
+            this.num_MouthMax4.Size = new System.Drawing.Size(116, 29);
+            this.num_MouthMax4.TabIndex = 2;
+            this.num_MouthMax4.Text = "uiDoubleUpDown1";
+            this.num_MouthMax4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_MouthMax4.Value = 9999D;
+            this.num_MouthMax4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            // 
+            // label28
+            // 
+            this.label28.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(13, 276);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(114, 21);
+            this.label28.TabIndex = 0;
+            this.label28.Text = "瓶口上限(mm)";
+            // 
+            // label16
+            // 
+            this.label16.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(33, 441);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(74, 21);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "放置属性";
+            // 
+            // num_placeAttr4
+            // 
+            this.num_placeAttr4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_placeAttr4.Decimal = 0;
+            this.num_placeAttr4.DecimalPlaces = 0;
+            this.num_placeAttr4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_placeAttr4.HasMaximum = true;
+            this.num_placeAttr4.HasMinimum = true;
+            this.num_placeAttr4.Location = new System.Drawing.Point(152, 437);
+            this.num_placeAttr4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_placeAttr4.Maximum = 8D;
+            this.num_placeAttr4.MaximumEnabled = true;
+            this.num_placeAttr4.Minimum = 1D;
+            this.num_placeAttr4.MinimumEnabled = true;
+            this.num_placeAttr4.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_placeAttr4.Name = "num_placeAttr4";
+            this.num_placeAttr4.ShowText = false;
+            this.num_placeAttr4.Size = new System.Drawing.Size(116, 29);
+            this.num_placeAttr4.Step = 1D;
+            this.num_placeAttr4.TabIndex = 2;
+            this.num_placeAttr4.Text = "uiDoubleUpDown1";
+            this.num_placeAttr4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_placeAttr4.Value = 1D;
+            this.num_placeAttr4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // label27
             // 
@@ -1191,36 +1194,33 @@
             this.num_MouthMin4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
             this.num_MouthMin4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
-            // label28
+            // label17
             // 
-            this.label28.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(13, 276);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(114, 21);
-            this.label28.TabIndex = 0;
-            this.label28.Text = "瓶口上限(mm)";
+            this.label17.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(33, 358);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(74, 21);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "对齐标准";
             // 
-            // num_MouthMax4
+            // num_BaseHeight4
             // 
-            this.num_MouthMax4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.num_MouthMax4.Decimal = 2;
-            this.num_MouthMax4.DecimalPlaces = 2;
-            this.num_MouthMax4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.num_MouthMax4.HasMinimum = true;
-            this.num_MouthMax4.Location = new System.Drawing.Point(152, 272);
-            this.num_MouthMax4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.num_MouthMax4.Minimum = 0D;
-            this.num_MouthMax4.MinimumEnabled = true;
-            this.num_MouthMax4.MinimumSize = new System.Drawing.Size(100, 0);
-            this.num_MouthMax4.Name = "num_MouthMax4";
-            this.num_MouthMax4.ShowText = false;
-            this.num_MouthMax4.Size = new System.Drawing.Size(116, 29);
-            this.num_MouthMax4.TabIndex = 2;
-            this.num_MouthMax4.Text = "uiDoubleUpDown1";
-            this.num_MouthMax4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
-            this.num_MouthMax4.Value = 9999D;
-            this.num_MouthMax4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
+            this.num_BaseHeight4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.num_BaseHeight4.Decimal = 0;
+            this.num_BaseHeight4.DecimalPlaces = 0;
+            this.num_BaseHeight4.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.num_BaseHeight4.Location = new System.Drawing.Point(152, 354);
+            this.num_BaseHeight4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.num_BaseHeight4.MinimumSize = new System.Drawing.Size(100, 0);
+            this.num_BaseHeight4.Name = "num_BaseHeight4";
+            this.num_BaseHeight4.ShowText = false;
+            this.num_BaseHeight4.Size = new System.Drawing.Size(116, 29);
+            this.num_BaseHeight4.Step = 1D;
+            this.num_BaseHeight4.TabIndex = 2;
+            this.num_BaseHeight4.Text = "uiDoubleUpDown1";
+            this.num_BaseHeight4.TextAlignment = System.Drawing.ContentAlignment.MiddleCenter;
+            this.num_BaseHeight4.ZoomScaleRect = new System.Drawing.Rectangle(0, 0, 0, 0);
             // 
             // label20
             // 

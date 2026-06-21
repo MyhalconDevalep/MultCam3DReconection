@@ -636,6 +636,15 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 SendPending3 = 0;
         }
 
+        private bool IsRobotPending(int robotId)
+        {
+            if (robotId == 1) return SendPending1 == 1;
+            if (robotId == 2) return SendPending2 == 1;
+            if (robotId == 3) return SendPending3 == 1;
+
+            return false;
+        }
+
         //先抓X最小的
 
         public void SendCoorValue3Robot(double baseOffsetX,SuperSimpleTcpHelper superTcp1,SuperSimpleTcpHelper superTcp2,SuperSimpleTcpHelper superTcp3)
@@ -645,57 +654,62 @@ namespace WideVisualPositionMultCam3D.ToolClass
             TrySendRobotMinX(
                 2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
+                baseOffsetX,
                 Robot2List,
                 _lock2,
                 superTcp2,
                 ref SendCurrentCoor2,
+                1,
                 SendCurrentCoor1,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
                 Robot1List,
                 1,
+                3,
                 SendCurrentCoor3,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
                 Robot3List,
                 2);
 
-            Thread.Sleep(20);
-
             TrySendRobotMinX(
                 1,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
+                baseOffsetX,
                 Robot1List,
                 _lock1,
                 superTcp1,
                 ref SendCurrentCoor1,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 1,
+                0,
                 null,
                 0,
                 null,
                 0);
 
-            Thread.Sleep(20);
-
             TrySendRobotMinX(
                 3,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
+                baseOffsetX,
                 Robot3List,
                 _lock3,
                 superTcp3,
                 ref SendCurrentCoor3,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 2,
+                0,
                 null,
                 0,
                 null,
                 0);
         }
 
-        private void TrySendRobotMinX(int robotId, int robotState,List<FindCoorData> selfList,object selfLock,SuperSimpleTcpHelper tcp, ref FindCoorData currentSend,FindCoorData otherCurrent1,int otherRobotState1,List<FindCoorData> otherList1,int conflictSafeMark1,FindCoorData otherCurrent2, int otherRobotState2,List<FindCoorData> otherList2,int conflictSafeMark2)
+        private void TrySendRobotMinX(int robotId, int robotState, double baseOffsetX, List<FindCoorData> selfList, object selfLock, SuperSimpleTcpHelper tcp, ref FindCoorData currentSend, int otherRobotId1, FindCoorData otherCurrent1, int otherRobotState1, List<FindCoorData> otherList1, int conflictSafeMark1, int otherRobotId2, FindCoorData otherCurrent2, int otherRobotState2, List<FindCoorData> otherList2, int conflictSafeMark2)
         {
             try
             {
@@ -705,17 +719,21 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 {
                     if (selfList.Count == 0) return;
 
-                    var target = selfList[selfList.Count - 1];
+                    var target = FindSafeCandidateMinX(
+                        selfList,
+                        baseOffsetX,
+                        otherRobotId1,
+                        otherCurrent1,
+                        otherRobotState1,
+                        otherList1,
+                        conflictSafeMark1,
+                        otherRobotId2,
+                        otherCurrent2,
+                        otherRobotState2,
+                        otherList2,
+                        conflictSafeMark2);
 
-                    bool canSend = true;
-
-                    if (!CanSendBySafeRegion(target, conflictSafeMark1, otherCurrent1, otherRobotState1, otherList1))
-                        canSend = false;
-
-                    if (canSend && !CanSendBySafeRegion(target, conflictSafeMark2, otherCurrent2, otherRobotState2, otherList2))
-                        canSend = false;
-
-                    if (!canSend) return;
+                    if (target == null) return;
 
                     List<FindCoorData> temp = new List<FindCoorData>() { target };
 
@@ -728,6 +746,37 @@ namespace WideVisualPositionMultCam3D.ToolClass
             {
                 // 建议加日志
             }
+        }
+
+        private FindCoorData FindSafeCandidateMinX(List<FindCoorData> selfList, double baseOffsetX, int otherRobotId1, FindCoorData otherCurrent1, int otherRobotState1, List<FindCoorData> otherList1, int conflictSafeMark1, int otherRobotId2, FindCoorData otherCurrent2, int otherRobotState2, List<FindCoorData> otherList2, int conflictSafeMark2)
+        {
+            if (selfList == null || selfList.Count == 0)
+                return null;
+
+            double baseWorldX = selfList[selfList.Count - 1].WorldXScurren.D;
+
+            for (int i = selfList.Count - 1; i >= 0; i--)
+            {
+                FindCoorData candidate = selfList[i];
+                double candidateWorldX = candidate.WorldXScurren.D;
+                if (candidateWorldX < baseWorldX)
+                    continue;
+
+                if (baseOffsetX > 0 && candidateWorldX > baseWorldX + baseOffsetX)
+                    continue;
+
+                bool canSend = CanSendBySafeRegion(candidate, conflictSafeMark1, otherRobotId1, otherCurrent1, otherRobotState1, otherList1);
+
+                if (canSend)
+                {
+                    canSend = CanSendBySafeRegion(candidate, conflictSafeMark2, otherRobotId2, otherCurrent2, otherRobotState2, otherList2);
+                }
+
+                if (canSend)
+                    return candidate;
+            }
+
+            return null;
         }
 
         //先抓Y最大的
@@ -743,17 +792,17 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock2,
                 superTcp2,
                 ref SendCurrentCoor2,
+                1,
                 SendCurrentCoor1,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
                 Robot1List,
                 1,
+                3,
                 SendCurrentCoor3,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
                 Robot3List,
                 2,
                 p => p.OrderBy(x => x.WorldY.D));
-
-            Thread.Sleep(20);
 
             TrySendRobotForThree(
                 1,
@@ -763,17 +812,17 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock1,
                 superTcp1,
                 ref SendCurrentCoor1,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 1,
+                0,
                 null,
                 0,
                 null,
                 0,
                 p => p.OrderBy(x => x.WorldY.D));
-
-            Thread.Sleep(20);
 
             TrySendRobotForThree(
                 3,
@@ -783,10 +832,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock3,
                 superTcp3,
                 ref SendCurrentCoor3,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 2,
+                0,
                 null,
                 0,
                 null,
@@ -808,17 +859,17 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock2,
                 superTcp2,
                 ref SendCurrentCoor2,
+                1,
                 SendCurrentCoor1,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1,
                 Robot1List,
                 1,
+                3,
                 SendCurrentCoor3,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
                 Robot3List,
                 2,
                 p => p.OrderByDescending(x => x.Height.D));
-
-            Thread.Sleep(20);
 
             TrySendRobotForThree(
                 1,
@@ -828,17 +879,17 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock1,
                 superTcp1,
                 ref SendCurrentCoor1,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 1,
+                0,
                 null,
                 0,
                 null,
                 0,
                p => p.OrderByDescending(x => x.Height.D));
-
-            Thread.Sleep(20);
 
             TrySendRobotForThree(
                 3,
@@ -848,10 +899,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 _lock3,
                 superTcp3,
                 ref SendCurrentCoor3,
+                2,
                 SendCurrentCoor2,
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2,
                 Robot2List,
                 2,
+                0,
                 null,
                 0,
                 null,
@@ -859,7 +912,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 p => p.OrderByDescending(x => x.Height.D));
         }
 
-        private void TrySendRobotForThree(int robotId,int robotState,double baseOffsetX,List<FindCoorData> selfList,object selfLock,SuperSimpleTcpHelper tcp,ref FindCoorData currentSend,FindCoorData otherCurrent1,int otherRobotState1, List<FindCoorData> otherList1,int conflictSafeMark1, FindCoorData otherCurrent2,int otherRobotState2,List<FindCoorData> otherList2,int conflictSafeMark2, Func<IEnumerable<FindCoorData>, IEnumerable<FindCoorData>> sortFunc)
+        private void TrySendRobotForThree(int robotId, int robotState, double baseOffsetX, List<FindCoorData> selfList, object selfLock, SuperSimpleTcpHelper tcp, ref FindCoorData currentSend, int otherRobotId1, FindCoorData otherCurrent1, int otherRobotState1, List<FindCoorData> otherList1, int conflictSafeMark1, int otherRobotId2, FindCoorData otherCurrent2, int otherRobotState2, List<FindCoorData> otherList2, int conflictSafeMark2, Func<IEnumerable<FindCoorData>, IEnumerable<FindCoorData>> sortFunc)
         {
             try
             {
@@ -873,7 +926,8 @@ namespace WideVisualPositionMultCam3D.ToolClass
                     double baseWorldX = basePoint.WorldXScurren.D;
 
                     var candidates = selfList
-                        .Where(p => p.WorldXScurren.D <= baseWorldX + baseOffsetX)
+                        .Where(p => p.WorldXScurren.D >= baseWorldX)
+                        .Where(p => baseOffsetX <= 0 || p.WorldXScurren.D <= baseWorldX + baseOffsetX)
                         .ToList();
 
                     if (candidates.Count == 0) return;
@@ -887,6 +941,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                         if (!CanSendBySafeRegion(
                             target,
                             conflictSafeMark1,
+                            otherRobotId1,
                             otherCurrent1,
                             otherRobotState1,
                             otherList1))
@@ -898,6 +953,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                             !CanSendBySafeRegion(
                                 target,
                                 conflictSafeMark2,
+                                otherRobotId2,
                                 otherCurrent2,
                                 otherRobotState2,
                                 otherList2))
@@ -924,7 +980,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             }
         }
         //安全去仲裁方法
-        private bool CanSendBySafeRegion(FindCoorData target,int conflictSafeMark, FindCoorData otherCurrent,int otherRobotState,List<FindCoorData> otherList)
+        private bool CanSendBySafeRegion(FindCoorData target, int conflictSafeMark, int otherRobotId, FindCoorData otherCurrent, int otherRobotState, List<FindCoorData> otherList)
         {
             if (target == null) return false;
 
@@ -935,7 +991,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             // 对方机械手正在安全区动作，当前点不能发
             if (otherCurrent != null &&
                 otherCurrent.SafeRegionMark == conflictSafeMark &&
-                otherRobotState == 1)
+                (otherRobotState == 1 || IsRobotPending(otherRobotId)))
             {
                 return false;
             }

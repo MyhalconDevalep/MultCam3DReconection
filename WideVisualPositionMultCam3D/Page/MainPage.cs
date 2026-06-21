@@ -166,18 +166,17 @@ namespace WideVisualPositionMultCam3D.Page
 
             _superSimpleTcp2 = new SuperSimpleTcpHelper(IP2, port2, false);
             _superSimpleTcp2.ActionPrintConnectionLog += actionPrintConnectionLog2;
-            _superSimpleTcp2.ActionReceivedMsg += ReceivedMsg2;
+            _superSimpleTcp2.ActionReceivedMsg += ReceivedMsgEncoding;
 
             _superSimpleTcp3 = new SuperSimpleTcpHelper(IP3, port3, false);
             _superSimpleTcp3.ActionPrintConnectionLog += actionPrintConnectionLog3;
 
-            _superSimpleTcp4 = new SuperSimpleTcpHelper(IP4, port4, false);
+            _superSimpleTcp4 = new SuperSimpleTcpHelper(IP4, port4, true);
             _superSimpleTcp4.ActionPrintConnectionLog += actionPrintConnectionLog4;
-            _superSimpleTcp4.ActionReceivedMsg += ReceivedMsg4;
-
-            _superSimpleTcp5 = new SuperSimpleTcpHelper(IP5, port5, true);
+   
+            _superSimpleTcp5 = new SuperSimpleTcpHelper(IP5, port5, false);
             _superSimpleTcp5.ActionPrintConnectionLog += actionPrintConnectionLog5;
-            _superSimpleTcp5.ActionReceivedMsg += ReceivedMsg5;
+      
 
             //给数据处理类绑定一个显示发送消息的信息显示委托  
             _pointProcessor._eventMsg = LogWinform;
@@ -707,15 +706,15 @@ namespace WideVisualPositionMultCam3D.Page
                     //为发送X最小的
                     if (GlobalStaticData.SendDataState == 0)
                     {
-                        _pointProcessor.SendCoorValue3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2,_superSimpleTcp3);
+                        _pointProcessor.SendCoorValue3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
                     else if (GlobalStaticData.SendDataState == 1)//发送Y坐标最小的
                     {
-                        _pointProcessor.SendCoorValueWorldYMinSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2, _superSimpleTcp3);
+                        _pointProcessor.SendCoorValueWorldYMinSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
                     else//发送Height最大的
                     {
-                        _pointProcessor.SendCoorValueHeightMaxSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp2, _superSimpleTcp3);
+                        _pointProcessor.SendCoorValueHeightMaxSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
                 }
                     BeginInvoke(new Action(() =>
@@ -730,7 +729,7 @@ namespace WideVisualPositionMultCam3D.Page
             }
         }
  
-        private void ReceivedMsg2(byte[] obj)
+        private void ReceivedMsgEncoding(byte[] obj)
         {
             int encoderObj = BitConverter.ToInt32(obj, 0);
             if (!IsDisposed && IsHandleCreated)
@@ -749,33 +748,8 @@ namespace WideVisualPositionMultCam3D.Page
             ProcessEncoderValue(encoderObj);
         }
 
-        private void ReceivedMsg4(byte[] obj)
-        {
-            //int encoderObj = BitConverter.ToInt32(obj, 0);
-            //int useData1 = BitConverter.ToInt32(obj, 4);
-            //int useData2 = BitConverter.ToInt32(obj, 8);
-            //int useData3 = BitConverter.ToInt32(obj, 12);
+   
 
-            //ProcessEncoderValue(encoderObj);
-
-            //robotnum1 = useData1;
-            //robotnum2 = useData2;
-            //robotnum3 = useData3;
-
-            //int total = _BindingData.EncoderTotal;
-            //BeginInvoke(new Action(() =>
-            //{
-            //    _BindingData.RobotUseData1 = robotnum1;
-            //    _BindingData.RobotUseData2 = robotnum2;
-            //    _BindingData.RobotUseData3 = robotnum3;
-            //    tool_EncodingValue.Text = total.ToString();
-            //}));
-        }
-
-        private void ReceivedMsg5(byte[] obj)
-        {
-
-        }
 
         private void actionPrintConnectionLog1(int arg1, string arg2)
         {
