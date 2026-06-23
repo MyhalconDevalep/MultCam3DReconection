@@ -2,6 +2,7 @@
 using Sunny.UI;
 using System;
 using System.Windows.Forms;
+using WideVisualPositionMultCam3D.Models;
 using WideVisualPositionMultCam3D.ToolClass;
 
 namespace WideVisualPositionMultCam3D.Page
@@ -94,45 +95,12 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "XYTolerance", _XY_Tolerance.ToString());
                 GlobalStaticData.OperateConfig.SetValue("PublicPositionConfig", "ZToleranceEx​​", _Z_Tolerance.ToString());
 
-                GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig1.Cam1.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam0.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam1.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam0.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam1.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam0.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam1.YoloInferData.conf_threshold = _conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.conf_threshold = _conf_threshold;
-
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance = _positionTolerance;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.PositionTolerance = _positionTolerance;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.PositionTolerance = _positionTolerance;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.PositionTolerance = _positionTolerance;
-
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
-
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
-
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight = _calib_Board_H;
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = _calib_Board_H;
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.BoardHeight = _calib_Board_H;
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.BoardHeight = _calib_Board_H;
-
+                foreach (CameraGroupConfig cameraGroupConfig in GetCameraGroupConfigs())
+                {
+                    ApplyPublicParams(cameraGroupConfig);
+                }
 
                 GlobalStaticData.PositionRefresh = true;
-                GlobalStaticData.CameraGroupConfig1.Version++;
-                GlobalStaticData.CameraGroupConfig2.Version++;
-                GlobalStaticData.CameraGroupConfig3.Version++;
-                GlobalStaticData.CameraGroupConfig4.Version++;
                 DisplayMessageHalper.displayMessageSuccesses("参数保存成功");
               //  UIMessageTip.ShowOk("参数保存成功");
             }
@@ -140,6 +108,47 @@ namespace WideVisualPositionMultCam3D.Page
             {
                 DisplayMessageHalper.displayMessageErro($"参数保存失败:{ex.Message}");
                // UIMessageTip.ShowError($"参数保存失败:{ex.Message}");
+            }
+        }
+
+        private CameraGroupConfig[] GetCameraGroupConfigs()
+        {
+            return new[]
+            {
+                GlobalStaticData.CameraGroupConfig1,
+                GlobalStaticData.CameraGroupConfig2,
+                GlobalStaticData.CameraGroupConfig3,
+                GlobalStaticData.CameraGroupConfig4,
+                GlobalStaticData.CameraGroupConfig5,
+                GlobalStaticData.CameraGroupConfig6
+            };
+        }
+
+        private void ApplyPublicParams(CameraGroupConfig cameraGroupConfig)
+        {
+            if (cameraGroupConfig == null)
+                return;
+
+            cameraGroupConfig.Cam0.YoloInferData.conf_threshold = _conf_threshold;
+            cameraGroupConfig.Cam1.YoloInferData.conf_threshold = _conf_threshold;
+            cameraGroupConfig.Cam2.YoloInferData.conf_threshold = _conf_threshold;
+            cameraGroupConfig.findCoorPairsData.PositionTolerance = _positionTolerance;
+            cameraGroupConfig.findCoorPairsData.hv_XYTolerance = _XY_Tolerance;
+            cameraGroupConfig.findCoorPairsData.hv_ZTolerance = _Z_Tolerance;
+            cameraGroupConfig.worldTransformerData.BoardHeight = _calib_Board_H;
+            cameraGroupConfig.Version++;
+        }
+
+        private void btn_ReflashModel_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                YoloInferenceEngine.ReloadAllModels(GlobalStaticData.model_path);
+                DisplayMessageHalper.displayMessageSuccesses("模型加载成功");
+            }
+            catch (Exception ex)
+            {
+                DisplayMessageHalper.displayMessageErro($"模型加载失败{ex.Message}");
             }
         }
 

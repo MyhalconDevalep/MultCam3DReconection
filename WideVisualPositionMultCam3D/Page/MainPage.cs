@@ -1,4 +1,4 @@
-Ôªøusing ChoiceTech.Halcon.Control;
+using ChoiceTech.Halcon.Control;
 using Force.DeepCloner;
 using HalconDotNet;
 using Microsoft.ML.OnnxRuntime;
@@ -31,19 +31,21 @@ namespace WideVisualPositionMultCam3D.Page
     public partial class MainPage : UIPage
     {
 
-       
+
         private int TimeoutMs = 100;
-        // Ê®°ÊãüÂõæÂÉèÊï∞ÊçÆÔºàÂÆûÈôÖÈ°πÁõÆ‰∏≠ÊõøÊç¢‰∏∫ Bitmap Êàñ MatÔºâ
+        // ƒ£ƒ‚ÕºœÒ ˝æ›£® µº œÓƒø÷–ÃÊªªŒ™ Bitmap ªÚ Mat£©
 
         private MultiCameraPairingManager pairingMgr;
         private PointProcessor2 _pointProcessor= new PointProcessor2();
+        private readonly Stopwatch _mainLoopWatch = new Stopwatch();
+        private volatile bool _isClosing = false;
         public MainPage()
         {
             InitializeComponent();
             this.Load += Page1_Load;
         }
-   
-        
+
+
         public string[] class_names;
         public int class_num;
         CameraGroup groupA;
@@ -75,71 +77,38 @@ namespace WideVisualPositionMultCam3D.Page
         private TableLayoutHalconDispZoomHWindow_final halconController4;
         private TableLayoutHalconDispZoomHWindow_final halconController5;
         private TableLayoutHalconDispZoomHWindow_final halconController6;
+        private void LoadCalibrationData(CameraGroupConfig cameraGroupConfig, int groupIndex)
+        {
+            if (!CalibrationFolderLoader.TryLoadCalibrationData(cameraGroupConfig, groupIndex, out string warning))
+            {
+                MessageBox.Show(warning);
+            }
+        }
         private void Page1_Load(object sender, EventArgs e)
         {
 
-            // 1. ÂàùÂßãÂåñÊéßÂà∂Âô®
-            halconController1 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel4)
-            {
-                // ÈÖçÁΩÆÈÄâÈ°π
-               // ShowHandCursor = true,
-               // EnableClickToRestore = true,
-               // MaximizeOnSingleClick = false,  // ÂçïÂáªÊó∂ÊúÄÂ§ßÂåñ
-               // MaximizeOnDoubleClick = true,  // ÂèåÂáªÊó∂‰πüÊúÄÂ§ßÂåñ
-               // EnableDoubleClickMaximize = true
-            };
-
-            halconController1.Register(hWindowControl1);
-            halconController1.Register(hWindowControl2);
-            halconController1.Register(hWindowControl3);
-            halconController1.Register(hWindowControl4);
-
-            // 2. Ê≥®ÂÜå‰∫ã‰ª∂ÁõëÂê¨
-            //halconController.OnWindowClicked += HalconController_OnWindowClicked;
-            //halconController.OnWindowDoubleClicked += HalconController_OnWindowDoubleClicked;
-            //halconController.OnWindowMaximized += HalconController_OnWindowMaximized;
-            //halconController.OnLayoutRestored += HalconController_OnLayoutRestored;
-
-            // 3. Ëá™Âä®Ê≥®ÂÜåÊâÄÊúâHWindowControlÊéß‰ª∂
-            // halconController1.AutoRegisterWindowsFromTable();
-
-            // 4. ‰øùÂ≠òÂéüÂßãÂ∏ÉÂ±Ä
-            // halconController1.SaveCurrentLayout();
+            // 1. ≥ı ºªØøÿ÷∆∆˜
+            halconController1 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel4);
+            halconController1.RegisterMany(hWindowControl1, hWindowControl2, hWindowControl3, hWindowControl4);
 
 
             halconController2 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel8);
-            halconController2.Register(hWindowControl5);
-            halconController2.Register(hWindowControl6);
-            halconController2.Register(hWindowControl7);
-            halconController2.Register(hWindowControl8);
+            halconController2.RegisterMany(hWindowControl5, hWindowControl6, hWindowControl7, hWindowControl8);
 
 
             halconController3 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel9);
-
-            halconController3.Register(hWindowControl9);
-            halconController3.Register(hWindowControl10);
-            halconController3.Register(hWindowControl11);
-            halconController3.Register(hWindowControl12);
+            halconController3.RegisterMany(hWindowControl9, hWindowControl10, hWindowControl11, hWindowControl12);
 
             halconController4 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel7);
-            halconController4.Register(hWindowControl13);
-            halconController4.Register(hWindowControl14);
-            halconController4.Register(hWindowControl15);
-            halconController4.Register(hWindowControl16);
+            halconController4.RegisterMany(hWindowControl13, hWindowControl14, hWindowControl15, hWindowControl16);
 
 
             halconController5 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel12);
-            halconController5.Register(hWindowControl17);
-            halconController5.Register(hWindowControl18);
-            halconController5.Register(hWindowControl19);
-            halconController5.Register(hWindowControl20);
+            halconController5.RegisterMany(hWindowControl17, hWindowControl18, hWindowControl19, hWindowControl20);
 
 
             halconController6 = new TableLayoutHalconDispZoomHWindow_final(tableLayoutPanel13);
-            halconController6.Register(hWindowControl21);
-            halconController6.Register(hWindowControl22);
-            halconController6.Register(hWindowControl23);
-            halconController6.Register(hWindowControl24);
+            halconController6.RegisterMany(hWindowControl21, hWindowControl22, hWindowControl23, hWindowControl24);
 
 
             try
@@ -158,13 +127,13 @@ namespace WideVisualPositionMultCam3D.Page
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"ÂèÇÊï∞Âä†ËΩΩÈîôËØØ:{ex.Message}");
+                MessageBox.Show($"≤Œ ˝º”‘ÿ¥ÌŒÛ:{ex.Message}");
             }
-           
+
             _superSimpleTcp1 =new SuperSimpleTcpHelper(IP1, port1,false);
             _superSimpleTcp1.ActionPrintConnectionLog += actionPrintConnectionLog1;
 
-            _superSimpleTcp2 = new SuperSimpleTcpHelper(IP2, port2, false);
+            _superSimpleTcp2 = new SuperSimpleTcpHelper(IP2, port2, true);
             _superSimpleTcp2.ActionPrintConnectionLog += actionPrintConnectionLog2;
             _superSimpleTcp2.ActionReceivedMsg += ReceivedMsgEncoding;
 
@@ -173,12 +142,12 @@ namespace WideVisualPositionMultCam3D.Page
 
             _superSimpleTcp4 = new SuperSimpleTcpHelper(IP4, port4, true);
             _superSimpleTcp4.ActionPrintConnectionLog += actionPrintConnectionLog4;
-   
+
             _superSimpleTcp5 = new SuperSimpleTcpHelper(IP5, port5, false);
             _superSimpleTcp5.ActionPrintConnectionLog += actionPrintConnectionLog5;
-      
 
-            //ÁªôÊï∞ÊçÆÂ§ÑÁêÜÁ±ªÁªëÂÆö‰∏Ä‰∏™ÊòæÁ§∫ÂèëÈÄÅÊ∂àÊÅØÁöÑ‰ø°ÊÅØÊòæÁ§∫ÂßîÊâò  
+
+            //∏¯ ˝æ›¥¶¿Ì¿‡∞Û∂®“ª∏ˆœ‘ æ∑¢ÀÕœ˚œ¢µƒ–≈œ¢œ‘ æŒØÕ–
             _pointProcessor._eventMsg = LogWinform;
 
            // _findCoorData = new List<FindCoorData>();
@@ -190,52 +159,21 @@ namespace WideVisualPositionMultCam3D.Page
             lbl_hasBeenSent3.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "RobotUseData3");
             lbl_SendDataNum.DataBindings.Add("Text", GlobalStaticData.UpdataBingdingDisplayMsgq, "SendDataNum");
 
-          
-            bool resCalib1 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data1.cal", out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig1.hv_StereoModelIDGroup);
-            if (!resCalib1)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ1Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
 
-            bool resCalib2 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data2.cal", out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig2.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig2.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig2.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig2.hv_StereoModelIDGroup);
-            if (!resCalib2)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ2Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
-
-
-            bool resCalib3 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data3.cal", out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig3.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig3.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig3.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig3.hv_StereoModelIDGroup);
-            if (!resCalib3)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ3Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
-
-            bool resCalib4 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data4.cal", out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig4.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig4.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig4.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig4.hv_StereoModelIDGroup);
-            if (!resCalib4)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ4Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
-
-            bool resCalib5 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data5.cal", out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig5.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig5.hv_StereoModelIDGroup);
-            if (!resCalib5)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ5Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
-
-            bool resCalib6 = GlobalStaticData.HalconAlgorithmFunction.Load_calibration_data(GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data6.cal", out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CalibDataID, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig6.hv_StereoModelIDGroup);
-            if (!resCalib6)
-            {
-                MessageBox.Show("Áõ∏Êú∫ÁªÑ6Ê†áÂÆöÂèÇÊï∞Âä†ËΩΩÂ§±Ë¥•");
-            }
-
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig1, 1);
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig2, 2);
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig3, 3);
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig4, 4);
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig5, 5);
+            LoadCalibrationData(GlobalStaticData.CameraGroupConfig6, 6);
             //for (int i = 0; i < CameraCount; i++)
             //{
             //    autoResetEvents.Add(new AutoResetEvent(false));
             //}
-            //_barrier.SignalAndWait();//ÂÆö‰πâÂá†‰∏™Áõ∏Êú∫,Â∞±Âú®Âá†‰∏™Áõ∏Êú∫ÈáåÈù¢Âä†‰∏äËøô‰∏ÄÂè•Êù•ÂêåÊ≠•
+            //_barrier.SignalAndWait();//∂®“Âº∏∏ˆœ‡ª˙,æÕ‘⁄º∏∏ˆœ‡ª˙¿Ô√Êº”…œ’‚“ªæ‰¿¥Õ¨≤Ω
 
 
-            //Áõ∏Êú∫ÂèñÂõæÂÆö‰ΩçÊµÅÁ®ã
+            //œ‡ª˙»°Õº∂®Œª¡˜≥Ã
             groupA = new CameraGroup(GlobalStaticData.CameraGroupConfig1);
             groupA.ActionDispImageEvent += groupADispImageEvent;
             groupA.ActionDispYoloRoiEvent += groupADispYoloRoiEvent;
@@ -260,7 +198,7 @@ namespace WideVisualPositionMultCam3D.Page
             groupF.ActionDispImageEvent += groupFDispImageEvent;
             groupF.ActionDispYoloRoiEvent += groupFDispYoloRoiEvent;
 
-            //Áõ∏Êú∫ÂêåÊ≠•ÁÆ°ÁêÜ
+            //œ‡ª˙Õ¨≤Ωπ‹¿Ì
             pairingMgr = new MultiCameraPairingManager(GlobalStaticData.CameraCount, TimeoutMs);
             pairingMgr.Start();
             //Task.Factory.StartNew(() => { PairingLoop(); },TaskCreationOptions.LongRunning);
@@ -347,14 +285,14 @@ namespace WideVisualPositionMultCam3D.Page
 
         }
 
-       
+
 
         private void groupADispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiA(hWindowControl1, obj[0]);
-            dispYoloRoiA(hWindowControl2, obj[1]);
-            dispYoloRoiA(hWindowControl3, obj[2]);
+            DisplayYoloRoi(hWindowControl1, obj[0]);
+            DisplayYoloRoi(hWindowControl2, obj[1]);
+            DisplayYoloRoi(hWindowControl3, obj[2]);
 
         }
 
@@ -362,18 +300,18 @@ namespace WideVisualPositionMultCam3D.Page
         private void groupBDispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiB(hWindowControl5, obj[0]);
-            dispYoloRoiB(hWindowControl6, obj[1]);
-            dispYoloRoiB(hWindowControl7, obj[2]);
+            DisplayYoloRoi(hWindowControl5, obj[0]);
+            DisplayYoloRoi(hWindowControl6, obj[1]);
+            DisplayYoloRoi(hWindowControl7, obj[2]);
 
         }
 
         private void groupCDispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiC(hWindowControl9, obj[0]);
-            dispYoloRoiC(hWindowControl10, obj[1]);
-            dispYoloRoiC(hWindowControl11, obj[2]);
+            DisplayYoloRoi(hWindowControl9, obj[0]);
+            DisplayYoloRoi(hWindowControl10, obj[1]);
+            DisplayYoloRoi(hWindowControl11, obj[2]);
 
         }
 
@@ -381,46 +319,46 @@ namespace WideVisualPositionMultCam3D.Page
         private void groupDDispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiD(hWindowControl13, obj[0]);
-            dispYoloRoiD(hWindowControl14, obj[1]);
-            dispYoloRoiD(hWindowControl15, obj[2]);
+            DisplayYoloRoi(hWindowControl13, obj[0]);
+            DisplayYoloRoi(hWindowControl14, obj[1]);
+            DisplayYoloRoi(hWindowControl15, obj[2]);
         }
 
         private void groupEDispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiD(hWindowControl17, obj[0]);
-            dispYoloRoiD(hWindowControl18, obj[1]);
-            dispYoloRoiD(hWindowControl19, obj[2]);
+            DisplayYoloRoi(hWindowControl17, obj[0]);
+            DisplayYoloRoi(hWindowControl18, obj[1]);
+            DisplayYoloRoi(hWindowControl19, obj[2]);
         }
 
         private void groupFDispYoloRoiEvent(YoloResult[] obj)
         {
 
-            dispYoloRoiD(hWindowControl21, obj[0]);
-            dispYoloRoiD(hWindowControl22, obj[1]);
-            dispYoloRoiD(hWindowControl23, obj[2]);
+            DisplayYoloRoi(hWindowControl21, obj[0]);
+            DisplayYoloRoi(hWindowControl22, obj[1]);
+            DisplayYoloRoi(hWindowControl23, obj[2]);
         }
 
         private void groupADispImageEvent(HObject image1, HObject image2, HObject image3)
         {
             if (image1 != null)
             {
-             
+
                 //GlobalStaticData.displayConvert.SetHalconScalingZoom(image1, hWindowControl1.HalconWindow);
-               
+
                 //hWindowControl1.HalconWindow.DispObj(image1);
                 hWindowControl1.HobjectToHimage(image1);
-              
+
                // GlobalStaticData.displayConvert.SetHalconScalingZoom(image1, hWindowControl4.HalconWindow);
                 //hWindowControl4.HalconWindow.DispObj(image1);
                 //hWindowControl4.HalconWindow.SetColor("red");
                 hWindowControl4.HobjectToHimage(image1);
-          
+
             }
             if (image2 != null)
             {
-              
+
                // GlobalStaticData.displayConvert.SetHalconScalingZoom(image2, hWindowControl2.HalconWindow);
                 // hWindowControl2.HalconWindow.DispObj(image2);
                 hWindowControl2.HobjectToHimage(image2);
@@ -438,8 +376,8 @@ namespace WideVisualPositionMultCam3D.Page
         {
             if (image1 != null)
             {
-              
-               
+
+
                 hWindowControl5.HobjectToHimage(image1);
 
 
@@ -454,8 +392,8 @@ namespace WideVisualPositionMultCam3D.Page
             }
             if (image3 != null)
             {
-              
-               
+
+
                 hWindowControl7.HobjectToHimage(image3);
             }
         }
@@ -464,24 +402,24 @@ namespace WideVisualPositionMultCam3D.Page
         {
             if (image1 != null)
             {
-               
-               
+
+
                 hWindowControl9.HobjectToHimage(image1);
             ;
-              
+
                 hWindowControl12.HobjectToHimage(image1);
                 //hWindowControl12.HalconWindow.SetColor("red");
             }
             if (image2 != null)
             {
-            
-              
+
+
                 hWindowControl10.HobjectToHimage(image2);
             }
             if (image3 != null)
             {
-                
-              
+
+
                 hWindowControl11.HobjectToHimage(image3);
             }
         }
@@ -491,24 +429,24 @@ namespace WideVisualPositionMultCam3D.Page
         {
             if (image1 != null)
             {
-             
-              
+
+
                 hWindowControl13.HobjectToHimage(image1);
-         
-                
+
+
                 hWindowControl16.HobjectToHimage(image1);
                //hWindowControl15.HalconWindow.SetColor("red");
             }
             if (image2 != null)
             {
-              
-             
+
+
                 hWindowControl14.HobjectToHimage(image2);
             }
             if (image3 != null)
             {
-              
-             
+
+
                 hWindowControl15.HobjectToHimage(image3);
             }
         }
@@ -567,158 +505,152 @@ namespace WideVisualPositionMultCam3D.Page
 
 
 
-        private void dispYoloRoiA(HWindow_Final hwindow,YoloResult yoloResult)
+        private void DisplayYoloRoi(HWindow_Final hwindow, YoloResult yoloResult)
         {
-            // ÂÖàÂà§Êñ≠Êéß‰ª∂ÊòØÂê¶ÊúâÊïà
-            if (hwindow == null || hwindow.hWindowControl == null ||
-                hwindow.hWindowControl.Width <= 0 || hwindow.hWindowControl.Height <= 0 ||
-                hwindow.hWindowControl.IsDisposed)
+            if (!TryGetRenderableHalconWindow(hwindow, out var control) || yoloResult == null)
                 return;
 
-
-            if (yoloResult._rows.Length > 0)
-                {
-                    for (int i = 0; i < yoloResult._rows.Length; i++)
-                    {
-                        int local_i = i;
-
-                        HOperatorSet.GenRectangle2(out HObject rectangle3, yoloResult._rows[local_i], yoloResult._cols[local_i], 0, yoloResult._height[local_i] / 2, yoloResult._width[local_i] / 2);
-                        //hwindow.HalconWindow.SetColor("red");
-                        //hwindow.HalconWindow.SetDraw("margin");
-                        hwindow.DispObj(rectangle3.Clone());
-                        hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height-20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
-
-
-                    }
-                }
-         
-        }
-
-
-        private void dispYoloRoiB(HWindow_Final hwindow, YoloResult yoloResult)
-        {
-            // ÂÖàÂà§Êñ≠Êéß‰ª∂ÊòØÂê¶ÊúâÊïà
-            if (hwindow == null || hwindow.hWindowControl == null ||
-                hwindow.hWindowControl.Width <= 0 || hwindow.hWindowControl.Height <= 0 ||
-                hwindow.hWindowControl.IsDisposed)
-                return;
-
-            if (yoloResult._rows.Length > 0)
+            if (control.InvokeRequired)
             {
-                for (int i = 0; i < yoloResult._rows.Length; i++)
+                try
                 {
-                    int local_i = i;
-
-                    HOperatorSet.GenRectangle2(out HObject rectangle3, yoloResult._rows[local_i], yoloResult._cols[local_i], 0, yoloResult._height[local_i] / 2, yoloResult._width[local_i] / 2);
-                    //hwindow.HalconWindow.SetColor("red");
-                    //hwindow.HalconWindow.SetDraw("margin");
-                    hwindow.DispObj(rectangle3.Clone());
-                    hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height - 20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
-
-
+                    control.BeginInvoke(new Action(() => DisplayYoloRoi(hwindow, yoloResult)));
                 }
+                catch (InvalidOperationException) { }
+                return;
             }
 
-        }
-
-        private void dispYoloRoiC(HWindow_Final hwindow, YoloResult yoloResult)
-        {
-            // ÂÖàÂà§Êñ≠Êéß‰ª∂ÊòØÂê¶ÊúâÊïà
-            if (hwindow == null || hwindow.hWindowControl == null ||
-                hwindow.hWindowControl.Width <= 0 || hwindow.hWindowControl.Height <= 0 ||
-                hwindow.hWindowControl.IsDisposed)
+            if (!TryGetRenderableHalconWindow(hwindow, out control))
                 return;
 
-            if (yoloResult._rows.Length > 0)
-            {
-             
-                for (int i = 0; i < yoloResult._rows.Length; i++)
-                {
-                    int local_i = i;
-
-                    HOperatorSet.GenRectangle2(out HObject rectangle3, yoloResult._rows[local_i], yoloResult._cols[local_i], 0, yoloResult._height[local_i] / 2, yoloResult._width[local_i] / 2);
-                    //hwindow.HalconWindow.SetColor("red");
-                    //hwindow.HalconWindow.SetDraw("margin");
-                    hwindow.DispObj(rectangle3.Clone());
-                    hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height - 20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
-
-                }
-
-               
-            }
-
-        }
-
-
-        private void dispYoloRoiD(HWindow_Final hwindow, YoloResult yoloResult)
-        {
-            // ÂÖàÂà§Êñ≠Êéß‰ª∂ÊòØÂê¶ÊúâÊïà
-            if (hwindow == null || hwindow.hWindowControl == null ||
-                hwindow.hWindowControl.Width <= 0 || hwindow.hWindowControl.Height <= 0 ||
-                hwindow.hWindowControl.IsDisposed)
+            int count = GetYoloRoiCount(yoloResult);
+            if (count <= 0)
                 return;
 
-            if (yoloResult._rows.Length > 0)
+            for (int i = 0; i < count; i++)
             {
-                for (int i = 0; i < yoloResult._rows.Length; i++)
+                HObject rectangle = null;
+                try
                 {
-                    int local_i = i;
+                    HOperatorSet.GenRectangle2(
+                        out rectangle,
+                        yoloResult._rows[i],
+                        yoloResult._cols[i],
+                        0,
+                        yoloResult._height[i] / 2,
+                        yoloResult._width[i] / 2);
 
-                    HOperatorSet.GenRectangle2(out HObject rectangle3, yoloResult._rows[local_i], yoloResult._cols[local_i], 0, yoloResult._height[local_i] / 2, yoloResult._width[local_i] / 2);
-                    //hwindow.HalconWindow.SetColor("red");
-                    //hwindow.HalconWindow.SetDraw("margin");
-                    
-                    hwindow.DispObj(rectangle3.Clone());
-                    hwindow.hWindowControl.HalconWindow.DispText(yoloResult._score[local_i].D.ToString("f2"), "image", (yoloResult._rows[local_i] - yoloResult._height - 20).D, (yoloResult._cols[local_i] - (yoloResult._width[local_i] / 2)).D, "green", "box", "false");
-
-
+                    hwindow.DispObj(rectangle);
+                    control.HalconWindow.DispText(
+                        yoloResult._score[i].D.ToString("f2"),
+                        "image",
+                        (yoloResult._rows[i] - yoloResult._height[i] - 20).D,
+                        (yoloResult._cols[i] - (yoloResult._width[i] / 2)).D,
+                        "green",
+                        "box",
+                        "false");
+                }
+                catch (HalconException) { }
+                catch (InvalidOperationException) { }
+                finally
+                {
+                    rectangle?.Dispose();
                 }
             }
+        }
 
+        private bool TryGetRenderableHalconWindow(HWindow_Final hwindow, out HWindowControl control)
+        {
+            control = null;
+
+            if (hwindow == null || hwindow.hWindowControl == null)
+                return false;
+
+            control = hwindow.hWindowControl;
+            return !control.IsDisposed &&
+                   control.IsHandleCreated &&
+                   control.Width > 0 &&
+                   control.Height > 0;
+        }
+
+        private int GetYoloRoiCount(YoloResult yoloResult)
+        {
+            if (yoloResult._rows == null ||
+                yoloResult._cols == null ||
+                yoloResult._width == null ||
+                yoloResult._height == null ||
+                yoloResult._score == null)
+                return 0;
+
+            return Math.Min(
+                Math.Min(yoloResult._rows.Length, yoloResult._cols.Length),
+                Math.Min(
+                    Math.Min(yoloResult._width.Length, yoloResult._height.Length),
+                    yoloResult._score.Length));
         }
 
 
         private FindCoorData robot1 = null;
+
+        private bool TryBeginInvoke(Action action)
+        {
+            if (_isClosing || IsDisposed || !IsHandleCreated)
+                return false;
+
+            try
+            {
+                BeginInvoke(action);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
+        }
+
         private void SendCoorMsg()
         {
-            while (true)
+            while (!_isClosing)
             {
 
                 RefreshCoorSendSelect(GlobalStaticData.SendRobotCoorRefresh);
                 if (GlobalStaticData.SendRobotNum <= 2)
                 {
-                    //‰∏∫ÂèëÈÄÅXÊúÄÂ∞èÁöÑ
+                    //Œ™∑¢ÀÕX◊Ó–°µƒ
                     if (GlobalStaticData.SendDataState == 0)
                     {
                         _pointProcessor.SendCoorValue(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
                     }
-                    else if (GlobalStaticData.SendDataState == 1)//ÂèëÈÄÅYÂùêÊ†áÊúÄÂ∞èÁöÑ
+                    else if (GlobalStaticData.SendDataState == 1)//∑¢ÀÕY◊¯±Í◊Ó–°µƒ
                     {
                         _pointProcessor.SendCoorValueWorldYMinSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
                     }
-                    else//ÂèëÈÄÅHeightÊúÄÂ§ßÁöÑ
+                    else//∑¢ÀÕHeight◊Ó¥Ûµƒ
                     {
                         _pointProcessor.SendCoorValueHeightMaxSort(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3);
                     }
                 }
                 else
                 {
-                    //‰∏∫ÂèëÈÄÅXÊúÄÂ∞èÁöÑ
+                    //Œ™∑¢ÀÕX◊Ó–°µƒ
                     if (GlobalStaticData.SendDataState == 0)
                     {
                         _pointProcessor.SendCoorValue3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
-                    else if (GlobalStaticData.SendDataState == 1)//ÂèëÈÄÅYÂùêÊ†áÊúÄÂ∞èÁöÑ
+                    else if (GlobalStaticData.SendDataState == 1)//∑¢ÀÕY◊¯±Í◊Ó–°µƒ
                     {
                         _pointProcessor.SendCoorValueWorldYMinSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
-                    else//ÂèëÈÄÅHeightÊúÄÂ§ßÁöÑ
+                    else//∑¢ÀÕHeight◊Ó¥Ûµƒ
                     {
                         _pointProcessor.SendCoorValueHeightMaxSort3Robot(GlobalStaticData.SendXOffset, _superSimpleTcp1, _superSimpleTcp3, _superSimpleTcp5);
                     }
                 }
-                    BeginInvoke(new Action(() =>
+                    TryBeginInvoke(new Action(() =>
                     {
+                        if (_isClosing || IsDisposed)
+                            return;
+
                         lbl_SendData.Text = _pointProcessor.Robot1List.Count().ToString();
                         lbl_SendData2.Text = _pointProcessor.Robot2List.Count().ToString();
                         lbl_SendData3.Text = _pointProcessor.Robot3List.Count().ToString();
@@ -728,33 +660,33 @@ namespace WideVisualPositionMultCam3D.Page
                 Thread.Sleep(50);
             }
         }
- 
+
         private void ReceivedMsgEncoding(byte[] obj)
         {
+            if (_isClosing || obj == null || obj.Length < 16)
+                return;
+
             int encoderObj = BitConverter.ToInt32(obj, 0);
-            if (!IsDisposed && IsHandleCreated)
+            TryBeginInvoke(new Action(() =>
             {
-                BeginInvoke(new Action(() =>
-                {
-                    if (!IsDisposed)
-                    {
-                        GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 = BitConverter.ToInt32(obj, 4);
-                        GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2= BitConverter.ToInt32(obj, 8);
-                        GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3= BitConverter.ToInt32(obj, 12);
-                    }
-                }));
-            }
-     
+                if (_isClosing || IsDisposed)
+                    return;
+
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData1 = BitConverter.ToInt32(obj, 4);
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData2= BitConverter.ToInt32(obj, 8);
+                GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3= BitConverter.ToInt32(obj, 12);
+            }));
+
             ProcessEncoderValue(encoderObj);
         }
 
-   
+
 
 
         private void actionPrintConnectionLog1(int arg1, string arg2)
         {
             LogWinform($"prot:{arg1} " + arg2);
-           
+
 
 
         }
@@ -775,14 +707,14 @@ namespace WideVisualPositionMultCam3D.Page
         private void actionPrintConnectionLog3(int arg1, string arg2)
         {
             LogWinform($"prot:{arg1} " + arg2);
-          
+
 
         }
 
         private void actionPrintConnectionLog4(int arg1, string arg2)
         {
             LogWinform($"prot:{arg1} " + arg2);
-         
+
 
 
         }
@@ -822,35 +754,35 @@ namespace WideVisualPositionMultCam3D.Page
 
         private int _CurrenDisp = 0;
         private const int MaxEncoderValue = 80000000;
+        private const int EncoderResetThreshold = MaxEncoderValue - 1000;
         // int _EncoderTotal = 0;
-        private int? _lastValue; // Áî®‰∫éÂ≠òÂÇ®‰∏ä‰∏ÄÊ¨°ÁöÑÁºñÁ†ÅÂô®ÂÄº
+        private int? _lastValue; // Last raw encoder value
 
         public void ProcessEncoderValue(int encoderValue)
         {
-
-            if (_lastValue.HasValue)
+            if (!_lastValue.HasValue)
             {
-                // ËÆ°ÁÆóÂΩìÂâçÂÄº‰∏é‰∏äÊ¨°ÂÄº‰πãÈó¥ÁöÑÂ∑ÆÂÄº
-                int delta = Math.Abs(encoderValue - _lastValue.Value);
+                _lastValue = encoderValue;
+                _CurrenDisp = 0;
+                return;
+            }
 
-                // Â¶ÇÊûúÂ∑ÆÂÄºÊòØË¥üÊï∞ÔºåËØ¥ÊòéÁºñÁ†ÅÂô®Â∑≤ÁªèÂΩíÈõ∂
-                if (delta > 79999000)
-                {
-                    // Ë°•ÂÅø800000
-                    _CurrenDisp = encoderValue - _lastValue.Value + MaxEncoderValue;
-                }
-                else
-                {
-                    // Ê≠£Â∏∏Á¥ØÂä†
-                    _CurrenDisp = encoderValue - _lastValue.Value;
-                }
+            int lastValue = _lastValue.Value;
+            int currentDisp;
+
+            // Wrap compensation: only treat a large high-to-low jump as encoder reset.
+            if (encoderValue < lastValue && lastValue - encoderValue > EncoderResetThreshold)
+            {
+                currentDisp = encoderValue - lastValue + MaxEncoderValue;
             }
             else
             {
-                _CurrenDisp = encoderValue;
+                currentDisp = encoderValue - lastValue;
             }
 
-            // Êõ¥Êñ∞‰∏äÊ¨°ÁöÑÁºñÁ†ÅÂô®ÂÄº
+            _CurrenDisp = currentDisp;
+
+            // Update last raw encoder value
             _lastValue = encoderValue;
             if (!IsDisposed && IsHandleCreated)
             {
@@ -858,15 +790,13 @@ namespace WideVisualPositionMultCam3D.Page
                 {
                     if (!IsDisposed)
                     {
-                        GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding = GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding + _CurrenDisp;
+                        GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding = GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding + currentDisp;
                     }
                 }));
             }
-
-
         }
 
-       
+
 
 
         void RefreshCoorSendSelect(bool enable)
@@ -885,7 +815,7 @@ namespace WideVisualPositionMultCam3D.Page
                 _pointProcessor._placeWebBeltSelectData1 = GlobalStaticData.placeWebBeltSelectData1;
                 GlobalStaticData.SendRobotCoorRefresh = false;
             }
-           
+
         }
 
         void RefreshCoorSelectConfig(bool enable)
@@ -908,22 +838,25 @@ namespace WideVisualPositionMultCam3D.Page
 
         private void LoopCalculateAndSendFunction()
         {
-            
-            while (true)
+
+            while (!_isClosing)
             {
                 RefreshCoorSelectConfig(GlobalStaticData.CoorSelectRefresh);
 
                 _pointProcessor.ProcessLoop();
-                this.BeginInvoke(new Action(() => {
-               GlobalStaticData.UpdataBingdingDisplayMsgq.CacheNum= _pointProcessor.GetPointCount();
+                TryBeginInvoke(new Action(() => {
+                    if (_isClosing || IsDisposed)
+                        return;
+
+                    GlobalStaticData.UpdataBingdingDisplayMsgq.CacheNum= _pointProcessor.GetPointCount();
                     GlobalStaticData.UpdataBingdingDisplayMsgq.SendDataNum = _pointProcessor.GetSendAllNumber;
                 }));
-    
+
                 Thread.Sleep(30);
             }
         }
 
-        // Êú∫Âô®‰∫∫‰ªªÂä°Ê±†ÔºàÂπ∂ÂèëÂèØËÆøÈóÆÔºâÔºåÁî® ConcurrentDictionary ‰ª•Êñπ‰æøÊü•ËØ¢/Âà†Èô§
+        // ª˙∆˜»À»ŒŒÒ≥ÿ£®≤¢∑¢ø…∑√Œ £©£¨”√ ConcurrentDictionary “‘∑Ω±„≤È—Ø/…æ≥˝
         //private ConcurrentBag<FindCoorData> Robot1List = new ConcurrentBag<FindCoorData>();
         //private ConcurrentBag<FindCoorData> Robot2List = new ConcurrentBag<FindCoorData>();
         //private ConcurrentDictionary<long, FindCoorData> RobotAllList = new ConcurrentDictionary<long, FindCoorData>();
@@ -941,17 +874,84 @@ namespace WideVisualPositionMultCam3D.Page
         //HTuple _Width=new HTuple();
         //HTuple _Height=new HTuple();
         private bool _isProcessing = false;
+
+        private void AddAndDisplayGroupResults(List<FindCoorData> results, HWindow_Final displayWindow)
+        {
+            if (results == null || results.Count == 0)
+                return;
+
+            foreach (var result in results)
+            {
+                _pointProcessor.AddPoint(CreateQueuedPoint(result));
+                DisplayFindCoorResult(displayWindow, result);
+            }
+        }
+
+        private FindCoorData CreateQueuedPoint(FindCoorData source)
+        {
+            return new FindCoorData()
+            {
+                encoding = source.encoding,
+                WorldX = source.WorldX,
+                WorldY = source.WorldY,
+                WorldXScurren = source.WorldXScurren,
+                Height = source.Height,
+                Score = source.Score,
+                Attribute = 1,
+                SafeRegionMark = 0,
+                placeCompensation = 0,
+                MouthWidthMm = source.MouthWidthMm,
+                MouthHeightMm = source.MouthHeightMm,
+                MouthAverageDiameterMm = source.MouthAverageDiameterMm
+            };
+        }
+
+        private void DisplayFindCoorResult(HWindow_Final hwindow, FindCoorData result)
+        {
+            TryBeginInvoke(new Action(() =>
+            {
+                if (_isClosing || !TryGetRenderableHalconWindow(hwindow, out var control))
+                    return;
+
+                HObject cross = null;
+                try
+                {
+                    HOperatorSet.GenCrossContourXld(out cross, result.pixelRow, result.pixelCol, 20, 0);
+                    hwindow.DispObj(cross);
+                    control.HalconWindow.DispText(
+                        $" x:{result.WorldX.D.ToString("f2")} y:{result.WorldY.D.ToString("f2")} z:{result.Height.D.ToString("f2")} Mouth:{result.MouthAverageDiameterMm.ToString("f2")}",
+                        "image",
+                        result.pixelRow.D,
+                        result.pixelCol.D,
+                        "green",
+                        "box",
+                        "false");
+                }
+                catch (HalconException) { }
+                catch (InvalidOperationException) { }
+                finally
+                {
+                    cross?.Dispose();
+                }
+            }));
+        }
+
         private async void MainLoopFunction()
         {
-            while (true)
+            while (!_isClosing)
             {
-                pairingMgr.PairReadyHandle.Wait(); // Á≠âÂõæÂÉèÂÖ®ÈÉ®ÂÆåÊàê
-                pairingMgr.PairReadyHandle.Reset();
+                if (!pairingMgr.WaitForReadyBatch(out _))
+                {
+                    if (_isClosing)
+                        break;
+
+                    continue;
+                }
+
                 _isProcessing = true;
                 if ( GlobalStaticData.allReady)
                 {
-                    Stopwatch watch=new Stopwatch();
-                    watch.Start();
+                    _mainLoopWatch.Restart();
                    int encodings= GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding;
 
 
@@ -962,7 +962,7 @@ namespace WideVisualPositionMultCam3D.Page
                     var groupEResultTask = Task.Run(() => groupE.Process(encodings));
                     var groupFResultTask = Task.Run(() => groupF.Process(encodings));
                     var taskAllResult = await Task.WhenAll(groupAResultTask, groupBResultTask, groupCResultTask, groupDResultTask,groupEResultTask,groupFResultTask);
-            
+
                     var groupAResult = taskAllResult[0];
                     var groupBResult = taskAllResult[1];
                     var groupCResult = taskAllResult[2];
@@ -970,92 +970,16 @@ namespace WideVisualPositionMultCam3D.Page
                     var groupEResult = taskAllResult[4];
                     var groupFResult = taskAllResult[5];
 
-                    for (int i = 0; i < groupAResult.Count; i++)
-                    {
-                        int local_i = i;
+                    AddAndDisplayGroupResults(groupAResult, hWindowControl4);
+                    AddAndDisplayGroupResults(groupBResult, hWindowControl8);
+                    AddAndDisplayGroupResults(groupCResult, hWindowControl12);
+                    AddAndDisplayGroupResults(groupDResult, hWindowControl16);
+                    AddAndDisplayGroupResults(groupEResult, hWindowControl20);
+                    AddAndDisplayGroupResults(groupFResult, hWindowControl24);
 
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupAResult[local_i].encoding, WorldX = groupAResult[local_i].WorldX, WorldY = groupAResult[local_i].WorldY, WorldXScurren = groupAResult[local_i].WorldXScurren, Height = groupAResult[local_i].Height, Score = groupAResult[local_i].Score,Attribute=1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupAResult[local_i].MouthWidthMm, MouthHeightMm = groupAResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupAResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupAResult[local_i].pixelRow, groupAResult[local_i].pixelCol, 20, 0);
-                        hWindowControl4.DispObj(cross_result.Clone());
-                        hWindowControl4.hWindowControl.HalconWindow.DispText($" x:{groupAResult[local_i].WorldX.D.ToString("f2")} y:{groupAResult[local_i].WorldY.D.ToString("f2")} z:{groupAResult[local_i].Height.D.ToString("f2")} Mouth:{groupAResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupAResult[local_i].pixelRow.D, groupAResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-                  
-                    for (int i = 0; i < groupBResult.Count; i++)
-                    {
-                        int local_i = i;
-
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupBResult[local_i].encoding, WorldX = groupBResult[local_i].WorldX, WorldY = groupBResult[local_i].WorldY, WorldXScurren = groupBResult[local_i].WorldXScurren, Height = groupBResult[local_i].Height, Score = groupBResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupBResult[local_i].MouthWidthMm, MouthHeightMm = groupBResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupBResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupBResult[local_i].pixelRow, groupBResult[local_i].pixelCol, 20, 0);
-                        hWindowControl8.DispObj(cross_result.Clone());
-                        hWindowControl8.hWindowControl.HalconWindow. DispText($" x:{groupBResult[local_i].WorldX.D.ToString("f2")} y:{groupBResult[local_i].WorldY.D.ToString("f2")} z:{groupBResult[local_i].Height.D.ToString("f2")} Mouth:{groupBResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupBResult[local_i].pixelRow.D, groupBResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-
-                   
-                    for (int i = 0; i < groupCResult.Count; i++)
-                    {
-                        int local_i = i;
-
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupCResult[local_i].encoding, WorldX = groupCResult[local_i].WorldX, WorldY = groupCResult[local_i].WorldY, WorldXScurren = groupCResult[local_i].WorldXScurren, Height = groupCResult[local_i].Height, Score = groupCResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupCResult[local_i].MouthWidthMm, MouthHeightMm = groupCResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupCResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupCResult[local_i].pixelRow, groupCResult[local_i].pixelCol, 20, 0);
-                        hWindowControl12.DispObj(cross_result.Clone());
-                        hWindowControl12.hWindowControl.HalconWindow.DispText($" x:{groupCResult[local_i].WorldX.D.ToString("f2")} y:{groupCResult[local_i].WorldY.D.ToString("f2")} z:{groupCResult[local_i].Height.D.ToString("f2")} Mouth:{groupCResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupCResult[local_i].pixelRow.D, groupCResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-                 
-                    for (int i = 0; i < groupDResult.Count; i++)
-                    {
-                        int local_i = i;
-
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupDResult[local_i].encoding, WorldX = groupDResult[local_i].WorldX, WorldY = groupDResult[local_i].WorldY, WorldXScurren = groupDResult[local_i].WorldXScurren, Height = groupDResult[local_i].Height, Score = groupDResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupDResult[local_i].MouthWidthMm, MouthHeightMm = groupDResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupDResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupDResult[local_i].pixelRow, groupDResult[local_i].pixelCol, 20, 0);
-                        hWindowControl16.DispObj(cross_result.Clone());
-                        hWindowControl16.hWindowControl.HalconWindow.DispText($" x:{groupDResult[local_i].WorldX.D.ToString("f2")} y:{groupDResult[local_i].WorldY.D.ToString("f2")} z:{groupDResult[local_i].Height.D.ToString("f2")} Mouth:{groupDResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupDResult[local_i].pixelRow.D, groupDResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-                    for (int i = 0; i < groupEResult.Count; i++)
-                    {
-                        int local_i = i;
-
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupEResult[local_i].encoding, WorldX = groupEResult[local_i].WorldX, WorldY = groupEResult[local_i].WorldY, WorldXScurren = groupEResult[local_i].WorldXScurren, Height = groupEResult[local_i].Height, Score = groupEResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupEResult[local_i].MouthWidthMm, MouthHeightMm = groupEResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupEResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupEResult[local_i].pixelRow, groupEResult[local_i].pixelCol, 20, 0);
-                        hWindowControl20.DispObj(cross_result.Clone());
-                        hWindowControl20.hWindowControl.HalconWindow.DispText($" x:{groupEResult[local_i].WorldX.D.ToString("f2")} y:{groupEResult[local_i].WorldY.D.ToString("f2")} z:{groupEResult[local_i].Height.D.ToString("f2")} Mouth:{groupEResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupEResult[local_i].pixelRow.D, groupEResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-                    for (int i = 0; i < groupFResult.Count; i++)
-                    {
-                        int local_i = i;
-
-                        //ËøôÈáåÂØπÂ∫îÁöÑÊú∫Ê¢∞ÊâãÂùêÊ†áÂíåÂõæÂÉèÂùêÊ†áÁöÑX\YÊòØÂèçÁöÑ
-                        //  double score = CalculateProportionalValue(rowArray[local_i], 0, _Height.D);
-                        _pointProcessor.AddPoint(new FindCoorData() { encoding = groupFResult[local_i].encoding, WorldX = groupFResult[local_i].WorldX, WorldY = groupFResult[local_i].WorldY, WorldXScurren = groupFResult[local_i].WorldXScurren, Height = groupFResult[local_i].Height, Score = groupFResult[local_i].Score, Attribute = 1, SafeRegionMark = 0, placeCompensation = 0, MouthWidthMm = groupFResult[local_i].MouthWidthMm, MouthHeightMm = groupFResult[local_i].MouthHeightMm, MouthAverageDiameterMm = groupFResult[local_i].MouthAverageDiameterMm });
-                        // GlobalStaticData.blockingCollectiontest.Add(new FindCoorData() { encoding = _localEncode, WorldX = hv_y_mm[local_i] +cam1_X_Offset, WorldY = hv_x_mm[local_i] +cam1_Y_Offset,WorldXScurren = _localEncode - hv_y_mm[local_i], Height = hv_z_mm[local_i] +cam1_Z_Offset,Score=score,SafeRegionMark=0 });
-                        HOperatorSet.GenCrossContourXld(out HObject cross_result, groupFResult[local_i].pixelRow, groupFResult[local_i].pixelCol, 20, 0);
-                        hWindowControl24.DispObj(cross_result.Clone());
-                        hWindowControl24.hWindowControl.HalconWindow.DispText($" x:{groupFResult[local_i].WorldX.D.ToString("f2")} y:{groupFResult[local_i].WorldY.D.ToString("f2")} z:{groupFResult[local_i].Height.D.ToString("f2")} Mouth:{groupFResult[local_i].MouthAverageDiameterMm.ToString("f2")}", "image", groupFResult[local_i].pixelRow.D, groupFResult[local_i].pixelCol.D, "green", "box", "false");
-                    }
-
-
-                    watch.Stop();
-                    BeginInvoke(new Action(() => { 
-                    GlobalStaticData.UpdataBingdingDisplayMsgq.RunTime=Convert.ToInt32(watch.ElapsedMilliseconds);
+                    _mainLoopWatch.Stop();
+                    BeginInvoke(new Action(() => {
+                    GlobalStaticData.UpdataBingdingDisplayMsgq.RunTime=Convert.ToInt32(_mainLoopWatch.ElapsedMilliseconds);
                     }));
 
                 }
@@ -1093,256 +1017,114 @@ namespace WideVisualPositionMultCam3D.Page
         private readonly object _lock16 = new object();
         private readonly object _lock17 = new object();
         private readonly object _lock18 = new object();
+
+        private void HandleHikCameraRun(HObject image, int cameraIndex, object cameraLock)
+        {
+            if (_isClosing || _isProcessing || image == null)
+                return;
+
+            lock (cameraLock)
+            {
+                if (_isClosing || _isProcessing)
+                    return;
+
+                pairingMgr.SignalCamera(cameraIndex, image);
+
+                if (GlobalStaticData.WriteGlobalImage)
+                    WriteImgaesHelper.WriteGlobalAllImages(image.Clone(), (cameraIndex + 1).ToString());
+            }
+        }
+
         private void HIKCamera1_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock1)
-                {
-                    GlobalStaticData._imageBuffer[0] = Himage.Clone();
-                if(GlobalStaticData.WriteGlobalImage)
-                 WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "1");
-                }
-
-            pairingMgr.SignalCamera(0);
-     
+            HandleHikCameraRun(Himage, 0, _lock1);
         }
 
         private void HIKCamera2_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            //if (GlobalStaticData.CalibrationMode1)
-            //{
-            //    lock (_lock2)
-            //    {
-            //        GlobalStaticData.Cam2DisplayEvent?.Invoke(Himage.Clone());
-            //    }
-            //}
-            //else
-            //{
-            lock (_lock2)
-                {
-                    GlobalStaticData._imageBuffer[1] = Himage.Clone();
-                //GlobalStaticData.Cam2DisplayEvent?.Invoke(Himage.Clone());
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "2");
-            }
-            // autoResetEvents[1].Set(); // ÈÄöÁü•ÊúâÊñ∞ÂõæÂÉè
-            pairingMgr.SignalCamera(1);
-            //}
-           // Himage.Dispose();
+            HandleHikCameraRun(Himage, 1, _lock2);
         }
 
         private void HIKCamera3_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock3)
-                {
-                    GlobalStaticData._imageBuffer[2] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "3");
-            }
-            pairingMgr.SignalCamera(2);
-        
+            HandleHikCameraRun(Himage, 2, _lock3);
         }
 
         private void HIKCamera4_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock4)
-            {
-                GlobalStaticData._imageBuffer[3] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "4");
-            }
-            pairingMgr.SignalCamera(3);
+            HandleHikCameraRun(Himage, 3, _lock4);
         }
 
 
         private void HIKCamera5_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock5)
-            {
-                GlobalStaticData._imageBuffer[4] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "5");
-            }
-            pairingMgr.SignalCamera(4);
+            HandleHikCameraRun(Himage, 4, _lock5);
         }
 
         private void HIKCamera6_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock6)
-            {
-                GlobalStaticData._imageBuffer[5] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "6");
-            }
-            pairingMgr.SignalCamera(5);
+            HandleHikCameraRun(Himage, 5, _lock6);
         }
 
 
         private void HIKCamera7_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock7)
-            {
-                GlobalStaticData._imageBuffer[6] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "7");
-            }
-            pairingMgr.SignalCamera(6);
+            HandleHikCameraRun(Himage, 6, _lock7);
         }
 
         private void HIKCamera8_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock8)
-            {
-                GlobalStaticData._imageBuffer[7] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "8");
-            }
-            pairingMgr.SignalCamera(7);
+            HandleHikCameraRun(Himage, 7, _lock8);
         }
 
         private void HIKCamera9_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock9)
-            {
-                GlobalStaticData._imageBuffer[8] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "9");
-            }
-            pairingMgr.SignalCamera(8);
+            HandleHikCameraRun(Himage, 8, _lock9);
         }
 
         private void HIKCamera10_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock10)
-            {
-                GlobalStaticData._imageBuffer[9] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "10");
-            }
-            pairingMgr.SignalCamera(9);
+            HandleHikCameraRun(Himage, 9, _lock10);
         }
 
         private void HIKCamera11_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock11)
-            {
-                GlobalStaticData._imageBuffer[10] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "11");
-            }
-            pairingMgr.SignalCamera(10);
+            HandleHikCameraRun(Himage, 10, _lock11);
         }
 
         private void HIKCamera12_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock12)
-            {
-                GlobalStaticData._imageBuffer[11] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "12");
-            }
-            pairingMgr.SignalCamera(11);
+            HandleHikCameraRun(Himage, 11, _lock12);
         }
 
         private void HIKCamera13_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock13)
-            {
-                GlobalStaticData._imageBuffer[12] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "13");
-            }
-            pairingMgr.SignalCamera(12);
+            HandleHikCameraRun(Himage, 12, _lock13);
         }
 
         private void HIKCamera14_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock14)
-            {
-                GlobalStaticData._imageBuffer[13] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "14");
-            }
-            pairingMgr.SignalCamera(13);
+            HandleHikCameraRun(Himage, 13, _lock14);
         }
 
         private void HIKCamera15_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock15)
-            {
-                GlobalStaticData._imageBuffer[14] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "15");
-            }
-            pairingMgr.SignalCamera(14);
+            HandleHikCameraRun(Himage, 14, _lock15);
         }
 
 
         private void HIKCamera16_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock16)
-            {
-                GlobalStaticData._imageBuffer[15] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "16");
-            }
-            pairingMgr.SignalCamera(15);
+            HandleHikCameraRun(Himage, 15, _lock16);
         }
 
         private void HIKCamera17_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock17)
-            {
-                GlobalStaticData._imageBuffer[16] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "17");
-            }
-            pairingMgr.SignalCamera(16);
+            HandleHikCameraRun(Himage, 16, _lock17);
         }
         private void HIKCamera18_eventRun(HObject Himage)
         {
-            if (_isProcessing)
-                return;
-            lock (_lock18)
-            {
-                GlobalStaticData._imageBuffer[17] = Himage.Clone();
-                if (GlobalStaticData.WriteGlobalImage)
-                    WriteImgaesHelper.WriteGlobalAllImages(Himage.Clone(), "18");
-            }
-            pairingMgr.SignalCamera(17);
+            HandleHikCameraRun(Himage, 17, _lock18);
         }
 
 
@@ -1368,8 +1150,8 @@ namespace WideVisualPositionMultCam3D.Page
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    // Âú®ËøôÈáåÊâßË°å‰Ω†ÁöÑÂæ™ÁéØÈÄªËæëÔºà‰æãÂ¶Ç‰øùÂ≠òÊï∞ÊçÆÔºâ
-                    //  Console.WriteLine($"Ê≠£Âú®‰øùÂ≠òÊï∞ÊçÆ... {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+                    // ‘⁄’‚¿Ô÷¥––ƒ„µƒ—≠ª∑¬ﬂº≠£®¿˝»Á±£¥Ê ˝æ›£©
+                    //  Console.WriteLine($"’˝‘⁄±£¥Ê ˝æ›... {DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
                     GlobalStaticData.HIKCamera1.SoftwareTrigger();
                     GlobalStaticData.HIKCamera2.SoftwareTrigger();
                     GlobalStaticData.HIKCamera3.SoftwareTrigger();
@@ -1382,20 +1164,20 @@ namespace WideVisualPositionMultCam3D.Page
                     GlobalStaticData.HIKCamera10.SoftwareTrigger();
                     GlobalStaticData.HIKCamera11.SoftwareTrigger();
                     GlobalStaticData.HIKCamera12.SoftwareTrigger();
-                    // Ê®°ÊãüËÄóÊó∂Êìç‰ΩúÔºà‰æãÂ¶ÇÊØè1ÁßíÊâßË°å‰∏ÄÊ¨°Ôºâ
-                    Thread.Sleep(500); // ÂèØË∞ÉÊï¥Êó∂Èó¥Èó¥Èöî
+                    // ƒ£ƒ‚∫ƒ ±≤Ÿ◊˜£®¿˝»Á√ø1√Î÷¥––“ª¥Œ£©
+                    Thread.Sleep(500); // ø…µ˜’˚ ±º‰º‰∏Ù
                 }
             }
             catch (OperationCanceledException)
             {
-                // Á∫øÁ®ãË¢´Ê≠£Â∏∏ÂèñÊ∂àÔºå‰∏çÂÅöÂ§ÑÁêÜ
+                // œﬂ≥Ã±ª’˝≥£»°œ˚£¨≤ª◊ˆ¥¶¿Ì
 
-                this.BeginInvoke(new Action(() => UIMessageTip.ShowWarning("Á∫øÁ®ãÂ∑≤ÂÅúÊ≠¢")));
+                this.BeginInvoke(new Action(() => UIMessageTip.ShowWarning("œﬂ≥Ã“—Õ£÷π")));
             }
             catch (Exception ex)
             {
-                // ÂÖ∂‰ªñÂºÇÂ∏∏Â§ÑÁêÜ
-                this.BeginInvoke(new Action(() => UIMessageTip.ShowError($"ÂèëÁîüÈîôËØØ: {ex.Message}")));
+                // ∆‰À˚“Ï≥£¥¶¿Ì
+                this.BeginInvoke(new Action(() => UIMessageTip.ShowError($"∑¢…˙¥ÌŒÛ: {ex.Message}")));
             }
         }
 
@@ -1404,7 +1186,7 @@ namespace WideVisualPositionMultCam3D.Page
 
         private void btn_start_Click(object sender, EventArgs e)
         {
-          if(  btn_start.Text=="ÂêØÂä®")
+          if(  btn_start.Text=="∆Ù∂Ø")
             {
                 GlobalStaticData.allReady = true;
                 GlobalStaticData.PositionRefresh = true;
@@ -1412,54 +1194,69 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.SendRobotCoorRefresh = true;
                // _cancellationTriggleSource = new CancellationTokenSource();
 
-                // ÂêØÂä®Êñ∞Á∫øÁ®ãÔºà‰ΩøÁî® Task.Run ÈÅøÂÖçÈòªÂ°û UIÔºâ
+                // ∆Ù∂Ø–¬œﬂ≥Ã£® π”√ Task.Run ±‹√‚◊Ë»˚ UI£©
               //  Task.Run(() => ContinuousSave(_cancellationTriggleSource.Token), _cancellationTriggleSource.Token);
-                btn_start.Text = "ÂÅúÊ≠¢";
+                btn_start.Text = "Õ£÷π";
                 btn_start.FillColor = Color.Red;
                 btn_start.FillHoverColor = Color.LightPink;
                 lgt_StartStaute.State = UILightState.Blink;
-                LogWinform("ÂêØÂä®Á®ãÂ∫è");
+                LogWinform("∆Ù∂Ø≥Ã–Ú");
             }
           else
             {
                 GlobalStaticData.allReady = false;
-                //_cancellationTriggleSource?.Cancel(); // ÂèëÈÄÅÂèñÊ∂à‰ø°Âè∑
-                //_cancellationTriggleSource?.Dispose(); // ÈáäÊîæËµÑÊ∫ê
+                //_cancellationTriggleSource?.Cancel(); // ∑¢ÀÕ»°œ˚–≈∫≈
+                //_cancellationTriggleSource?.Dispose(); //  Õ∑≈◊ ‘¥
                 btn_start.FillColor = Color.FromArgb(80, 160, 255);
                 btn_start.FillHoverColor = Color.FromArgb(115, 179, 255);
                 lgt_StartStaute.State = UILightState.Off;
-                btn_start.Text = "ÂêØÂä®";
+                btn_start.Text = "∆Ù∂Ø";
 
-                LogWinform("ÂÅúÊ≠¢Á®ãÂ∫è");
-             
+                LogWinform("Õ£÷π≥Ã–Ú");
+
             }
         }
 
         private void btn_Reset_Click(object sender, EventArgs e)
         {
-            
+
             GlobalStaticData.allReady = false;
-            //_cancellationTriggleSource?.Cancel(); // ÂèëÈÄÅÂèñÊ∂à‰ø°Âè∑
-            //_cancellationTriggleSource?.Dispose(); // ÈáäÊîæËµÑÊ∫ê
+            //_cancellationTriggleSource?.Cancel(); // ∑¢ÀÕ»°œ˚–≈∫≈
+            //_cancellationTriggleSource?.Dispose(); //  Õ∑≈◊ ‘¥
             btn_start.FillColor = Color.FromArgb(80, 160, 255);
             btn_start.FillHoverColor = Color.FromArgb(115, 179, 255);
             lgt_StartStaute.State = UILightState.Off;
-            btn_start.Text = "ÂêØÂä®";
-            LogWinform("Â§ç‰ΩçÁ®ãÂ∫è");
+            btn_start.Text = "∆Ù∂Ø";
+            LogWinform("∏¥Œª≥Ã–Ú");
             Thread.Sleep(100);
             bool res = _pointProcessor.ClearData();
             if (res)
             {
-                LogWinform("Êï∞ÊçÆÊ∏ÖÈô§ÊàêÂäü");
+                LogWinform(" ˝æ›«Â≥˝≥…π¶");
             }
             else
             {
-                LogWinform("Êï∞ÊçÆÊ∏ÖÈô§Â§±Ë¥•");
+                LogWinform(" ˝æ›«Â≥˝ ß∞‹");
             }
         }
 
         private void MainPage_FormClosing(object sender, FormClosingEventArgs e)
         {
+            _isClosing = true;
+            GlobalStaticData.allReady = false;
+
+            try
+            {
+                _superSimpleTcp2.ActionReceivedMsg -= ReceivedMsgEncoding;
+            }
+            catch { }
+
+            try
+            {
+                pairingMgr?.Stop();
+            }
+            catch { }
+
             //_session1_1?.Dispose();
             //_session1_2?.Dispose();
             //_session1_3?.Dispose();
@@ -1472,20 +1269,20 @@ namespace WideVisualPositionMultCam3D.Page
             if (ck_AllImageSave.Active)
             {
                 GlobalStaticData.WriteGlobalImage = true;
-                LogWinform("ÂõæÂÉè‰øùÂ≠òÂºÄÂêØ");
+                LogWinform("ÕºœÒ±£¥Êø™∆Ù");
             }
             else
             {
                 GlobalStaticData.WriteGlobalImage = false;
-                LogWinform("ÂõæÂÉè‰øùÂ≠òÂÖ≥Èó≠");
+                LogWinform("ÕºœÒ±£¥Êπÿ±’");
             }
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            // ÂºπÂá∫Á°ÆËÆ§ÂØπËØùÊ°Ü
-            DialogResult result = MessageBox.Show("Á°ÆÂÆöË¶ÅÊ∏ÖÁ©∫ÊâÄÊúâÂÜÖÂÆπÂêóÔºü",
-                "Á°ÆËÆ§Ê∏ÖÁ©∫",
+            // µØ≥ˆ»∑»œ∂‘ª∞øÚ
+            DialogResult result = MessageBox.Show("»∑∂®“™«Âø’À˘”–ƒ⁄»›¬£ø",
+                "»∑»œ«Âø’",
                 MessageBoxButtons.YesNo,
                 MessageBoxIcon.Question);
 
@@ -1496,7 +1293,3 @@ namespace WideVisualPositionMultCam3D.Page
         }
     }
 }
-
-
-
-

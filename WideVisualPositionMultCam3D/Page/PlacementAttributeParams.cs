@@ -31,17 +31,19 @@ namespace WideVisualPositionMultCam3D.Page
             {
                 panel1.Enabled = false;
             }
-            num_Threshold1Down.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold1Down;
+    
             num_Threshold1Up.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold1Up;
             num_Threshold2Up.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold2Up;
             num_Threshold3Up.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold3Up;
             num_Threshold4Up.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold4Up;
+            num_Threshold1Down.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold1Down;
             num_Threshold2Down.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold2Down;
             num_Threshold3Down.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold3Down;
             num_Threshold4Down.Value = GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold4Down;
             cmb_Atrribute1.SelectedIndex = GlobalStaticData.placeWebBeltSelectData1.SegmentationAttri1 - 1;
             cmb_Atrribute2.SelectedIndex = GlobalStaticData.placeWebBeltSelectData1.SegmentationAttri2 - 1;
             cmb_Atrribute3.SelectedIndex = GlobalStaticData.placeWebBeltSelectData1.SegmentationAttri3 - 1;
+            cmb_Atrribute4.SelectedIndex = GlobalStaticData.placeWebBeltSelectData1.SegmentationAttri4 - 1;
 
 
         }
@@ -107,7 +109,7 @@ namespace WideVisualPositionMultCam3D.Page
             GlobalStaticData.OperateConfig.SetValue("PlaceWebBeltSelectData1", "SegmentationThreshold4Down", GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold4Down.ToString());
             GlobalStaticData.OperateConfig.SetValue("PlaceWebBeltSelectData1", "SegmentationThreshold4Up", GlobalStaticData.placeWebBeltSelectData1.SegmentationThreshold4Up.ToString());
             GlobalStaticData.OperateConfig.SetValue("PlaceWebBeltSelectData1", "SegmentationAttri4", GlobalStaticData.placeWebBeltSelectData1.SegmentationAttri4.ToString());
-            DisplayMessageHalper.displayMessageSuccesses("网带3属性设置成功");
+            DisplayMessageHalper.displayMessageSuccesses("网带4属性设置成功");
             GlobalStaticData.SendRobotCoorRefresh = true;
         }
     }

@@ -33,6 +33,7 @@ namespace WideVisualPositionMultCam3D.Page
             _barrier = new Barrier(3);
             SaveImages.Enabled = false;
             btn_SaveContinuousStart.Enabled = false;
+            Disposed += (s, e) => CalibrationAcqUiStateHelper.StopContinuousCapture(ref _isRunning, ref _cancellationTokenSource, btn_SaveContinuousStart);
             SaveImageIndex.DataBindings.Add("Value", GlobalStaticData.UpdataBingdingData, "CalibrationIndex1",true,DataSourceUpdateMode.OnPropertyChanged);
         }
 
@@ -217,28 +218,13 @@ namespace WideVisualPositionMultCam3D.Page
         private bool _isRunning = false;
         private void btn_SaveContinuousStart_Click(object sender, EventArgs e)
         {
-        
             if (!_isRunning)
             {
-                // 启动线程
-                _isRunning = true;
-                btn_SaveContinuousStart.Text = "采集停止"; // 更新按钮文本
-                btn_SaveContinuousStart.FillColor = Color.Red;
-                btn_SaveContinuousStart.FillHoverColor = Color.LightPink;
-                _cancellationTokenSource = new CancellationTokenSource();
-
-                // 启动新线程（使用 Task.Run 避免阻塞 UI）
-                Task.Run(() => ContinuousSave(_cancellationTokenSource.Token), _cancellationTokenSource.Token);
+                CalibrationAcqUiStateHelper.StartContinuousCapture(ref _isRunning, ref _cancellationTokenSource, btn_SaveContinuousStart, ContinuousSave);
             }
             else
             {
-                // 停止线程
-                _isRunning = false;
-                btn_SaveContinuousStart.Text = "采集启动"; // 恢复按钮文本
-                btn_SaveContinuousStart.FillColor = Color.FromArgb(80, 160, 255);
-                btn_SaveContinuousStart.FillHoverColor = Color.FromArgb(115, 179, 255);
-                _cancellationTokenSource?.Cancel(); // 发送取消信号
-                _cancellationTokenSource?.Dispose(); // 释放资源
+                CalibrationAcqUiStateHelper.StopContinuousCapture(ref _isRunning, ref _cancellationTokenSource, btn_SaveContinuousStart);
             }
         }
 
@@ -256,7 +242,10 @@ namespace WideVisualPositionMultCam3D.Page
                     GlobalStaticData.HIKCamera2.SoftwareTrigger();
                     GlobalStaticData.HIKCamera3.SoftwareTrigger();
                     // 模拟耗时操作（例如每1秒执行一次）
-                    Thread.Sleep(500); // 可调整时间间隔
+                    if (cancellationToken.WaitHandle.WaitOne(500))
+                    {
+                        break;
+                    }
                 }
             }
             catch (OperationCanceledException)
@@ -292,12 +281,14 @@ namespace WideVisualPositionMultCam3D.Page
                 GlobalStaticData.HIKCamera2?.TriggerMode(0);
                 GlobalStaticData.HIKCamera3?.TriggerMode(0);
 
+                GlobalStaticData.HIKCamera1.eventRun -= Camera1Display;
                 GlobalStaticData.HIKCamera1.eventRun += Camera1Display;
+                GlobalStaticData.HIKCamera2.eventRun -= Camera2Display;
                 GlobalStaticData.HIKCamera2.eventRun += Camera2Display;
+                GlobalStaticData.HIKCamera3.eventRun -= Camera3Display;
                 GlobalStaticData.HIKCamera3.eventRun += Camera3Display;
                 this.Invoke(new Action(() => {
-                    SaveImages.Enabled = true;
-                CamContinuousEnable.Enabled = false;
+                    CalibrationAcqUiStateHelper.SetNormalModeUi(SaveImages, CamContinuousEnable, true);
                 }));
             }
             else
@@ -312,8 +303,7 @@ namespace WideVisualPositionMultCam3D.Page
 
                 GlobalStaticData.UpdataBingdingData.CalibrationIndex1 = 0;
                 this.Invoke(new Action(() => {
-                    SaveImages.Enabled = false;
-                    CamContinuousEnable.Enabled = true;
+                    CalibrationAcqUiStateHelper.SetNormalModeUi(SaveImages, CamContinuousEnable, false);
                 }));
               
             }
@@ -328,11 +318,13 @@ namespace WideVisualPositionMultCam3D.Page
                     GlobalStaticData.HIKCamera1.TriggerCamera(7);
                     GlobalStaticData.HIKCamera2.TriggerCamera(7);
                     GlobalStaticData.HIKCamera3.TriggerCamera(7);
+                    GlobalStaticData.HIKCamera1.eventRun -= Camera1ContinuousDisplay;
                     GlobalStaticData.HIKCamera1.eventRun += Camera1ContinuousDisplay;
+                    GlobalStaticData.HIKCamera2.eventRun -= Camera2ContinuousDisplay;
                     GlobalStaticData.HIKCamera2.eventRun += Camera2ContinuousDisplay;
+                    GlobalStaticData.HIKCamera3.eventRun -= Camera3ContinuousDisplay;
                     GlobalStaticData.HIKCamera3.eventRun += Camera3ContinuousDisplay;
-                    btn_SaveContinuousStart.Enabled = true;
-                    Cam1AcqEnabel.Enabled = false;
+                    CalibrationAcqUiStateHelper.SetSoftModeUi(btn_SaveContinuousStart, Cam1AcqEnabel, true);
 
                 
             }
@@ -340,14 +332,14 @@ namespace WideVisualPositionMultCam3D.Page
             {
 
 
+                CalibrationAcqUiStateHelper.StopContinuousCapture(ref _isRunning, ref _cancellationTokenSource, btn_SaveContinuousStart);
                 GlobalStaticData.HIKCamera1.TriggerCamera(0);
                 GlobalStaticData.HIKCamera2.TriggerCamera(0);
                 GlobalStaticData.HIKCamera3.TriggerCamera(0);
                 GlobalStaticData.HIKCamera1.eventRun -= Camera1ContinuousDisplay;
                 GlobalStaticData.HIKCamera2.eventRun -= Camera2ContinuousDisplay;
                 GlobalStaticData.HIKCamera3.eventRun -= Camera3ContinuousDisplay;
-                btn_SaveContinuousStart.Enabled = false;
-                Cam1AcqEnabel.Enabled = true;
+                CalibrationAcqUiStateHelper.SetSoftModeUi(btn_SaveContinuousStart, Cam1AcqEnabel, false);
             }
         }
 

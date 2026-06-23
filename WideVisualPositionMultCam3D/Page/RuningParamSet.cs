@@ -1,12 +1,5 @@
 ﻿using Sunny.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WideVisualPositionMultCam3D.ToolClass;
 
@@ -14,165 +7,86 @@ namespace WideVisualPositionMultCam3D.Page
 {
     public partial class RuningParamSet : UIPage
     {
+        private readonly CameraOffsetState _cam1Offset = new CameraOffsetState();
+        private readonly CameraOffsetState _cam2Offset = new CameraOffsetState();
 
-
-        private double _cam1_X_Offset = 0;
-        private double _cam1_Y_Offset = 0;
-        private double _cam1_Z_Offset = 0;
-        private double _cam1_Rz_offset = 0;
-
-        private double _cam2_X_Offset = 0;
-        private double _cam2_Y_Offset = 0;
-        private double _cam2_Z_Offset = 0;
-        private double _cam2_Rz_offset = 0;
         public RuningParamSet()
         {
             InitializeComponent();
-            this.Load += RuningParamSet_Load; ;
-          
+            this.Load += RuningParamSet_Load;
         }
 
         private void RuningParamSet_Load(object sender, EventArgs e)
         {
             try
             {
-               
-                num_Cam1XOffset.Value=GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset;
-                _cam1_X_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset;
-                num_Cam1YOffset.Value = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset;
-                _cam1_Y_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset;
-                num_Cam1ZOffset.Value=GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset;
-                _cam1_Z_Offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset;
-                num_Cam1RzOffset.Value = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset;
-                _cam1_Rz_offset = GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset;
-                num_Cam2XOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset;
-                _cam2_X_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset;
-                num_Cam2YOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset;
-                _cam2_Y_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset;
-                num_Cam2ZOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset;
-                _cam2_Z_Offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset;
-                num_Cam2RzOffset.Value = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset;
-                _cam2_Rz_offset = GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset;
-
+                RuningParamOffsetHelper.LoadCameraOffset(GlobalStaticData.CameraGroupConfig1.worldTransformerData, CreateCam1Controls(), _cam1Offset);
+                RuningParamOffsetHelper.LoadCameraOffset(GlobalStaticData.CameraGroupConfig2.worldTransformerData, CreateCam2Controls(), _cam2Offset);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"相机组合1/2参数界面绑定数据初始化异常：{ex.Message}");
-              
             }
-          
         }
-
-      
 
         private void num_Cam1XOffset_ValueChanged(object sender, double value)
         {
-            _cam1_X_Offset=value;
-            
+            _cam1Offset.X = value;
         }
 
         private void num_Cam1YOffset_ValueChanged(object sender, double value)
         {
-            _cam1_Y_Offset=value;
-           
+            _cam1Offset.Y = value;
         }
 
         private void num_Cam1ZOffset_ValueChanged(object sender, double value)
         {
-            _cam1_Z_Offset=value;
-           
+            _cam1Offset.Z = value;
         }
 
         private void num_Cam1RzOffset_ValueChanged(object sender, double value)
         {
-            _cam1_Rz_offset=value;
-           
+            _cam1Offset.Rz = value;
         }
-
-      
 
         private void num_Cam2XOffset_ValueChanged(object sender, double value)
         {
-            _cam2_X_Offset=value;
-           
+            _cam2Offset.X = value;
         }
 
         private void num_Cam2YOffset_ValueChanged(object sender, double value)
         {
-            _cam2_Y_Offset=value;
-           
+            _cam2Offset.Y = value;
         }
 
         private void num_Cam2ZOffset_ValueChanged(object sender, double value)
         {
-            _cam2_Z_Offset=value;
-           
+            _cam2Offset.Z = value;
         }
 
         private void num_Cam2RzOffset_ValueChanged(object sender, double value)
         {
-            _cam2_Rz_offset=value;
-           
+            _cam2Offset.Rz = value;
         }
 
         private void btn_SaveConfig1_Click(object sender, EventArgs e)
         {
-            if (GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower < 1)
-            {
-                DisplayMessageHalper.displayMessageWarning("当前用户没有权限操作");
-                // UIMessageTip.ShowWarning("当前用户没有权限操作");
-                return;
-            }
-            try
-            {
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "XOffset", _cam1_X_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "YOffset",_cam1_Y_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "ZOffset", _cam1_Z_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam1PositionConfig", "RzOffset", _cam1_Rz_offset.ToString());
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset = _cam1_X_Offset;
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset = _cam1_Y_Offset;
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset = _cam1_Z_Offset;
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset = _cam1_Rz_offset;
-                // GlobalStaticData.PositionRefresh = true;
-                GlobalStaticData.CameraGroupConfig1.Version++;
-                DisplayMessageHalper.displayMessageSuccesses("参数保存成功");
-               // UIMessageTip.ShowOk("参数保存成功");
-            }
-            catch (Exception ex)
-            {
-               // UIMessageTip.ShowError($"参数保存失败:{ex.Message}");
-                DisplayMessageHalper.displayMessageErro($"参数保存失败:{ex.Message}");
-            }
+            RuningParamOffsetHelper.SaveCameraOffset("Cam1PositionConfig", GlobalStaticData.CameraGroupConfig1, _cam1Offset);
         }
 
         private void btn_SaveConfig2_Click(object sender, EventArgs e)
         {
-            if (GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower < 1)
-            {
-                DisplayMessageHalper.displayMessageWarning("当前用户没有权限操作");
-                // UIMessageTip.ShowWarning("当前用户没有权限操作");
-                return;
-            }
-            try
-            {
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "XOffset", _cam2_X_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "YOffset",_cam2_Y_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "ZOffset", _cam2_Z_Offset.ToString());
-                GlobalStaticData.OperateConfig.SetValue("Cam2PositionConfig", "RzOffset", _cam2_Rz_offset.ToString());
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset = _cam2_X_Offset;
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset = _cam2_Y_Offset;
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset = _cam2_Z_Offset;
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset = _cam2_Rz_offset;
-                // GlobalStaticData.PositionRefresh = true;
-                GlobalStaticData.CameraGroupConfig2.Version++;
-                DisplayMessageHalper.displayMessageSuccesses("参数保存成功");
-               // UIMessageTip.ShowOk("参数保存成功");
-            }
-            catch (Exception ex)
-            {
-                DisplayMessageHalper.displayMessageErro($"参数保存失败:{ex.Message}");
-               // UIMessageTip.ShowError($"参数保存失败:{ex.Message}");
-            }
+            RuningParamOffsetHelper.SaveCameraOffset("Cam2PositionConfig", GlobalStaticData.CameraGroupConfig2, _cam2Offset);
+        }
+
+        private CameraOffsetControls CreateCam1Controls()
+        {
+            return new CameraOffsetControls(num_Cam1XOffset, num_Cam1YOffset, num_Cam1ZOffset, num_Cam1RzOffset);
+        }
+
+        private CameraOffsetControls CreateCam2Controls()
+        {
+            return new CameraOffsetControls(num_Cam2XOffset, num_Cam2YOffset, num_Cam2ZOffset, num_Cam2RzOffset);
         }
     }
 }

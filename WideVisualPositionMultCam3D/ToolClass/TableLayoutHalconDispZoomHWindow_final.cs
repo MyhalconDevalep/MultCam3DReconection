@@ -28,11 +28,6 @@ namespace WideVisualPositionMultCam3D.ToolClass
         private HWindow_Final lastClickWin = null;
         private const int DoubleClickInterval = 300;
 
-        // ===== 防抖刷新相关 =====
-        private CancellationTokenSource sizeChangedCts;
-
-
-
         public TableLayoutHalconDispZoomHWindow_final(TableLayoutPanel panel)
         {
             table = panel;
@@ -40,20 +35,48 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
         #region 注册
 
-        public void Register(HWindow_Final win)
+        public bool Register(HWindow_Final win)
         {
-            if (win == null || win.hWindowControl == null) return;
+            if (!TryGetValidControl(win, out var control))
+                return false;
 
-            if (map.ContainsKey(win.hWindowControl)) return;
+            if (map.ContainsKey(control))
+                return false;
 
             windows.Add(win);
-            map[win.hWindowControl] = win;
+            map[control] = win;
 
             // 只注册鼠标双击逻辑
-            win.hWindowControl.MouseDown += OnMouseDown;
+            control.MouseDown += OnMouseDown;
 
             // 尺寸变化 → 防抖异步刷新
-            win.hWindowControl.SizeChanged += OnHalconSizeChanged;
+            control.SizeChanged += OnHalconSizeChanged;
+
+            return true;
+        }
+
+        public void RegisterMany(params HWindow_Final[] wins)
+        {
+            if (wins == null) return;
+
+            foreach (var win in wins)
+                Register(win);
+        }
+
+        public bool IsRegistered(HWindow_Final win)
+        {
+            return TryGetValidControl(win, out var control) && map.ContainsKey(control);
+        }
+
+        private bool TryGetValidControl(HWindow_Final win, out HWindowControl control)
+        {
+            control = null;
+
+            if (win == null || win.hWindowControl == null)
+                return false;
+
+            control = win.hWindowControl;
+            return !control.IsDisposed;
         }
 
         #endregion
@@ -62,21 +85,28 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
 
         private readonly Dictionary<HWindow_Final, CancellationTokenSource> sizeChangedTokens = new Dictionary<HWindow_Final, CancellationTokenSource>();
+        private readonly object sizeChangedLock = new object();
 
         private void OnHalconSizeChanged(object sender, EventArgs e)
         {
             if (!(sender is HWindowControl h) || !map.TryGetValue(h, out var win))
                 return;
 
-            // 取消上一次任务（如果存在）
-            if (sizeChangedTokens.TryGetValue(win, out var oldCts))
+            CancellationTokenSource oldCts = null;
+            CancellationTokenSource cts = new CancellationTokenSource();
+
+            lock (sizeChangedLock)
             {
-                oldCts.Cancel();
-                oldCts.Dispose();
+                if (sizeChangedTokens.TryGetValue(win, out oldCts))
+                {
+                    sizeChangedTokens.Remove(win);
+                }
+
+                sizeChangedTokens[win] = cts;
             }
 
-            var cts = new CancellationTokenSource();
-            sizeChangedTokens[win] = cts;
+            oldCts?.Cancel();
+            oldCts?.Dispose();
             var token = cts.Token;
 
             Task.Run(async () =>
@@ -86,19 +116,30 @@ namespace WideVisualPositionMultCam3D.ToolClass
                     await Task.Delay(1000, token);
                     if (token.IsCancellationRequested) return;
 
-                    win.hWindowControl.Invoke(new Action(() =>
+                    if (!TryGetValidControl(win, out var control)) return;
+
+                    control.Invoke(new Action(() =>
                     {
                         try
                         {
-                            win.viewWindow.resetWindowImage();
+                            if (TryGetValidControl(win, out _))
+                                win.viewWindow.resetWindowImage();
                         }
                         catch { }
                     }));
 
                     // 完成刷新后移除 token
-                    sizeChangedTokens.Remove(win);
+                    lock (sizeChangedLock)
+                    {
+                        if (sizeChangedTokens.TryGetValue(win, out var currentCts) && currentCts == cts)
+                            sizeChangedTokens.Remove(win);
+                    }
                 }
                 catch (TaskCanceledException) { }
+                finally
+                {
+                    cts.Dispose();
+                }
             });
         }
 

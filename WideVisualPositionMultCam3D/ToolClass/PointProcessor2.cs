@@ -802,7 +802,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
                 Robot3List,
                 2,
-                p => p.OrderBy(x => x.WorldY.D));
+                p => p.OrderBy(x => x.WorldY.D).ThenBy(x => x.WorldXScurren.D));
 
             TrySendRobotForThree(
                 1,
@@ -822,7 +822,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 0,
                 null,
                 0,
-                p => p.OrderBy(x => x.WorldY.D));
+                p => p.OrderBy(x => x.WorldY.D).ThenBy(x => x.WorldXScurren.D));
 
             TrySendRobotForThree(
                 3,
@@ -842,7 +842,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 0,
                 null,
                 0,
-                p => p.OrderBy(x => x.WorldY.D));
+                p => p.OrderBy(x => x.WorldY.D).ThenBy(x => x.WorldXScurren.D));
         }
 
         //先抓高度最大的
@@ -850,6 +850,28 @@ namespace WideVisualPositionMultCam3D.ToolClass
         {
 
             RefreshRobotPending();
+
+            IEnumerable<FindCoorData> HeightPriorityInBaseXWindow(IEnumerable<FindCoorData> points, int robotId)
+            {
+                var list = points.ToList();
+                if (list.Count == 0)
+                    return list;
+
+                var basePoint = list[0];
+                for (int i = 1; i < list.Count; i++)
+                {
+                    if (list[i].WorldXScurren.D < basePoint.WorldXScurren.D)
+                        basePoint = list[i];
+                }
+
+                double baseHeight = basePoint.Height.D;
+
+                return list
+                    .OrderByDescending(p => p.Height.D > baseHeight)
+                    .ThenByDescending(p => p.Height.D)
+                    .ThenBy(p => p.WorldXScurren.D);
+            }
+
             // 先发中间机器人，因为 Robot2 同时可能和 Robot1、Robot3 冲突
             TrySendRobotForThree(
                 2,
@@ -869,7 +891,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 GlobalStaticData.UpdataBingdingDisplayMsgq.RobotUseData3,
                 Robot3List,
                 2,
-                p => p.OrderByDescending(x => x.Height.D));
+                p => HeightPriorityInBaseXWindow(p, 2));
 
             TrySendRobotForThree(
                 1,
@@ -889,7 +911,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 0,
                 null,
                 0,
-               p => p.OrderByDescending(x => x.Height.D));
+               p => HeightPriorityInBaseXWindow(p, 1));
 
             TrySendRobotForThree(
                 3,
@@ -909,7 +931,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 0,
                 null,
                 0,
-                p => p.OrderByDescending(x => x.Height.D));
+                p => HeightPriorityInBaseXWindow(p, 3));
         }
 
         private void TrySendRobotForThree(int robotId, int robotState, double baseOffsetX, List<FindCoorData> selfList, object selfLock, SuperSimpleTcpHelper tcp, ref FindCoorData currentSend, int otherRobotId1, FindCoorData otherCurrent1, int otherRobotState1, List<FindCoorData> otherList1, int conflictSafeMark1, int otherRobotId2, FindCoorData otherCurrent2, int otherRobotState2, List<FindCoorData> otherList2, int conflictSafeMark2, Func<IEnumerable<FindCoorData>, IEnumerable<FindCoorData>> sortFunc)
@@ -922,12 +944,13 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 {
                     if (selfList.Count == 0) return;
 
-                    var basePoint = selfList[selfList.Count - 1];
-                    double baseWorldX = basePoint.WorldXScurren.D;
+                    double baseWorldX = selfList.Min(p => p.WorldXScurren.D);
+                    double maxWorldX = baseOffsetX > 0 ? baseWorldX + baseOffsetX : double.MaxValue;
 
                     var candidates = selfList
                         .Where(p => p.WorldXScurren.D >= baseWorldX)
-                        .Where(p => baseOffsetX <= 0 || p.WorldXScurren.D <= baseWorldX + baseOffsetX)
+                        .Where(p => p.WorldXScurren.D <= maxWorldX)
+                        .OrderBy(p => p.WorldXScurren.D)
                         .ToList();
 
                     if (candidates.Count == 0) return;

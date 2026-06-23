@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using HalconDotNet;
 using System.Threading;
+using WideVisualPositionMultCam3D.ToolClass;
 
 namespace WideVisualPositionMultCam3D.Page
 {
@@ -50,19 +51,14 @@ namespace WideVisualPositionMultCam3D.Page
                 
             if (DirEx.SelectDirEx("扩展打开文件夹", ref dir))
             {
+                if (!CalibrationFolderLoader.TryLoad(dir, GlobalStaticData.CameraGroupConfig1, hWindowControl1, hWindowControl2, hWindowControl3, out string warning))
+                {
+                    UIMessageTip.ShowWarning(warning);
+                    btn_StarCalibrationCams.Enabled = false;
+                    return;
+                }
+
                 UIMessageTip.ShowOk(dir);
-                HOperatorSet.ReadImage(out HObject image0, dir + "0\\1_0.bmp");
-                HOperatorSet.ReadImage(out HObject image1,dir+ "1\\2_0.bmp");
-                HOperatorSet.ReadImage(out HObject image2, dir + "2\\3_0.bmp");
-                HOperatorSet.GetImageSize(image1,out HTuple width,out HTuple height);
-                GlobalStaticData.HalconAlgorithmFunction.Calibration_model_Init(0.006, 0.00000345, 0.00000345, width, height, dir + "caltab_240mm.descr", out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CalibDataID);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image0, hWindowControl1.HalconWindow);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image1, hWindowControl2.HalconWindow);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image2, hWindowControl3.HalconWindow);
-                hWindowControl1.HalconWindow.DispObj(image0.Clone());
-                hWindowControl2.HalconWindow.DispObj(image1.Clone());
-                hWindowControl3.HalconWindow.DispObj(image2.Clone());
-                image0.Dispose();
                 btn_StarCalibrationCams.Enabled = true;
             }
            
@@ -110,9 +106,7 @@ namespace WideVisualPositionMultCam3D.Page
        
             if (hv_Errors.D>0&& hv_Errors.D<5)
             {
-                bool res = GlobalStaticData.HalconAlgorithmFunction.Write_calibration_data(GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CalibDataID, GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data1.cal", out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig1.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig1.hv_StereoModelIDGroup);
-
-                if (res)
+                if (CalibrationFolderLoader.TrySave(GlobalStaticData.CameraGroupConfig1, 1, out string warning))
                 {
                     GlobalStaticData.CameraGroupConfig1.Version++;
                     btn_StarCalibrationCams.Enabled = false;
@@ -122,7 +116,7 @@ namespace WideVisualPositionMultCam3D.Page
                 }
                 else
                 {
-                    UIMessageTip.ShowOk("标定保存失败");
+                    UIMessageTip.ShowWarning(warning);
                 }
             }
            

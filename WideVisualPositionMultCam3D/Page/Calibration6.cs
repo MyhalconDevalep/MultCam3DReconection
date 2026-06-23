@@ -1,4 +1,4 @@
-ï»¿using HalconDotNet;
+using HalconDotNet;
 using Sunny.UI;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WideVisualPositionMultCam3D.ToolClass;
 
 namespace WideVisualPositionMultCam3D.Page
 {
@@ -35,29 +36,24 @@ namespace WideVisualPositionMultCam3D.Page
         {
             if (GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower < 2)
             {
-                UIMessageTip.ShowWarning("å½“å‰ç”¨æˆ·æ²¡æœ‰æƒé™æ“ä½œ");
+                UIMessageTip.ShowWarning("µ±Ç°ÓÃ»§Ã»ÓÐÈ¨ÏÞ²Ù×÷");
                 return;
             }
             if (GlobalStaticData.allReady)
             {
-                UIMessageTip.ShowWarning("è¯·ç¡®è®¤ç¨‹åºæ˜¯å¦å¤„äºŽåœæ­¢çŠ¶æ€");
+                UIMessageTip.ShowWarning("ÇëÈ·ÈÏ³ÌÐòÊÇ·ñ´¦ÓÚÍ£Ö¹×´Ì¬");
                 return;
             }
-            if (DirEx.SelectDirEx("æ‰©å±•æ‰“å¼€æ–‡ä»¶å¤¹", ref dir))
+            if (DirEx.SelectDirEx("À©Õ¹´ò¿ªÎÄ¼þ¼Ð", ref dir))
             {
+                if (!CalibrationFolderLoader.TryLoad(dir, GlobalStaticData.CameraGroupConfig6, hWindowControl1, hWindowControl2, hWindowControl3, out string warning))
+                {
+                    UIMessageTip.ShowWarning(warning);
+                    btn_StarCalibrationCams.Enabled = false;
+                    return;
+                }
+
                 UIMessageTip.ShowOk(dir);
-                HOperatorSet.ReadImage(out HObject image0, dir + "0\\1_0.bmp");
-                HOperatorSet.ReadImage(out HObject image1, dir + "1\\2_0.bmp");
-                HOperatorSet.ReadImage(out HObject image2, dir + "2\\3_0.bmp");
-                HOperatorSet.GetImageSize(image1, out HTuple width, out HTuple height);
-                GlobalStaticData.HalconAlgorithmFunction.Calibration_model_Init(0.006, 0.00000345, 0.00000345, width, height, dir + "caltab_240mm.descr", out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CalibDataID);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image0, hWindowControl1.HalconWindow);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image1, hWindowControl2.HalconWindow);
-                GlobalStaticData.displayConvert.SetHalconScalingZoom(image2, hWindowControl3.HalconWindow);
-                hWindowControl1.HalconWindow.DispObj(image0.Clone());
-                hWindowControl2.HalconWindow.DispObj(image1.Clone());
-                hWindowControl3.HalconWindow.DispObj(image2.Clone());
-                image0.Dispose();
                 btn_StarCalibrationCams.Enabled = true;
             }
 
@@ -68,12 +64,12 @@ namespace WideVisualPositionMultCam3D.Page
         {
             if (GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower < 2)
             {
-                UIMessageTip.ShowWarning("å½“å‰ç”¨æˆ·æ²¡æœ‰æƒé™æ“ä½œ");
+                UIMessageTip.ShowWarning("µ±Ç°ÓÃ»§Ã»ÓÐÈ¨ÏÞ²Ù×÷");
                 return;
             }
             if (GlobalStaticData.allReady)
             {
-                UIMessageTip.ShowWarning("è¯·ç¡®è®¤ç¨‹åºæ˜¯å¦å¤„äºŽåœæ­¢çŠ¶æ€");
+                UIMessageTip.ShowWarning("ÇëÈ·ÈÏ³ÌÐòÊÇ·ñ´¦ÓÚÍ£Ö¹×´Ì¬");
                 return;
             }
             btn_StarCalibrationCams.Enabled = false;
@@ -82,39 +78,38 @@ namespace WideVisualPositionMultCam3D.Page
             SystemEx.Delay(50);
             if (hv_Errors == null)
             {
-                UIMessageTip.ShowOk("æ ‡å®šå¼‚å¸¸ï¼");
+                UIMessageTip.ShowOk("±ê¶¨Òì³££¡");
                 return;
             }
             lb_CalibrationErr.Text = hv_Errors.ToString();
             btn_SaveCalibration.Enabled = true;
-            UIMessageTip.ShowOk("æ ‡å®šå®Œæˆ");
+            UIMessageTip.ShowOk("±ê¶¨Íê³É");
         }
 
         private void btn_SaveCalibration_Click(object sender, EventArgs e)
         {
             if (GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower < 2)
             {
-                UIMessageTip.ShowWarning("å½“å‰ç”¨æˆ·æ²¡æœ‰æƒé™æ“ä½œ");
+                UIMessageTip.ShowWarning("µ±Ç°ÓÃ»§Ã»ÓÐÈ¨ÏÞ²Ù×÷");
                 return;
             }
             if (GlobalStaticData.allReady)
             {
-                UIMessageTip.ShowWarning("è¯·ç¡®è®¤ç¨‹åºæ˜¯å¦å¤„äºŽåœæ­¢çŠ¶æ€");
+                UIMessageTip.ShowWarning("ÇëÈ·ÈÏ³ÌÐòÊÇ·ñ´¦ÓÚÍ£Ö¹×´Ì¬");
                 return;
             }
             if (hv_Errors.D > 0 && hv_Errors.D < 5)
             {
-                bool res = GlobalStaticData.HalconAlgorithmFunction.Write_calibration_data(GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CalibDataID, GlobalStaticData.WriteCalibrationPath + @"\Calibration\calibration_data6.cal", out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_CamParamData0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamParamData2, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CamPose2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_World2CamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat0, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat1, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_InvertToCamMat2, out GlobalStaticData.CameraGroupConfig6.worldTransformerData.hv_PlanePose, out GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_CameraSetupModel, out GlobalStaticData.CameraGroupConfig6.hv_StereoModelIDGroup);
-                if (res)
+                if (CalibrationFolderLoader.TrySave(GlobalStaticData.CameraGroupConfig6, 6, out string warning))
                 {
                     GlobalStaticData.CameraGroupConfig6.Version++;
                     btn_StarCalibrationCams.Enabled = false;
                     btn_SaveCalibration.Enabled = false;
-                    UIMessageTip.ShowOk("æ ‡å®šä¿å­˜æˆåŠŸ");
+                    UIMessageTip.ShowOk("±ê¶¨±£´æ³É¹¦");
                 }
                 else
                 {
-                    UIMessageTip.ShowOk("æ ‡å®šä¿å­˜å¤±è´¥");
+                    UIMessageTip.ShowWarning(warning);
                 }
             }
 

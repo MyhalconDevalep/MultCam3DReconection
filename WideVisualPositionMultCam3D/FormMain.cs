@@ -142,186 +142,7 @@ namespace WideVisualPositionMultCam3D
                   
                 }
                
-                if(GlobalStaticData.CameraCount>0)
-                {
-                    CameraInitData1.Number = GlobalStaticData.OperateConfig.GetValue("Camera1", "Number");
-                    CameraInitData1.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera1", "Gain"));
-                    CameraInitData1.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera1", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera1 = new HIKCameraSDK(CameraInitData1.Number, 0, 0);
-                    GlobalStaticData.HIKCamera1.SetGain(CameraInitData1.Gain);
-                    GlobalStaticData.HIKCamera1.SetExposureTime(CameraInitData1.ExpsureTime);
-
-                }
-                if (GlobalStaticData.CameraCount > 1)
-                {
-                    CameraInitData2.Number = GlobalStaticData.OperateConfig.GetValue("Camera2", "Number");
-                    CameraInitData2.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera2", "Gain"));
-                    CameraInitData2.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera2", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera2 = new HIKCameraSDK(CameraInitData2.Number, 0, 0);
-                    GlobalStaticData.HIKCamera2.SetGain(CameraInitData2.Gain);
-                    GlobalStaticData.HIKCamera2.SetExposureTime(CameraInitData2.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 2)
-                {
-                    CameraInitData3.Number = GlobalStaticData.OperateConfig.GetValue("Camera3", "Number");
-                    CameraInitData3.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera3", "Gain"));
-                    CameraInitData3.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera3", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera3 = new HIKCameraSDK(CameraInitData3.Number, 0, 0);
-                    GlobalStaticData.HIKCamera3.SetGain(CameraInitData3.Gain);
-                    GlobalStaticData.HIKCamera3.SetExposureTime(CameraInitData3.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 3)
-                {
-                    CameraInitData4.Number = GlobalStaticData.OperateConfig.GetValue("Camera4", "Number");
-                    CameraInitData4.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera4", "Gain"));
-                    CameraInitData4.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera4", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera4 = new HIKCameraSDK(CameraInitData4.Number, 0, 0);
-                    GlobalStaticData.HIKCamera4.SetGain(CameraInitData4.Gain);
-                    GlobalStaticData.HIKCamera4.SetExposureTime(CameraInitData4.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 4)
-                {
-                    CameraInitData5.Number = GlobalStaticData.OperateConfig.GetValue("Camera5", "Number");
-                    CameraInitData5.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera5", "Gain"));
-                    CameraInitData5.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera5", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera5 = new HIKCameraSDK(CameraInitData5.Number, 0, 0);
-                    GlobalStaticData.HIKCamera5.SetGain(CameraInitData5.Gain);
-                    GlobalStaticData.HIKCamera5.SetExposureTime(CameraInitData5.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 5)
-                {
-                    CameraInitData6.Number = GlobalStaticData.OperateConfig.GetValue("Camera6", "Number");
-                    CameraInitData6.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera6", "Gain"));
-                    CameraInitData6.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera6", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera6 = new HIKCameraSDK(CameraInitData6.Number, 0, 0);
-                    GlobalStaticData.HIKCamera6.SetGain(CameraInitData6.Gain);
-                    GlobalStaticData.HIKCamera6.SetExposureTime(CameraInitData6.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 6)
-                {
-                    CameraInitData7.Number = GlobalStaticData.OperateConfig.GetValue("Camera7", "Number");
-                    CameraInitData7.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera7", "Gain"));
-                    CameraInitData7.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera7", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera7 = new HIKCameraSDK(CameraInitData7.Number, 0, 0);
-                    GlobalStaticData.HIKCamera7.SetGain(CameraInitData7.Gain);
-                    GlobalStaticData.HIKCamera7.SetExposureTime(CameraInitData7.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 7)
-                {
-                    CameraInitData8.Number = GlobalStaticData.OperateConfig.GetValue("Camera8", "Number");
-                    CameraInitData8.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera8", "Gain"));
-                    CameraInitData8.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera8", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera8 = new HIKCameraSDK(CameraInitData8.Number, 0, 0);
-                    GlobalStaticData.HIKCamera8.SetGain(CameraInitData8.Gain);
-                    GlobalStaticData.HIKCamera8.SetExposureTime(CameraInitData8.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 8)
-                {
-                    CameraInitData9.Number = GlobalStaticData.OperateConfig.GetValue("Camera9", "Number");
-                    CameraInitData9.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera9", "Gain"));
-                    CameraInitData9.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera9", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera9 = new HIKCameraSDK(CameraInitData9.Number, 0, 0);
-                    GlobalStaticData.HIKCamera9.SetGain(CameraInitData9.Gain);
-                    GlobalStaticData.HIKCamera9.SetExposureTime(CameraInitData9.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 9)
-                {
-                    CameraInitData10.Number = GlobalStaticData.OperateConfig.GetValue("Camera10", "Number");
-                    CameraInitData10.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera10", "Gain"));
-                    CameraInitData10.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera10", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera10 = new HIKCameraSDK(CameraInitData10.Number, 0, 0);
-                    GlobalStaticData.HIKCamera10.SetGain(CameraInitData10.Gain);
-                    GlobalStaticData.HIKCamera10.SetExposureTime(CameraInitData10.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 10)
-                {
-                    CameraInitData11.Number = GlobalStaticData.OperateConfig.GetValue("Camera11", "Number");
-                    CameraInitData11.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera11", "Gain"));
-                    CameraInitData11.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera11", "CamExposureTime"));
-
-                    GlobalStaticData.HIKCamera11 = new HIKCameraSDK(CameraInitData11.Number, 0, 0);
-                    GlobalStaticData.HIKCamera11.SetGain(CameraInitData11.Gain);
-                    GlobalStaticData.HIKCamera11.SetExposureTime(CameraInitData11.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 11)
-                {
-                    CameraInitData12.Number = GlobalStaticData.OperateConfig.GetValue("Camera12", "Number");
-                    CameraInitData12.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera12", "Gain"));
-                    CameraInitData12.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera12", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera12 = new HIKCameraSDK(CameraInitData12.Number, 0, 0);
-                    GlobalStaticData.HIKCamera12.SetGain(CameraInitData12.Gain);
-                    GlobalStaticData.HIKCamera12.SetExposureTime(CameraInitData12.ExpsureTime);
-                }
-
-                if (GlobalStaticData.CameraCount > 12)
-                {
-                    CameraInitData12.Number = GlobalStaticData.OperateConfig.GetValue("Camera13", "Number");
-                    CameraInitData12.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera13", "Gain"));
-                    CameraInitData12.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera13", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera12 = new HIKCameraSDK(CameraInitData12.Number, 0, 0);
-                    GlobalStaticData.HIKCamera12.SetGain(CameraInitData12.Gain);
-                    GlobalStaticData.HIKCamera12.SetExposureTime(CameraInitData12.ExpsureTime);
-                }
-
-
-               
-
-
-                if (GlobalStaticData.CameraCount > 13)
-                {
-                    CameraInitData14.Number = GlobalStaticData.OperateConfig.GetValue("Camera14", "Number");
-                    CameraInitData14.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera14", "Gain"));
-                    CameraInitData14.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera14", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera14 = new HIKCameraSDK(CameraInitData14.Number, 0, 0);
-                    GlobalStaticData.HIKCamera14.SetGain(CameraInitData14.Gain);
-                    GlobalStaticData.HIKCamera14.SetExposureTime(CameraInitData14.ExpsureTime);
-                }
-
-
-                if (GlobalStaticData.CameraCount > 14)
-                {
-                    CameraInitData15.Number = GlobalStaticData.OperateConfig.GetValue("Camera15", "Number");
-                    CameraInitData15.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera15", "Gain"));
-                    CameraInitData15.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera15", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera15 = new HIKCameraSDK(CameraInitData15.Number, 0, 0);
-                    GlobalStaticData.HIKCamera15.SetGain(CameraInitData15.Gain);
-                    GlobalStaticData.HIKCamera15.SetExposureTime(CameraInitData15.ExpsureTime);
-                }
-
-                if (GlobalStaticData.CameraCount > 15)
-                {
-                    CameraInitData16.Number = GlobalStaticData.OperateConfig.GetValue("Camera16", "Number");
-                    CameraInitData16.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera16", "Gain"));
-                    CameraInitData16.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera16", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera16 = new HIKCameraSDK(CameraInitData16.Number, 0, 0);
-                    GlobalStaticData.HIKCamera16.SetGain(CameraInitData16.Gain);
-                    GlobalStaticData.HIKCamera16.SetExposureTime(CameraInitData16.ExpsureTime);
-                }
-                if (GlobalStaticData.CameraCount > 16)
-                {
-                    CameraInitData17.Number = GlobalStaticData.OperateConfig.GetValue("Camera17", "Number");
-                    CameraInitData17.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera17", "Gain"));
-                    CameraInitData17.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera17", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera17 = new HIKCameraSDK(CameraInitData17.Number, 0, 0);
-                    GlobalStaticData.HIKCamera17.SetGain(CameraInitData17.Gain);
-                    GlobalStaticData.HIKCamera17.SetExposureTime(CameraInitData17.ExpsureTime);
-                }
-
-                if (GlobalStaticData.CameraCount > 17)
-                {
-                    CameraInitData18.Number = GlobalStaticData.OperateConfig.GetValue("Camera18", "Number");
-                    CameraInitData18.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera18", "Gain"));
-                    CameraInitData18.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue("Camera18", "CamExposureTime"));
-                    GlobalStaticData.HIKCamera18 = new HIKCameraSDK(CameraInitData18.Number, 0, 0);
-                    GlobalStaticData.HIKCamera18.SetGain(CameraInitData18.Gain);
-                    GlobalStaticData.HIKCamera18.SetExposureTime(CameraInitData18.ExpsureTime);
-                }
-
-
-
-
-
-
+                InitializeConfiguredCameras();
             }
             catch (Exception ex)
             {
@@ -331,156 +152,11 @@ namespace WideVisualPositionMultCam3D
 
             try
             {
-
-                GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold = float.Parse(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "conf_Score"));
-                GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold = float.Parse(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "nms_threshold"));
-                GlobalStaticData.CameraGroupConfig1.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig1.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig1.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "PositioningTolerance"));
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "XYTolerance"));
-                GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "ZToleranceEx​​"));
-
-            
-
-
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "CalibrationBoardHeight​"));
-          
-
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig1.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam1PositionConfig", "RzOffset"));
-
+                LoadAllCameraGroupRuntimeConfigs();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"相机组1参数读取失败:{ex.Message}");
-            }
-            try
-            {
-                GlobalStaticData.CameraGroupConfig2.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig2.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
-                GlobalStaticData.CameraGroupConfig2.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
-               GlobalStaticData.CameraGroupConfig2.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
-
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig2.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam2PositionConfig", "RzOffset"));
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"相机组2参数读取失败:{ex.Message}");
-            }
-
-            try
-            {
-
-                GlobalStaticData.CameraGroupConfig3.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig3.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
-                GlobalStaticData.CameraGroupConfig3.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
-
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam3PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam3PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam3PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig3.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam3PositionConfig", "RzOffset"));
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"相机组3参数读取失败:{ex.Message}");
-            }
-
-            try
-            {
-
-                GlobalStaticData.CameraGroupConfig4.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig4.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
-                GlobalStaticData.CameraGroupConfig4.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
-
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam4PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam4PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam4PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig4.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam4PositionConfig", "RzOffset"));
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"相机组4参数读取失败:{ex.Message}");
-            }
-
-            try
-            {
-
-                GlobalStaticData.CameraGroupConfig5.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig5.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig5.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig5.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig5.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig5.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
-                GlobalStaticData.CameraGroupConfig5.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
-                GlobalStaticData.CameraGroupConfig5.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
-                                                  
-                GlobalStaticData.CameraGroupConfig5.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig5.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam5PositionConfig", "RzOffset"));
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"相机组4参数读取失败:{ex.Message}");
-            }
-
-
-            try
-            {
-
-                GlobalStaticData.CameraGroupConfig6.Cam0.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig6.Cam0.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig6.Cam1.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig6.Cam1.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig6.Cam2.YoloInferData.conf_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.conf_threshold;
-                GlobalStaticData.CameraGroupConfig6.Cam2.YoloInferData.nms_threshold = GlobalStaticData.CameraGroupConfig1.Cam0.YoloInferData.nms_threshold;
-                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.PositionTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.PositionTolerance;
-                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_XYTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_XYTolerance;
-                GlobalStaticData.CameraGroupConfig6.findCoorPairsData.hv_ZTolerance = GlobalStaticData.CameraGroupConfig1.findCoorPairsData.hv_ZTolerance;
-                GlobalStaticData.CameraGroupConfig6.worldTransformerData.BoardHeight = GlobalStaticData.CameraGroupConfig1.worldTransformerData.BoardHeight;
-                                                  
-                GlobalStaticData.CameraGroupConfig6.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "XOffset"));
-                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "YOffset"));
-                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "ZOffset"));
-                GlobalStaticData.CameraGroupConfig6.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Cam6PositionConfig", "RzOffset"));
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"相机组4参数读取失败:{ex.Message}");
+                MessageBox.Show($"相机组参数读取失败:{ex.Message}");
             }
 
 
@@ -503,69 +179,7 @@ namespace WideVisualPositionMultCam3D
 
             try
             {
-                GlobalStaticData.HeightAligmentData1.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData1.UpCompensation =Convert.ToDouble( GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData1.DownCompensation=Convert.ToDouble( GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData1.BaseHeight=Convert.ToDouble( GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData1.PlaceAttr=Convert.ToDouble( GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData1.PlaceHeightCompeensation=Convert.ToDouble( GlobalStaticData.OperateConfig.GetValue("Bottle1AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData1, "Bottle1AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData2.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData2.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData2.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData2.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData2.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData2.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle2AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData2, "Bottle2AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData3.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData3.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData3.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData3.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData3.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData3.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle3AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData3, "Bottle3AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData4.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData4.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData4.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData4.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData4.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData4.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle4AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData4, "Bottle4AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData5.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData5.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData5.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData5.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData5.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData5.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle5AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData5, "Bottle5AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData6.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData6.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData6.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData6.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData6.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData6.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle6AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData6, "Bottle6AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData7.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData7.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData7.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData7.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData7.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData7.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle7AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData7, "Bottle7AlignmentCompensation");
-
-                GlobalStaticData.HeightAligmentData8.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "IsEnable"));
-                GlobalStaticData.HeightAligmentData8.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "UpCompensation"));
-                GlobalStaticData.HeightAligmentData8.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "DownCompensation"));
-                GlobalStaticData.HeightAligmentData8.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "BaseHeight​"));
-                GlobalStaticData.HeightAligmentData8.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "PlaceAttr"));
-                GlobalStaticData.HeightAligmentData8.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("Bottle8AlignmentCompensation", "PlaceCompensation"));
-                LoadMouthSizeConfig(GlobalStaticData.HeightAligmentData8, "Bottle8AlignmentCompensation");
+                LoadHeightAlignmentConfigs();
             }
             catch (Exception ex)
             {
@@ -650,6 +264,169 @@ namespace WideVisualPositionMultCam3D
                 //MessageBox.Show("5分钟无操作，已自动退出登录");
                 GlobalStaticData.UpdataBingdingDisplayMsgq.UserPower = 0; 
             }));
+        }
+
+        private void InitializeConfiguredCameras()
+        {
+            for (int cameraIndex = 1; cameraIndex <= GlobalStaticData.CameraCount && cameraIndex <= 18; cameraIndex++)
+            {
+                CameraInitData initData = GetCameraInitData(cameraIndex);
+                string section = $"Camera{cameraIndex}";
+                initData.Number = GlobalStaticData.OperateConfig.GetValue(section, "Number");
+                initData.Gain = float.Parse(GlobalStaticData.OperateConfig.GetValue(section, "Gain"));
+                initData.ExpsureTime = float.Parse(GlobalStaticData.OperateConfig.GetValue(section, "CamExposureTime"));
+
+                HIKCameraSDK camera = new HIKCameraSDK(initData.Number, 0, 0);
+                camera.SetGain(initData.Gain);
+                camera.SetExposureTime(initData.ExpsureTime);
+                SetHikCamera(cameraIndex, camera);
+            }
+        }
+
+        private CameraInitData GetCameraInitData(int cameraIndex)
+        {
+            switch (cameraIndex)
+            {
+                case 1: return CameraInitData1;
+                case 2: return CameraInitData2;
+                case 3: return CameraInitData3;
+                case 4: return CameraInitData4;
+                case 5: return CameraInitData5;
+                case 6: return CameraInitData6;
+                case 7: return CameraInitData7;
+                case 8: return CameraInitData8;
+                case 9: return CameraInitData9;
+                case 10: return CameraInitData10;
+                case 11: return CameraInitData11;
+                case 12: return CameraInitData12;
+                case 13: return CameraInitData13;
+                case 14: return CameraInitData14;
+                case 15: return CameraInitData15;
+                case 16: return CameraInitData16;
+                case 17: return CameraInitData17;
+                case 18: return CameraInitData18;
+                default: throw new ArgumentOutOfRangeException(nameof(cameraIndex), cameraIndex, "相机编号超出范围");
+            }
+        }
+
+        private void SetHikCamera(int cameraIndex, HIKCameraSDK camera)
+        {
+            switch (cameraIndex)
+            {
+                case 1: GlobalStaticData.HIKCamera1 = camera; break;
+                case 2: GlobalStaticData.HIKCamera2 = camera; break;
+                case 3: GlobalStaticData.HIKCamera3 = camera; break;
+                case 4: GlobalStaticData.HIKCamera4 = camera; break;
+                case 5: GlobalStaticData.HIKCamera5 = camera; break;
+                case 6: GlobalStaticData.HIKCamera6 = camera; break;
+                case 7: GlobalStaticData.HIKCamera7 = camera; break;
+                case 8: GlobalStaticData.HIKCamera8 = camera; break;
+                case 9: GlobalStaticData.HIKCamera9 = camera; break;
+                case 10: GlobalStaticData.HIKCamera10 = camera; break;
+                case 11: GlobalStaticData.HIKCamera11 = camera; break;
+                case 12: GlobalStaticData.HIKCamera12 = camera; break;
+                case 13: GlobalStaticData.HIKCamera13 = camera; break;
+                case 14: GlobalStaticData.HIKCamera14 = camera; break;
+                case 15: GlobalStaticData.HIKCamera15 = camera; break;
+                case 16: GlobalStaticData.HIKCamera16 = camera; break;
+                case 17: GlobalStaticData.HIKCamera17 = camera; break;
+                case 18: GlobalStaticData.HIKCamera18 = camera; break;
+                default: throw new ArgumentOutOfRangeException(nameof(cameraIndex), cameraIndex, "相机编号超出范围");
+            }
+        }
+
+        private void LoadAllCameraGroupRuntimeConfigs()
+        {
+            float confThreshold = float.Parse(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "conf_Score"));
+            float nmsThreshold = float.Parse(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "nms_threshold"));
+            double positionTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "PositioningTolerance"));
+            double xyTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "XYTolerance"));
+            double zTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "ZToleranceEx​​"));
+            double boardHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "CalibrationBoardHeight​"));
+
+            CameraGroupConfig[] cameraGroupConfigs = GetCameraGroupConfigs();
+            for (int i = 0; i < cameraGroupConfigs.Length; i++)
+            {
+                ApplyPublicCameraGroupConfig(cameraGroupConfigs[i], confThreshold, nmsThreshold, positionTolerance, xyTolerance, zTolerance, boardHeight);
+                LoadPositionOffsetConfig(cameraGroupConfigs[i], $"Cam{i + 1}PositionConfig");
+            }
+        }
+
+        private CameraGroupConfig[] GetCameraGroupConfigs()
+        {
+            return new[]
+            {
+                GlobalStaticData.CameraGroupConfig1,
+                GlobalStaticData.CameraGroupConfig2,
+                GlobalStaticData.CameraGroupConfig3,
+                GlobalStaticData.CameraGroupConfig4,
+                GlobalStaticData.CameraGroupConfig5,
+                GlobalStaticData.CameraGroupConfig6
+            };
+        }
+
+        private void ApplyPublicCameraGroupConfig(
+            CameraGroupConfig cameraGroupConfig,
+            float confThreshold,
+            float nmsThreshold,
+            double positionTolerance,
+            double xyTolerance,
+            double zTolerance,
+            double boardHeight)
+        {
+            cameraGroupConfig.Cam0.YoloInferData.conf_threshold = confThreshold;
+            cameraGroupConfig.Cam0.YoloInferData.nms_threshold = nmsThreshold;
+            cameraGroupConfig.Cam1.YoloInferData.conf_threshold = confThreshold;
+            cameraGroupConfig.Cam1.YoloInferData.nms_threshold = nmsThreshold;
+            cameraGroupConfig.Cam2.YoloInferData.conf_threshold = confThreshold;
+            cameraGroupConfig.Cam2.YoloInferData.nms_threshold = nmsThreshold;
+            cameraGroupConfig.findCoorPairsData.PositionTolerance = positionTolerance;
+            cameraGroupConfig.findCoorPairsData.hv_XYTolerance = xyTolerance;
+            cameraGroupConfig.findCoorPairsData.hv_ZTolerance = zTolerance;
+            cameraGroupConfig.worldTransformerData.BoardHeight = boardHeight;
+        }
+
+        private void LoadPositionOffsetConfig(CameraGroupConfig cameraGroupConfig, string section)
+        {
+            cameraGroupConfig.worldTransformerData.X_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "XOffset"));
+            cameraGroupConfig.worldTransformerData.Y_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "YOffset"));
+            cameraGroupConfig.worldTransformerData.Z_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "ZOffset"));
+            cameraGroupConfig.worldTransformerData.Rz_Offset = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "RzOffset"));
+        }
+
+        private void LoadHeightAlignmentConfigs()
+        {
+            HeightAligmentData[] heightAligmentDatas = GetHeightAlignmentDatas();
+            for (int i = 0; i < heightAligmentDatas.Length; i++)
+            {
+                LoadHeightAlignmentConfig(heightAligmentDatas[i], $"Bottle{i + 1}AlignmentCompensation");
+            }
+        }
+
+        private HeightAligmentData[] GetHeightAlignmentDatas()
+        {
+            return new[]
+            {
+                GlobalStaticData.HeightAligmentData1,
+                GlobalStaticData.HeightAligmentData2,
+                GlobalStaticData.HeightAligmentData3,
+                GlobalStaticData.HeightAligmentData4,
+                GlobalStaticData.HeightAligmentData5,
+                GlobalStaticData.HeightAligmentData6,
+                GlobalStaticData.HeightAligmentData7,
+                GlobalStaticData.HeightAligmentData8
+            };
+        }
+
+        private void LoadHeightAlignmentConfig(HeightAligmentData data, string section)
+        {
+            data.IsEnable = bool.Parse(GlobalStaticData.OperateConfig.GetValue(section, "IsEnable"));
+            data.UpCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "UpCompensation"));
+            data.DownCompensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "DownCompensation"));
+            data.BaseHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "BaseHeight​"));
+            data.PlaceAttr = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "PlaceAttr"));
+            data.PlaceHeightCompeensation = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue(section, "PlaceCompensation"));
+            LoadMouthSizeConfig(data, section);
         }
 
         private void LoadMouthSizeConfig(HeightAligmentData data, string section)
