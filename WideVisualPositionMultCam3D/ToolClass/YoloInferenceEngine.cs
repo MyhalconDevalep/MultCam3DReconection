@@ -91,14 +91,14 @@ namespace WideVisualPositionMultCam3D.ToolClass
             {
                 try
                 {
-                    MessageBox.Show("调用GPU失败，启用CPU推理");
+                    LoggerHelper._.Warn("调用GPU失败，启用CPU推理");
                     options.LogSeverityLevel = OrtLoggingLevel.ORT_LOGGING_LEVEL_INFO;
                     options.InterOpNumThreads = 1;
                     options.AppendExecutionProvider_CPU(0);// 设置为CPU上运行
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show("启用CPU失败");
+                    LoggerHelper._.Error("启用CPU失败", ex);
                 }
             }
 

@@ -38,8 +38,17 @@ namespace WideVisualPositionMultCam3D.ToolClass
 
         public YoloResult RunInference(HObject img)
         {
-            Mat mat = GlobalStaticData.displayConvert.HObjectToMatC(img);
-            return yolo.Inference(mat);
+            Mat mat = null;
+            try
+            {
+                mat = GlobalStaticData.displayConvert.HObjectToMatC(img);
+                return yolo.Inference(mat);
+            }
+            finally
+            {
+                mat?.Dispose();
+                img?.Dispose();
+            }
         }
     }
 

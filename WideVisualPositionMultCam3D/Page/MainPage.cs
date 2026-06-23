@@ -38,6 +38,7 @@ namespace WideVisualPositionMultCam3D.Page
         private MultiCameraPairingManager pairingMgr;
         private PointProcessor2 _pointProcessor= new PointProcessor2();
         private readonly Stopwatch _mainLoopWatch = new Stopwatch();
+        private int _mainLoopLogCounter = 0;
         private volatile bool _isClosing = false;
         public MainPage()
         {
@@ -190,11 +191,11 @@ namespace WideVisualPositionMultCam3D.Page
             groupD.ActionDispImageEvent += groupDDispImageEvent;
             groupD.ActionDispYoloRoiEvent += groupDDispYoloRoiEvent;
 
-            groupE = new CameraGroup(GlobalStaticData.CameraGroupConfig4);
+            groupE = new CameraGroup(GlobalStaticData.CameraGroupConfig5);
             groupE.ActionDispImageEvent += groupEDispImageEvent;
             groupE.ActionDispYoloRoiEvent += groupEDispYoloRoiEvent;
 
-            groupF = new CameraGroup(GlobalStaticData.CameraGroupConfig4);
+            groupF = new CameraGroup(GlobalStaticData.CameraGroupConfig6);
             groupF.ActionDispImageEvent += groupFDispImageEvent;
             groupF.ActionDispYoloRoiEvent += groupFDispYoloRoiEvent;
 
@@ -752,7 +753,7 @@ namespace WideVisualPositionMultCam3D.Page
 
         }
 
-        private int _CurrenDisp = 0;
+        private long _CurrenDisp = 0;
         private const int MaxEncoderValue = 80000000;
         private const int EncoderResetThreshold = MaxEncoderValue - 1000;
         // int _EncoderTotal = 0;
@@ -768,7 +769,7 @@ namespace WideVisualPositionMultCam3D.Page
             }
 
             int lastValue = _lastValue.Value;
-            int currentDisp;
+            long currentDisp;
 
             // Wrap compensation: only treat a large high-to-low jump as encoder reset.
             if (encoderValue < lastValue && lastValue - encoderValue > EncoderResetThreshold)
@@ -940,56 +941,78 @@ namespace WideVisualPositionMultCam3D.Page
         {
             while (!_isClosing)
             {
-                if (!pairingMgr.WaitForReadyBatch(out _))
+                ReadyBatchInfo readyBatch = null;
+                Stopwatch waitWatch = Stopwatch.StartNew();
+                Stopwatch processWatch = new Stopwatch();
+                Stopwatch displayWatch = new Stopwatch();
+
+                try
                 {
-                    if (_isClosing)
-                        break;
+                    if (!pairingMgr.WaitForReadyBatch(out readyBatch))
+                    {
+                        if (_isClosing)
+                            break;
 
-                    continue;
+                        continue;
+                    }
+
+                    waitWatch.Stop();
+                    _isProcessing = true;
+                    if (GlobalStaticData.allReady)
+                    {
+                        _mainLoopWatch.Restart();
+                        long encodings = GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding;
+
+                        processWatch.Start();
+                        var groupAResultTask = Task.Run(() => groupA.Process(encodings));
+                        var groupBResultTask = Task.Run(() => groupB.Process(encodings));
+                        var groupCResultTask = Task.Run(() => groupC.Process(encodings));
+                        var groupDResultTask = Task.Run(() => groupD.Process(encodings));
+                        var groupEResultTask = Task.Run(() => groupE.Process(encodings));
+                        var groupFResultTask = Task.Run(() => groupF.Process(encodings));
+                        var taskAllResult = await Task.WhenAll(groupAResultTask, groupBResultTask, groupCResultTask, groupDResultTask, groupEResultTask, groupFResultTask);
+                        processWatch.Stop();
+
+                        var groupAResult = taskAllResult[0];
+                        var groupBResult = taskAllResult[1];
+                        var groupCResult = taskAllResult[2];
+                        var groupDResult = taskAllResult[3];
+                        var groupEResult = taskAllResult[4];
+                        var groupFResult = taskAllResult[5];
+
+                        displayWatch.Start();
+                        AddAndDisplayGroupResults(groupAResult, hWindowControl4);
+                        AddAndDisplayGroupResults(groupBResult, hWindowControl8);
+                        AddAndDisplayGroupResults(groupCResult, hWindowControl12);
+                        AddAndDisplayGroupResults(groupDResult, hWindowControl16);
+                        AddAndDisplayGroupResults(groupEResult, hWindowControl20);
+                        AddAndDisplayGroupResults(groupFResult, hWindowControl24);
+                        displayWatch.Stop();
+
+                        _mainLoopWatch.Stop();
+                        TryBeginInvoke(new Action(() =>
+                        {
+                            GlobalStaticData.UpdataBingdingDisplayMsgq.RunTime = Convert.ToInt32(_mainLoopWatch.ElapsedMilliseconds);
+                        }));
+
+                        int pointCount = groupAResult.Count + groupBResult.Count + groupCResult.Count + groupDResult.Count + groupEResult.Count + groupFResult.Count;
+                        if (Interlocked.Increment(ref _mainLoopLogCounter) % 100 == 0)
+                        {
+                            LoggerHelper._.Info($"MainLoop Batch:{readyBatch.BatchId}, Wait:{waitWatch.ElapsedMilliseconds}ms, Process:{processWatch.ElapsedMilliseconds}ms, Display:{displayWatch.ElapsedMilliseconds}ms, Total:{_mainLoopWatch.ElapsedMilliseconds}ms, Points:{pointCount}");
+                        }
+                    }
                 }
-
-                _isProcessing = true;
-                if ( GlobalStaticData.allReady)
+                catch (Exception ex)
                 {
-                    _mainLoopWatch.Restart();
-                   int encodings= GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding;
-
-
-                    var groupAResultTask =  Task.Run(() => groupA.Process(encodings));
-                    var groupBResultTask =  Task.Run(() => groupB.Process(encodings));
-                    var groupCResultTask =  Task.Run(() => groupC.Process(encodings));
-                    var groupDResultTask =  Task.Run(() => groupD.Process(encodings));
-                    var groupEResultTask = Task.Run(() => groupE.Process(encodings));
-                    var groupFResultTask = Task.Run(() => groupF.Process(encodings));
-                    var taskAllResult = await Task.WhenAll(groupAResultTask, groupBResultTask, groupCResultTask, groupDResultTask,groupEResultTask,groupFResultTask);
-
-                    var groupAResult = taskAllResult[0];
-                    var groupBResult = taskAllResult[1];
-                    var groupCResult = taskAllResult[2];
-                    var groupDResult = taskAllResult[3];
-                    var groupEResult = taskAllResult[4];
-                    var groupFResult = taskAllResult[5];
-
-                    AddAndDisplayGroupResults(groupAResult, hWindowControl4);
-                    AddAndDisplayGroupResults(groupBResult, hWindowControl8);
-                    AddAndDisplayGroupResults(groupCResult, hWindowControl12);
-                    AddAndDisplayGroupResults(groupDResult, hWindowControl16);
-                    AddAndDisplayGroupResults(groupEResult, hWindowControl20);
-                    AddAndDisplayGroupResults(groupFResult, hWindowControl24);
-
-                    _mainLoopWatch.Stop();
-                    BeginInvoke(new Action(() => {
-                    GlobalStaticData.UpdataBingdingDisplayMsgq.RunTime=Convert.ToInt32(_mainLoopWatch.ElapsedMilliseconds);
-                    }));
-
+                    LoggerHelper._.Error($"MainLoopFunction error, Batch:{readyBatch?.BatchId.ToString() ?? "none"}", ex);
                 }
-
-                GlobalStaticData._imageBuffer.Clear();
-                _isProcessing = false;
+                finally
+                {
+                    pairingMgr.ClearCommittedImages();
+                    _isProcessing = false;
+                }
             }
         }
-
-
 
 
 

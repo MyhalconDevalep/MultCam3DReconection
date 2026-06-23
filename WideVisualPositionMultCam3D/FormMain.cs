@@ -18,6 +18,9 @@ namespace WideVisualPositionMultCam3D
 {
     public partial class FormMain : UIHeaderAsideMainFooterFrame
     {
+        private const string PublicPickConfigSection = "PublicPickConfig";
+        private const string PublicPositionConfigSection = "PublicPositionConfig";
+
         public CameraInitData CameraInitData1 { get; set; }
         public CameraInitData CameraInitData2 { get; set; }
         public CameraInitData CameraInitData3 { get; set; }
@@ -165,8 +168,8 @@ namespace WideVisualPositionMultCam3D
                 GlobalStaticData.UpdataBingdingData.BottleTolerance = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "BottleTolerance"));
                 GlobalStaticData.UpdataBingdingData.XCommandPoint = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "XCommandPoint"));
                 GlobalStaticData.UpdataBingdingData.SafetyClearance = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "SafetyClearance"));
-                GlobalStaticData.UpdataBingdingData.MinHeight = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "MinHeight​"));
-                GlobalStaticData.UpdataBingdingData.MaxHeight = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "MaxHeight​"));
+                GlobalStaticData.UpdataBingdingData.MinHeight = ReadIntConfig(PublicPickConfigSection, 0, "MinHeight", "MinHeight\u200B");
+                GlobalStaticData.UpdataBingdingData.MaxHeight = ReadIntConfig(PublicPickConfigSection, 0, "MaxHeight", "MaxHeight\u200B");
                 GlobalStaticData.UpdataBingdingData.Robot1Threshold = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "Robot1Threshold"));
                 GlobalStaticData.UpdataBingdingData.Robot2Threshold = Convert.ToInt32(GlobalStaticData.OperateConfig.GetValue("PublicPickConfig", "Robot2Threshold"));
             }
@@ -341,8 +344,8 @@ namespace WideVisualPositionMultCam3D
             float nmsThreshold = float.Parse(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "nms_threshold"));
             double positionTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "PositioningTolerance"));
             double xyTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "XYTolerance"));
-            double zTolerance = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "ZToleranceEx​​"));
-            double boardHeight = Convert.ToDouble(GlobalStaticData.OperateConfig.GetValue("PublicPositionConfig", "CalibrationBoardHeight​"));
+            double zTolerance = ReadDoubleConfig(PublicPositionConfigSection, 0, "ZToleranceEx", "ZToleranceEx\u200B\u200B");
+            double boardHeight = ReadDoubleConfig(PublicPositionConfigSection, 0, "CalibrationBoardHeight", "CalibrationBoardHeight\u200B");
 
             CameraGroupConfig[] cameraGroupConfigs = GetCameraGroupConfigs();
             for (int i = 0; i < cameraGroupConfigs.Length; i++)
@@ -443,6 +446,38 @@ namespace WideVisualPositionMultCam3D
 
             double result;
             return double.TryParse(value, out result) ? result : defaultValue;
+        }
+
+        private double ReadDoubleConfig(string section, double defaultValue, params string[] keys)
+        {
+            string value = ReadConfigValue(section, keys);
+            if (string.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            double result;
+            return double.TryParse(value, out result) ? result : defaultValue;
+        }
+
+        private int ReadIntConfig(string section, int defaultValue, params string[] keys)
+        {
+            string value = ReadConfigValue(section, keys);
+            if (string.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            int result;
+            return int.TryParse(value, out result) ? result : defaultValue;
+        }
+
+        private string ReadConfigValue(string section, params string[] keys)
+        {
+            foreach (string key in keys)
+            {
+                string value = GlobalStaticData.OperateConfig.GetValue(section, key);
+                if (!string.IsNullOrWhiteSpace(value))
+                    return value;
+            }
+
+            return string.Empty;
         }
 
         private void FormMain_FormClosing(object sender, FormClosingEventArgs e)

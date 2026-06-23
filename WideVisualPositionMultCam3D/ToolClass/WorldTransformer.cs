@@ -18,12 +18,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
             this.config = data;
         }
 
-        public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,int Encoding)
+        public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,long Encoding)
         {
             return Transform(X, Y, Z, rowImg, colImg, Encoding, null);
         }
 
-        public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,int Encoding, IList<MouthSizeMm> mouthSizes)
+        public List<FindCoorData> Transform(HTuple X, HTuple Y, HTuple Z,HTuple rowImg, HTuple colImg,long Encoding, IList<MouthSizeMm> mouthSizes)
         {
             GlobalStaticData.HalconAlgorithmFunction.Coordinate_Transformation_Result(
                 X, Y, Z,

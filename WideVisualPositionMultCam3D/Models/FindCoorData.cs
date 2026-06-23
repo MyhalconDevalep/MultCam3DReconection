@@ -30,7 +30,7 @@ namespace WideVisualPositionMultCam3D.Models
         public double MouthHeightMm { get; set; } = -1;
         public double MouthAverageDiameterMm { get; set; } = -1;
 
-        public int encoding { get; set; }
+        public long encoding { get; set; }
         public int placeCompensation {  get; set; }
     }
 }

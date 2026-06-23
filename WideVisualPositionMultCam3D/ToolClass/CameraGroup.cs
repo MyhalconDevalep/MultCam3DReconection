@@ -62,44 +62,51 @@ namespace WideVisualPositionMultCam3D.ToolClass
             _lastConfigVersion = config.Version;
         }
 
-        public List<FindCoorData> Process(int endcoding)
+        public List<FindCoorData> Process(long endcoding)
         {
-            ApplyConfigUpdate(GlobalStaticData.GetGroupConfig(GroupId));
-            // int endcoding = GlobalStaticData.UpdataBingdingDisplayMsgq.Encoding;
-            // 1. 获取三张图
             HObject[] images = new HObject[3];
-            lock (cameras)
+            try
             {
-                 images = cameras.Select(c => c.GetImage()).ToArray();
+                ApplyConfigUpdate(GlobalStaticData.GetGroupConfig(GroupId));
+                // 1. 获取三张图
+                lock (cameras)
+                {
+                    images = cameras.Select(c => c.GetImage()).ToArray();
+                }
+                if (images[0] != null && images[1]!=null && images[2]!=null)
+                {
+                    ActionDispImageEvent?.Invoke(images[0].Clone(), images[1].Clone(), images[2].Clone());
+                }
+                else
+                {
+                    return new List<FindCoorData>();
+                }
+
+                //YoloResult yoloResult0=cameras[0].RunInference(images[0]);
+                //YoloResult yoloResult1 = cameras[1].RunInference(images[1]);
+                //YoloResult yoloResult2 = cameras[2].RunInference(images[2]);
+
+                // 2. 执行 YOLO
+                var yoloResults = cameras.Select((c, i) =>
+                    c.RunInference(images[i].Clone())
+                ).ToArray();
+                ActionDispYoloRoiEvent?.Invoke(yoloResults);
+                // 3. 点对三相机配对
+                matcher.Match(yoloResults, out var rows, out var cols, out var cams, out var indices);
+                List<MouthSizeMm> mouthSizes = BuildCam0MouthSizes(yoloResults[0], rows, cols, cams, GlobalStaticData.GetGroupConfig(GroupId).worldTransformerData);
+
+                // 4. 重建三维
+                reconstructor.Reconstruct(rows, cols, cams, indices,out var X, out var Y, out var Z);
+
+                // 5. 世界坐标转换
+                return transformer.Transform(X, Y, Z, rows, cols, endcoding, mouthSizes);
+               // return new List<FindCoorData>();
             }
-            if (images[0] != null && images[1]!=null && images[2]!=null)
+            finally
             {
-                ActionDispImageEvent?.Invoke(images[0], images[1], images[2]);
+                foreach (HObject image in images)
+                    image?.Dispose();
             }
-            else
-            {
-                return new List<FindCoorData>();
-            }
-
-            //YoloResult yoloResult0=cameras[0].RunInference(images[0]);
-            //YoloResult yoloResult1 = cameras[1].RunInference(images[1]);
-            //YoloResult yoloResult2 = cameras[2].RunInference(images[2]);
-
-            // 2. 执行 YOLO
-            var yoloResults = cameras.Select((c, i) =>
-                c.RunInference(images[i].Clone())
-            ).ToArray();
-            ActionDispYoloRoiEvent?.Invoke(yoloResults);
-            // 3. 点对三相机配对
-            matcher.Match(yoloResults, out var rows, out var cols, out var cams, out var indices);
-            List<MouthSizeMm> mouthSizes = BuildCam0MouthSizes(yoloResults[0], rows, cols, cams, GlobalStaticData.GetGroupConfig(GroupId).worldTransformerData);
-
-            // 4. 重建三维
-            reconstructor.Reconstruct(rows, cols, cams, indices,out var X, out var Y, out var Z);
-
-            // 5. 世界坐标转换
-            return transformer.Transform(X, Y, Z, rows, cols, endcoding, mouthSizes);
-           // return new List<FindCoorData>();
         }
 
         private List<MouthSizeMm> BuildCam0MouthSizes(YoloResult cam0Result, HTuple rows, HTuple cols, HTuple cams, WorldTransformerData worldTransformerData)

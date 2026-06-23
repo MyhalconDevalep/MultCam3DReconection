@@ -17,9 +17,9 @@ namespace WideVisualPositionMultCam3D.Models
         }
 
 
-        private int _encoding = 0;
+        private long _encoding = 0;
 
-        public int Encoding
+        public long Encoding
         {
             get { return _encoding; }
             set

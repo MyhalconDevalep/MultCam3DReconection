@@ -20,6 +20,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
         private bool _running;
         private bool _hasActiveBatch;
         private long _currentBatchId;
+        private DateTime _lastTimeoutUtc = DateTime.MinValue;
         private bool[] _arrived;
         private Dictionary<int, HObject> _batchImages;
 
@@ -109,7 +110,16 @@ namespace WideVisualPositionMultCam3D.ToolClass
                     return;
 
                 if (!_hasActiveBatch)
+                {
+                    if (IsDrainingLateFramesLocked())
+                    {
+                        Interlocked.Increment(ref _lateFrameCount);
+                        LoggerHelper._.Warn($"Camera frame ignored during timeout drain, camera:{cameraIndex}, current:{_currentBatchId}");
+                        return;
+                    }
+
                     StartNewBatchLocked();
+                }
 
                 batchId = _currentBatchId;
             }
@@ -206,6 +216,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
                 missing = GetMissingCamerasLocked();
                 Interlocked.Increment(ref _timeoutBatchCount);
                 DiscardActiveBatchLocked();
+                _lastTimeoutUtc = DateTime.UtcNow;
             }
 
             LoggerHelper._.Warn($"Batch {batchId} timeout, missing cameras: {string.Join(",", missing)}");
@@ -216,6 +227,7 @@ namespace WideVisualPositionMultCam3D.ToolClass
             ResetBatchState();
             _currentBatchId++;
             _hasActiveBatch = true;
+            _lastTimeoutUtc = DateTime.MinValue;
             _timeoutTimer.Change(_timeoutMs, Timeout.Infinite);
         }
 
@@ -240,11 +252,22 @@ namespace WideVisualPositionMultCam3D.ToolClass
             if (GlobalStaticData._imageBuffer == null)
                 GlobalStaticData._imageBuffer = new ConcurrentDictionary<int, HObject>();
 
-            GlobalStaticData._imageBuffer.Clear();
+            ClearCommittedImages();
             foreach (var kvp in images)
             {
                 GlobalStaticData._imageBuffer[kvp.Key] = kvp.Value;
             }
+        }
+
+        public void ClearCommittedImages()
+        {
+            if (GlobalStaticData._imageBuffer == null)
+                return;
+
+            foreach (var image in GlobalStaticData._imageBuffer.Values)
+                image?.Dispose();
+
+            GlobalStaticData._imageBuffer.Clear();
         }
 
         private void PublishReadyBatch(ReadyBatchInfo readyBatch)
@@ -279,6 +302,12 @@ namespace WideVisualPositionMultCam3D.ToolClass
             }
 
             return true;
+        }
+
+        private bool IsDrainingLateFramesLocked()
+        {
+            return _lastTimeoutUtc != DateTime.MinValue &&
+                (DateTime.UtcNow - _lastTimeoutUtc).TotalMilliseconds < _timeoutMs;
         }
 
         private List<int> GetMissingCamerasLocked()
